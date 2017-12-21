@@ -1,0 +1,118 @@
+<HTML>
+
+<HEAD>
+  <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=Shift_JIS">
+  <META NAME="Description" CONTENT="pgbashは、bash シェルにPostgreSQL用の直接SQL/埋込SQLインターフェイスの機能を組みこんだシェルです。">
+  <META NAME="KeyWords" CONTENT="PostgreSQL,pgbash,bash,SQLインターフェイス">   
+
+  <TITLE>PostgreSQL pgbash usage</TITLE>
+</HEAD>
+
+<BODY BGCOLOR=#eeeeff text=#000000 ALINK=#ff0000>
+<BASEFONT SIZE=3>
+<CENTER>
+<BLOCKQUOTE>
+<TABLE BORDER=0><TR><TD width=640>
+
+<CENTER>
+
+<TABLE BORDER=0 width=90%><TR>
+<TD align=left>  [<a href="usage05-j.html">Prev</A>] </TD>
+<TD align=middle>[<a href="../usage-j.html" align=middle>Menu</A>] </TD>
+<TD align=right> [<a href="usage07-j.html">Next</A>] </TD>
+</TR></TABLE>
+
+<hr>
+<FONT SIZE=5 COLOR="#0000ff"><B>CGI（Webアプリケーション）の使用方法</B></FONT><BR>
+<hr>
+<BR>
+
+<TABLE BORDER=0><TR><TD>
+<UL>
+<A name="CONF">
+<font size=4><B><LI> ウェブサーバソフトの設定</B></font><BR>
+</A>
+<BR>
+Pgbashを CGIとして実行する場合、LD_LIBRARY_PATH環境変数に PostrgeSQLのライブラリパス名を指定する必要があります。apacheウェブサーバソフトの場合は、"httpd.conf"の先頭付近に次のように指定します。<BR>
+<BR>
+<B>SetEnv LD_LIBRARY_PATH /usr/local/pgsql/lib</B><BR>
+<BR>
+<A name="SHELL">
+<font size=4><B><LI> シェルスクリプトの記述方法</B></font><BR>
+</A>
+<BR>
+次のコマンドをシェルスクリプトの先頭に指定します。<BR>
+<BR>
+<TABLE BORDER=1><TR><TD>
+#!/usr/local/bin/pgbash<BR>
+<font color="0000ff" size=4>exec 2>&1</font> ............ (1)<BR>
+echo "Content-type: text/html"   ........................ (2)<BR>
+echo "" <BR>
+<font color="0000ff" size=4><B>set EXEC_SQL_OPTION  CGI;</B></font>  ......(3)<BR>
+</TD></TR></TABLE>
+<BR>
+ <B>(1)</B> exec 2&gt;&1 <BR>
+ exec 2&gt;1 は、標準エラー出力を標準出力に出力するための指定です。必須ではありませんが、bashが出力するエラーメッセージをホームページに表示することができます。<BR>
+ <BR>
+ <B>(2)</B> Content-type<BR>
+ CGIとして使用するために、echo "Content-type: text/html"と echo ""は必須です。<BR>
+ <BR>
+ <B>(3)</B> set EXEC_SQL_OPTION CGI;<BR>
+set EXEC_SQL_OPTION CGI; は、ホームページで入力されたデータをシェル変数に登録し、出力モードをHTMLにします。<BR>
+<BR>
+HTMLのFORM文では、GET/POSTメソッドを使用できます。また、クッキーがセットされている場合、クッキーの値は、次のシェル変数に登録されます。<BR>
+<PRE>
+  <B>$HTTP_NCOOKIE       </B> : クッキーの個数
+  <B>${HTTP_COOKIEKEY[i]}</B> : クッキーのキー名
+  <B>${HTTP_COOKIEVAL[i]}</B> : クッキーの値   
+ (但し、i は 0 から HTTP_NCOOKIE-1 までです。)
+ </pre>
+<BR>
+<A name="CGI">
+<font size=4><B><LI> シェルスクリプトの一般的な作成方法</B></font><BR>
+</A>
+<BR>
+Webサーバ上に、例えば次のようなHTMLファイル(ホームページ)があるものとします。ここでは、passwd, MYNAME, ADDRESS の３つのデータを入力するものとします。<BR>
+<BR>
+<TABLE BORDER=1><TR><TD>
+&lt;HTML&gt;<BR>
+&lt;FORM METHOD=POST ACTION="test.sh"&gt;<BR>
+&lt;INPUT TYPE=password NAME=<B>passwd</B> &gt;<BR>
+&lt;INPUT TYPE=text NAME="<B>MYNAME</B>" VALUE="sakaida"&gt;<BR>
+&lt;INPUT TYPE=text NAME="<B>ADDRESS</B>" VALUE="Osaka"&gt;<BR>
+&lt;INPUT TYPE=submit VALUE=submit&gt;<BR>
+&lt;/HTML&gt;<BR>
+</TD></TR></TABLE>
+<BR>
+この場合、ホームページから入力された３つのデータは、CGIシェルスクリプトの set EXEC_SQL_OPTION CGI; によって、それぞれ $passwd, $MYNAME, $ADDRESS シェル変数に格納されます。そのシェル変数を利用したCGIスクリプトの例は次のようになります。<BR>
+<BR>
+<TABLE BORDER=1><TR><TD>
+#!/usr/local/bin/pgbash<BR>
+exec 2>&1<BR>
+echo "Content-type: text/html" <BR>
+echo "" <BR>
+<B>set EXEC_SQL_OPTION  CGI;</B><BR>
+#<BR>
+connect to dbname as db1 user nopbody <B>$passwd</B>; <BR>
+insert into test values( '<B>$MYNAME</B>','<B>$ADDRESS</B>'); <BR>
+select * from test order by uname limit 100; <BR>
+</TD></TR></TABLE>
+<BR>
+<font color=ff0000>pgbashは、マルチバイト文字のシェル変数名（例えば、$氏名）を使用することはできません</font>。従いまして、HTMLのINPUTタグのNAMEにおいて、全角文字を指定することはできないことになります。<BR>
+<BR>
+
+<HR>
+<TABLE BORDER=0 width=90%><TR>
+<TD align=left>  [<a href="usage05-j.html">Prev</A>] </TD>
+<TD align=middle>[<a href="../usage-j.html" align=middle>Menu</A>] </TD>
+<TD align=right> [<a href="usage07-j.html">Next</A>] </TD>
+</TR></TABLE>
+
+<BR>
+
+</CENTER>
+</TD></TR></TABLE>
+</BLOCKQUOTE>
+</CENTER>
+</BODY>
+</HTML>

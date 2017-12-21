@@ -1,0 +1,398 @@
+<HTML>
+
+<HEAD>
+  <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=Shift_JIS">
+  <META NAME="Description" CONTENT="pgbashは、bash シェルにPostgreSQL用の直接SQL/埋込SQLインターフェイスの機能を組みこんだシェルです。">
+  <META NAME="KeyWords" CONTENT="PostgreSQL,pgbash,bash,SQLインターフェイス">   
+
+  <TITLE>PostgreSQL pgbash FAQ</TITLE>
+</HEAD>
+<!--
+<BODY BACKGROUND="back.gif">
+-->
+<BODY BGCOLOR=eeeeff ALINK=ff0000>
+<BASEFONT SIZE=3>
+<CENTER>
+<BLOCKQUOTE>
+<TABLE BORDER=0><TR><TD width=640>
+
+<CENTER>
+
+<TABLE BORDER=0><TR><TD>
+[<a href="index-j.html">Home</A>] 
+[<a href="download-j.html">ダウンロード</A>] 
+[<a href="install-j.html">インストール</A>] 
+[<a href="usage-j.html">使用方法</A>] 
+[<a href="example-j.html">使用例</A>] 
+[<a href="faq-j.html">FAQ</A>] 
+</TD></TR></TABLE>
+<BR>
+
+<FONT SIZE=6 COLOR="#0000ff"><B>Ｆ Ａ Ｑ</B></FONT><BR>
+</center>
+<BR>
+<CENTER>
+<!-----
+<TABLE BORDER=0 BGCOLOR=ddddff CELLPADDING=10><TR><TD>
+pgbashのよくある質問をまとめてます。
+
+尚、<A href="http://www2.psn.ne.jp/psn/pgbash/">pgbash掲示板</A>（フレーム、Java Script使用)を用意してますのでpgbashに関する質問や要望などありましたら書きこんでください。この掲示板に書かれた内容は、FAQとしてこのページに掲載する可能性がありますのでご了承お願いします。
+</TD></TR></TABLE>
+---->
+<BR>
+
+</CENTER>
+
+<B>インストールに関するFAQ</B><BR>
+<UL>
+<LI><A HREF="#Q1030">pgbashは、bashのどのバージョンを使用しますか？</A>
+<LI><A HREF="#Q1031">pgbashは、PostgreSQLのどのバージョンを使用しますか？</A>
+<LI><A HREF="#Q1041">独自の対話型操作環境を作成したのですがどうすれば良いですか？</A>
+<LI><A HREF="#Q1042">シェルスクリプトは存在しているが"No such file or directory"で実行できません。</A>
+</UL>
+<BR>
+
+<B>bashの操作に関するFAQ</B><BR>
+<UL>
+<LI><A HREF="#Q1040">シェルスクリプトで alias相当の指定ができますか？</A>
+<LI><A HREF="#Q1060">pgbashの標準エラー出力を標準出力に切り替えることができますか？</A>
+</UL>
+<BR>
+
+<B>データベースの接続に関するFAQ</B><BR>
+<UL>
+<LI><A HREF="#Q2001">CONNECT文を使用しなくても自動的にデータベースに接続してくれますか？</A>
+<LI><A HREF="#Q2002">CONNECT文で接続名を指定しなかった場合はどうなりますか？</A>
+<LI><A HREF="#Q2009">セッションが切れた場合 backendは終了しますか？</A>
+<LI><A HREF="#Q2010">SQL使用中にbackendが死んだ場合はどうなりますか？</A>
+</UL>
+<BR>
+
+<B>SQLの操作に関するFAQ</B><BR>
+<UL>
+<LI><A HREF="#Q3010">SQL文はそのまま backend に送信されますか？</A>
+<LI><A HREF="#Q3060">列の値がNULLであること判断できますか？</A>
+<LI><A HREF="#Q3070">データベース情報を表示するコマンドはどのような　QUERY をバックエンドに送信しているのですか？</A>
+</UL>
+<BR>
+
+<B>検索結果の出力に関するFAQ</B><BR>
+<UL>
+<LI><A HREF="#Q4009">pgbash の検索結果と psql の検索結果は同じですか？</A>
+<LI><A HREF="#Q4040">Select Into 文で検索結果が複数タプルの場合はどうなりますか？</A>
+<LI><A HREF="#Q4050">Fetch Into 文で　検索数とか'ALL'を指定したらどうなりますか？</A>
+<LI><A HREF="#Q4090">スペースとNULLとゼロビット(空)とを区別して表示できますか？</A>
+<LI><A HREF="#Q4100">SELECTの結果をCSV形式でファイルに出力することができますか？</A>
+<LI><A HREF="#Q4200">検索した時の列名を取得する方法はありますか？</A>
+</UL>
+<BR>
+
+<B>Webアプリケーションに関するFAQ</B><BR>
+<UL>
+<LI><A HREF="#Q5100">pgbashはCGIプログラムとして利用することができますか？</A>
+<LI><A HREF="#Q5110">HTTP クッキーを処理する方法が提供されていますか？</A>
+</UL>
+<BR>
+
+<CENTER>
+
+<HR> <!---------------------------------------------------------->
+<BR>
+
+
+<TABLE BORDER=0><TR><TD>
+
+<!-------------->
+<A NAME="Q1030">
+<font color="0000ff"><B>Ｑ．pgbashは、bashのどのバージョンを使用しますか？</B></font><BR>
+<UL>
+  pgbash-8r2.05は bash-2.05a, pgbash-8r3.2 は bash-3.2.48, pgbash-8r4.1 は bash-4.1.10 のソースファイルを使用します。<BR>
+</UL>
+<!-------------->
+<A NAME="Q1031">
+<font color="0000ff"><B>Ｑ．pgbashは、PostgreSQLのどのバージョンを使用しますか？</B></font><BR>
+<UL>
+pgbash は　PostgreSQL-7.4以降の libpqライブラリを使用します。 そして、PostgreSQL-7.4, PostgreSQL-8.0 から 8.4 および PostgreSQL 9.0 サーバに接続できます。libpqライブラリのPostgreSQLバージョンと、サーバ側のPostgreSQLバージョンは一致しなくてもかまいません。<br>
+</UL>
+<!-------------->
+<A NAME="Q1041">
+<font color="0000ff"><B>Ｑ．独自の対話型操作環境を作成したのですがどうすれば良いですか？</FONT></B><BR>
+<UL>
+　/etc/pgbashrc をホームディレクトリに .pgbashrc としてコピーし、そのファイルに独自の対話型操作環境を追加してください。<BR>
+<BR>
+</UL>
+<!-------------->
+<A NAME="Q1042">
+<font color="0000ff"><B>Ｑ．シェルスクリプトは存在しているが"No such file or directory"で実行できません。</FONT></B><BR>
+<UL>
+シェルスクリプトの改行コードは'<B>LF</B>'です。'CR+LF'コードになっていると、このエラーになります。もちろん、パスが間違っても同じです。<BR>
+</UL>
+<!-------------->
+<A NAME="Q1040">
+<font color="0000ff"><B>Ｑ．シェルスクリプトで alias相当の指定ができますか？</FONT></B><BR>
+<UL>
+  シェルスクリプト内では alias は使用できません。例えば、次のように function を定義して alias と同様に使用することができます。
+<PRE>
+ #!/usr/local/bin/pgbash
+ function E {
+       exec_sql "$*"
+ }
+  E "select * from test"
+</PRE>
+<br>
+</UL>
+
+<!-------------->
+<A NAME="Q1060">
+<font color="0000ff"><B>Ｑ．pgbashの標準エラー出力を標準出力に切り替えることができますか？</FONT></B><BR>
+<UL>
+  はい、できます。<B>exec 2>&1</B> とします。CGI用のシェルスクリプトを作成する場合は、プログラムの先頭で必ず指定した方が良いでしょう。
+<PRE>
+ #!/usr/local/bin/pgbash
+ <B>exec  2>&1 </B>
+ echo "Content-type: text/html"
+ echo ""
+ set EXEC_SQL_OPTION CGI;
+</PRE>
+</UL>
+
+<HR> <!---------------------------------------------------------->
+<BR>
+
+<!-------------->
+<A NAME="Q2001">
+<font color="0000ff"><B>Ｑ．CONNECT文を使用しなくても自動的にデータベースに接続してくれますか？</B></font><BR>
+<UL>
+  CONNECT文を実行せずに SQL文を実行した場合は、<B>ログインユーザ名をユーザ名</B>とし、<B>ユーザ名と同じ名前のデータベース名</B>に対して自動的に接続します。<BR>
+  例えば、ログインユーザ名が admin の場合は、<B>connect to default;</B> は <B>connect to admin user admin;</B>が実行されたことと同じになります。<BR>
+<BR>
+　但し、パスワードが設定されているデータベースは、"CONNECT データベース名 user <B>ユーザ名 [パスワード]</B>"の形式で CONNECT文を実行しなければなりません。CONNECT文の最後にパスワードを記述しなかった場合は、パスワードの入力要求メッセージが表示されますので、それにしたがってパスワードを入力しなければなりません。<BR>
+</UL>
+<!-------------->
+<A NAME="Q2002">
+<font color="0000ff"><B>Ｑ．CONNECT文で接続名を指定しなかった場合はどうなりますか？</B></font><BR>
+<UL>
+  "CONNECT TO データベース名 AS 接続名"　の接続名を省略した場合は、データベース名と同じ名前になります。次の例では接続名はいずれも"admin"です。
+<PRE>
+  connect to admin;
+  connect to admin@www.psn.co.jp:5432;
+</PRE>
+
+</UL>
+<!-------------->
+<A NAME="Q2009">
+<font color="0000ff"><B>Ｑ．セッションが切れた場合 backendは終了しますか？</B></font><BR>
+<UL>
+  pgbashのシェルスクリプトが終了すると、セッションが切れ、backendは自動的に終了します。対話型でpgbashを使用している場合は、ログアウトするかもしくは、"disconnect 接続名またはALL"で backendは終了します。
+</UL>
+
+<!-------------->
+<A NAME="Q2010">
+<font color="0000ff"><B>Ｑ．SQL使用中にbackendが死んだ場合はどうなりますか？</B></font><BR>
+<UL>
+ SQL使用中に、backendプロセスが何らかの理由で死ぬと、backendを再起動しても"SQL_BAD_RESPONSE"のエラーが発生してデータ操作ができなくなります。次のいずれかの処理を行わなければなりません。<BR>
+<BR>
+(対処)<BR>
+ ・ disconnect all; でデータベースの切断を行う。<BR>
+ ・ connect to xxx as db123；のように新しい接続名で接続する。<BR>
+ ・ pgbashをログインシェルとして使用している場合、ログアウトして再度ログインする。<BR>
+ ・ pgbashをサブシェルとして使用している場合は、exit してして再度pgbashを起動する。<BR>
+<BR>
+</UL>
+
+<HR> <!---------------------------------------------------------->
+<BR>
+
+<!-------------->
+<A NAME="Q3010">
+<font color="0000ff"><B>Ｑ．SQL文はそのまま backend に送信されますか？
+</FONT></B><BR>
+<UL>
+  次のSQL文は、pgbashの内部で処理されます。<BR>
+<BR>
+ ・ CONNECT 文、 DISCONNECT 文、 SET CONNECTION 文<BR>
+ ・ SET EXEC_SQL_OPTION文、SET OPTION_NAME=VALUE; 文<BR>
+ ・ FETCH INTO 文の INTO句　(INTO句を除いた文が backend に送信される)<BR>
+ ・ SELECT INTO 文の INTO句　(INTO句を除いた文が backend に送信される)<BR>
+<BR>
+  上記のSQL文を除いた他の全てのSQL文はそのまま backend に送信されます。<BR>
+</UL>
+
+<!-------------->
+<A NAME="Q3060">
+<font color="0000ff"><B>Ｑ．列の値がNULLであることを判断できますか？</FONT></B><BR>
+<UL>
+　はい、判断できます。例えば、
+<PRE>
+  begin;
+  declare cur cursor for select * from test;
+  fetch in cur into :aaa <B>:aaa_indi</B>, :bbb :bbb_indi;
+  <B>if(( aaa_indi == SQL_NULL ))</B>; then
+     ...
+  fi
+  end;
+</PRE>
+  のように fetch into の標識変数(インディケータ)が SQL_NULLと等しいことで判断できます。ちなみに、そのときのシェル変数($aaa)には '\0' (１バイト目がビットオフ)が代入されています。echo $aaaとしても何も表示されません。<BR>
+</UL>
+<!-------------->
+<A NAME="Q3070">
+<font color="0000ff"><B>Ｑ．データベース情報を表示するコマンドはどのような　QUERY をバックエンドに送信しているのですか？</FONT></B><BR>
+<UL>
+　これを知るには、<B>E+</B> を入力した後にデータベース情報表示コマンドを実行してください。表示結果の先頭に、バックエンドに送信される QUERY が表示されます。元に戻すには　<B>E-</B> を入力します。<BR>
+<PRE>
+   pgbash&gt; E+
+   pgbash&gt; ?l
+   [ List of databases ]
+   ########## QUERY ##########
+   SELECT  pg_database.datname as "Database", pg_user.usename as "Owner",
+     pg_encoding_to_char(pg_database.encoding) as "Encoding"
+    FROM pg_database, pg_user
+    WHERE pg_database.datdba = pg_user.usesysid
+    UNION
+    SELECT pg_database.datname as "Database", NULL as "Owner",
+     pg_encoding_to_char(pg_database.encoding) as "Encoding"
+    FROM pg_database
+    WHERE pg_database.datdba NOT IN (SELECT usesysid FROM pg_user)
+    ORDER BY "Database"
+   ###########################
+ 
+   Database |Owner   |Encoding
+   ---------+--------+---------
+   admin    |postgres|EUC_JP
+   postgres |postgres|SQL_ASCII
+   template0|postgres|SQL_ASCII
+   template1|postgres|SQL_ASCII
+</PRE>
+</UL>
+
+<!-------------->
+<A NAME="Q4009">
+<font color="0000ff"><B>Ｑ．pgbash の検索結果と psql の検索結果は同じですか？</B></font><BR>
+<UL>
+  はい、基本的には同じです。但し、pgbashは次の機能を拡張しています。<BR>
+<BR>
+ ・外枠罫線の出力有無のコントロール<BR>
+ ・NULLや ZERO(文字型のAll bit off)に適当な文字列を表示する機能<BR>
+ ・表形式の出力において、CHAR型であってもデータの後ろのスペースを削除して罫線を揃えます。<BR>
+</UL>
+<!-------------->
+<A NAME="Q4040">
+<font color="0000ff"><B>Ｑ．Select Into 文で検索結果が複数タプルの場合はどうなりますか？</FONT></B><BR>
+<UL>
+検索結果が複数タプルの場合は、into句の処理(シェル変数に検索結果を代入）はされません。検索結果は、標準出力(画面)に出力されてしまいます。<BR>
+</UL>
+<!-------------->
+<A NAME="Q4050">
+<font color="0000ff"><B>Ｑ．Fetch Into 文で　検索数とか'ALL'を指定したらどうなりますか？</FONT></B><BR>
+<UL>
+　fetch ALL in cur into :aaa, :bbb, :ccc; のようにした場合、検索結果が複数タプルの場合は、into句の処理はされません。標準出力(画面)に出力されてしまいます。ALLを指定しても検索結果が１タプルの場合は、into句は処理され、シェル変数 aaa,bbb, ccc に値がセットされます。一般的には、into句を指定する場合は検索数とか'ALL'は指定しません。
+</UL>
+<!-------------->
+<A NAME="Q4090">
+<font color="0000ff"><B>Ｑ．スペースとNULLとゼロビット(空)とを区別して表示できますか？</FONT></B><BR>
+<UL>
+　はい、可能です。例えば、NULLを"-NULL-"、空を"-0-"にした場合は次のようにします。
+<PRE>
+set OPTION_NULLSTRING="-NULL-";
+set OPTION_ZEROSTRING="-0-";
+select * from test;
+
+code  |name      |address
+------+----------+--------
+222   |test2     |addr2
+333   |          |-0-
+444   |-NULL-    |-NULL-
+(3 rows)
+</UL>
+
+<!-------------->
+<A NAME="Q4100">
+<font color="0000ff"><B>Ｑ．SELECTの結果をCSV形式でファイルに出力することができますか？</FONT></B><BR>
+<UL>
+はい、可能です。一時的にCSV形式にするには、<BR>
+<BR>
+exec_sql -S ',' -TBA "select ... from ... where ..."<BR>
+<BR>
+全ての出力を CSV形式にする場合は、次の方が便利です。<BR>
+<BR>
+set OPTION_SEPARATOR=',';<BR>
+set OPTION_HEADER=OFF;<BR>
+set OPTION_BOTTOM=OFF;<BR>
+set OPTION_ALIGNMENT=OFF;<BR>
+のようにオプションを指定しておいて、SELECTを実行します。<BR>
+</UL>
+
+<!-------------->
+<A NAME="Q4200">
+<font color="0000ff"><B>Ｑ．検索した時の列名を取得する方法はありますか？</FONT></B><BR>
+<UL>
+  はい、あります。$SQLNFIELD に列数、${SQLFIELDNAME[i]}に列名がセットされています。例えば、次のような方法で列名を表示することができます。
+<PRE>
+  select * from test;
+  declares -i x; let x=0; while(( x &lt; <B>SQLNFIELD</B> ))
+  do
+      echo "NAME=<B>${SQLFIELDNAME[x]}</B>"
+      let x=x+1
+  done
+</PRE>
+</UL>
+
+<HR> <!---------------------------------------------------------->
+<BR>
+
+<!-------------->
+<A NAME="Q5100">
+<font color="0000ff"><B>Ｑ．pgbashはCGIプログラムとして利用することができますか？</B></font><BR>
+<UL>
+　はい、できます。すべての出力を HTML出力に切り替え、GET/POSTメソッドにデータを読み込みシェル変数にセットする機能があります。pgbashをCGIプログラムとするには次の文が必要です。但し、exec 2>&1 は必須ではありません。
+<PRE>
+ #!/usr/local/bin/pgbash
+ <B>exec 2>&1    ................ pgbashの標準エラー出力を標準出力に切り替える</B>
+ <B>echo "Content-type: text/html"</B>
+ <B>echo ""</B>
+ <B>set EXEC_SQL_OPTION CGI; .... HTML出力、GET/POSTのデータ処理</B>
+</PRE>
+</UL>
+
+<!-------------->
+<A NAME="Q5110">
+<font color="0000ff"><B>Ｑ．HTTP クッキーを処理する方法が提供されていますか？</B></font><BR>
+<UL>
+  はい、提供されています。set EXEX_SQL_OPTION CGI; を実行すると $HTTP_NCOOKIEにクッキーの個数、${HTTP_COOKIEKEY[i]}にキー名、${HTTP_COOKIEVAL[i]}にクッキーの値がセットされます。（クッキーの文字列は $HTTP_COOKIE にセットされています）
+<PRE>
+ #!/usr/local/bin/pgbash
+ exec 2>&1
+<B> echo "Content-type: text/html"</B>
+<B> echo "Set-Cookie: key11=111"</B>
+<B> echo "Set-Cookie: kei22=222"</B>
+<B> echo ""</B>
+<B> set EXEC_SQL_OPTION CGI;</B>
+ # 
+ declares -i x; let x=0; while(( x &lt; <B>HTTP_NCOOKIE</B> ))
+ do
+        echo "<B>${HTTP_COOKIEKEY[x]</B> = <B>${HTTP_COOKIEVAL[x]}</B>"
+	let x=x+1
+ done
+</PRE>
+</UL>
+
+
+<!-------------------------------------------------------------------->
+</TD></TR></TABLE>
+<HR>
+<TABLE BORDER=0><TR><TD>
+[<a href="index-j.html">Home</A>] 
+[<a href="download-j.html">ダウンロード</A>] 
+[<a href="install-j.html">インストール</A>] 
+[<a href="usage-j.html">使用方法</A>] 
+[<a href="example-j.html">使用例</A>] 
+[<a href="faq-j.html">FAQ</A>] 
+</TD></TR></TABLE>
+
+<BR>
+
+</TD></TR></TABLE>
+</BLOCKQUOTE>
+</CENTER>
+</BODY>
+</HTML>

@@ -1,0 +1,111 @@
+<HTML>
+
+<HEAD>
+  <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=Shift_JIS">
+  <META NAME="Description" CONTENT="pgbashは、bash シェルにPostgreSQL用の直接SQL/埋込SQLインターフェイスの機能を組みこんだシェルです。">
+  <META NAME="KeyWords" CONTENT="PostgreSQL,pgbash,bash,SQLインターフェイス">   
+
+  <TITLE>PostgreSQL pgbash usage</TITLE>
+</HEAD>
+
+<BODY BGCOLOR=#eeeeff text=#000000 ALINK=#ff0000>
+<BASEFONT SIZE=3>
+<CENTER>
+<BLOCKQUOTE>
+<TABLE BORDER=0><TR><TD width=640>
+
+<CENTER>
+
+<TABLE BORDER=0 width=90%><TR>
+<TD align=left>  [<a href="usage10-j.html">Prev</A>] </TD>
+<TD align=middle>[<a href="../usage-j.html" align=middle>Menu</A>] </TD>
+<TD align=right> [End] </TD>
+<!---
+<TD align=right> [<a href="usage12-j.html">Next</A>] </TD>
+--->
+</TR></TABLE>
+
+<hr>
+<FONT SIZE=5 COLOR="#0000ff"><B>使用制限</B></FONT><BR>
+<hr>
+<BR>
+
+<TABLE BORDER=0><TR><TD>
+
+<UL>
+Pgbashの使用上の制限について説明します。（SQL の指定方法の制限につきましては、<a href="usage02-j.html#LIMIT">SQLの指定方法</A>を参照してください。）<BR>
+<BR>
+<BR>
+<A NAME="BASH">
+<font size=4><B><LI>bashコマンド</B></font><BR>
+</A>
+<BR>
+　bashの declare、set、selectコマンドは、SQL文の先頭語と同じになります。pgbashでは、SQL文を優先的に取り扱いますので、bashのコマンド名を次のように変更してます。<BR><B>
+<pre>
+  bashのdeclareコマンド ==&gt; <font size=4><B>declares</B></font>
+  bashのsetコマンド     ==&gt; <font size=4><B>sets</B></font>
+  bashのselectコマンド  ==&gt; <font size=4><B>selects</B></font>
+</pre></B>
+<BR>
+<A NAME="SHELLVAR">
+<font size=4><B><LI>シェル変数の制限</B></font><BR>
+</A>
+<BR>
+<B><U>(1) SQLCODEシェル変数</U></B><BR>
+<BR>
+SQLCODEシェル変数($SQLCODEなど)は、SQLの実行結果コードを保管したシェル変数です。SQLをパイプライン処理( | more など)やバックグランドジョブ(SQL; & )で実行した場合、SQLCODEシェル変数の値を参照することはできません。<BR>
+  <BR>
+  これは、パイプライン処理とバックグランド処理が、別プロセスで起動されるため、もとのプロセスにシェル変数の値を返せないからです。例えば次のような使い方は正しくありません。<BR>
+<PRE>
+例)
+pgbash> select * from test; | more  .... パイプを使用
+pgbash> echo $SQLCODE (または ?s)   <B>...上のselect文の実行結果は参照できません。</B>
+pgbash> select * from test; & ........... バックグランドジョブ
+pgbash> echo $SQLCODE (または ?s)   <B>...上のselect文の実行結果は参照できません。</B>
+</PRE>
+<BR>
+<B><U>(2) 検索結果を受け取るシェル変数</U></B><BR>
+<BR>
+上記で説明した理由と同じ理由で、パイプやバックグランドジョブを使用すると、検索結果を受け取るシェル変数の値を参照することができません。<BR>
+<PRE>
+pgbash> select col1,col2 into :aa, :bb from test; | more 
+        <B>... $aa, $bbの値を参照できません</B>
+pgbash> select col1,col2 into :aa, :bb from test; & 
+        <B>... $aa, $bbの値を参照できません</B>
+</PRE>
+<BR>
+<B><U>(3) ユーザが使用するシェル変数</U></B><BR>
+<BR>
+  <a href=usage07-j.html>Pgbashは英大文字のシェル変数を使用</a>していますので、ユーザが使用するシェル変数は英小文字の方が無難です。 <BR>
+<BR>
+<BR>
+<A NAME="VERSION">
+<font size=4><B><LI>PostgreSQLサーババージョンと互換性</B></font><BR>
+</A>
+<BR>
+Pgbashは、PostgreSQL-7.4 以降に対応してます。基本的には、Pgbashはリンクした libpq のバージョンと、アクセスするデータベースのバージョンが異なっていても問題ありません。<BR>
+<BR>
+<BR>
+
+
+</TD></TR></TABLE>
+<BR>
+
+<HR>
+<TABLE BORDER=0 width=90%><TR>
+<TD align=left>  [<a href="usage10-j.html">Prev</A>] </TD>
+<TD align=middle>[<a href="../usage-j.html" align=middle>Menu</A>] </TD>
+<TD align=right> [End] </TD>
+<!---
+<TD align=right> [<a href="usage12-j.html">Next</A>] </TD>
+--->
+</TR></TABLE>
+
+<BR>
+
+</CENTER>
+</TD></TR></TABLE>
+</BLOCKQUOTE>
+</CENTER>
+</BODY>
+</HTML>

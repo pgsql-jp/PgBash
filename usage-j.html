@@ -1,0 +1,166 @@
+<HTML>
+
+<HEAD>
+  <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=Shift_JIS">
+  <META NAME="Description" CONTENT="pgbashは、bash シェルにPostgreSQL用の直接SQL/埋込SQLインターフェイスの機能を組みこんだシェルです。">
+  <META NAME="KeyWords" CONTENT="PostgreSQL,pgbash,bash,SQLインターフェイス">   
+
+  <TITLE>PostgreSQL pgbash usage</TITLE>
+
+<!----- Google翻訳 ----->
+<meta name="google-translate-customization" content="7d14da840e624c3-70b2c12ed7d575da-gcb3321aad8fd6a5b-20"></meta>
+
+</HEAD>
+
+<BODY BGCOLOR=#eeeeff text=#000000 ALINK=#ff0000>
+
+<!----- Google翻訳 ----->
+<div id="google_translate_element"></div><script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({pageLanguage: 'ja', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+}
+</script><script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+<BASEFONT SIZE=3>
+<CENTER>
+<TABLE BORDER=0><TR><TD width=600>
+<CENTER>
+
+<TABLE BORDER=0><TR><TD>
+[<a href="index-j.html">Home</A>] 
+[<a href="download-j.html">ダウンロード</A>] 
+[<a href="install-j.html">インストール</A>] 
+[<a href="usage-j.html">使用方法</A>] 
+[<a href="example-j.html">使用例</A>] 
+[<a href="faq-j.html">FAQ</A>] 
+</TD></TR></TABLE>
+<BR>
+
+<FONT SIZE=5 COLOR="#0000ff"><B>pgbash の使用方法</B></FONT><BR>
+<BR>
+
+<TABLE BORDER=0 BGCOLOR=ddddff CELLPADDING=10><TR><TD>
+　pgbashは、SQL; をシェルコマンドとして実行することができます。以下の説明では、pgbashは"/usr/local/bin"ディレクトリにあるものとします。
+</TD></TR></TABLE>
+<BR>
+</CENTER>
+
+<BLOCKQUOTE>
+
+<OL>
+<LI><A HREF="usage/usage01-j.html">pgbashの起動と終了</A><BR>
+<BR>
+<UL>
+  <LI><A HREF="usage/usage01-j.html#TTY">対話型環境</a>
+  <LI><A HREF="usage/usage01-j.html#SHELL">シェルスクリプト</a>
+  <LI><A HREF="usage/usage01-j.html#CGI">CGI（Webアプリケーション）</a>
+</UL>
+<BR>
+<LI><A HREF="usage/usage02-j.html">SQLの指定方法</A><BR>
+<BR>
+<UL>
+  <LI><A HREF="usage/usage02-j.html#SQL">SQLの記述方法</a>
+  <LI><A HREF="usage/usage02-j.html#EXEC_SQL">SQLの実行方法</a>
+  <LI><A HREF="usage/usage02-j.html#LIMIT">SQLの指定方法の制限</a>
+  <LI><A HREF="usage/usage02-j.html#QUOTATION">SQL文中のシングル/ダブルクォート</a>
+  <LI><A HREF="usage/usage02-j.html#COMMENT">SQL文中のコメント</a>
+</UL>
+<BR>
+<LI><A HREF="usage/usage03-j.html">データベースの接続と切断</A><BR>
+<BR>
+<UL>
+  <LI><A HREF="usage/usage03-j.html#CONNECT">データベースの接続</a>
+  <LI><A HREF="usage/usage03-j.html#DISCONNECT">データベースの切断</a>
+  <LI><A HREF="usage/usage03-j.html#SETCONNECT">現在の接続の切替</a>
+  <LI><A HREF="usage/usage03-j.html#STATUS">データベースの接続状態の表示</a>
+</UL>
+<BR>
+<LI><A HREF="usage/usage04-j.html">検索結果の出力</A><BR>
+<BR>
+<UL>
+  <LI><A HREF="usage/usage04-j.html#DIRECT">検索結果を即座に表示</a>
+  <LI><A HREF="usage/usage04-j.html#SHELL">検索結果の値をシェル変数に代入</a>
+  <LI><A HREF="usage/usage04-j.html#PIPE">検索結果を１ページごと表示</a>
+  <LI><A HREF="usage/usage04-j.html#REDIRECT">検索結果をファイルに書き出す</a>
+</UL>
+<BR>
+<LI><A HREF="usage/usage05-j.html">SQLの実行オプション</A><BR>
+<BR>
+<UL>
+  <LI><A HREF="usage/usage05-j.html#OPTION">オプションの指定方法</a>
+  <LI><A HREF="usage/usage05-j.html#SETOPTION">set文による定常的なオプション</a>
+  <LI><A HREF="usage/usage05-j.html#TEMPOPTION">exec_sqlコマンドによる一時的なオプション</a>
+</UL>
+<BR>
+<LI><A HREF="usage/usage06-j.html">CGI（Webアプリケーション）の使用方法</A><BR>
+<BR>
+<UL>
+  <LI><A HREF="usage/usage06-j.html#CONFL">ウェブサーバソフトの設定</a>
+  <LI><A HREF="usage/usage06-j.html#SHELL">シェルスクリプトの記述方法</a>
+  <LI><A HREF="usage/usage06-j.html#CGI">シェルスクリプトの一般的な作成方法</a>
+<!--
+  <LI><A HREF="usage/usage06-j.html#SQLPREPARE">EXEC_SQL_PREPAREの使い方</a>
+-->
+</UL>
+<BR>
+<LI><A HREF="usage/usage07-j.html">pgbashが使用するシェル変数</A><BR>
+<BR>
+<UL>
+  <LI><A HREF="usage/usage07-j.html#STATUS">SQLの実行状態を表すシェル変数</a>
+  <LI><A HREF="usage/usage07-j.html#VAR">オプション変数</a>
+  <LI><A HREF="usage/usage07-j.html#ERRCODE">エラーコード</a>
+  <LI><A HREF="usage/usage07-j.html#ETC">その他のシェル変数</a>
+</UL>
+<BR>
+<LI><A HREF="usage/usage08-j.html">ヘルプおよびデータベース情報の表示について</A><BR>
+<BR>
+<UL>
+  <LI><A HREF="usage/usage08-j.html#HELPMENU">ヘルプメニューの表示方法</a>
+  <LI><A HREF="usage/usage08-j.html#RESERVED">SQL予約語一覧のヘルプ</a>
+  <LI><A HREF="usage/usage08-j.html#SQLSYNTAX">SQL文法のヘルプ</a>
+  <LI><A HREF="usage/usage08-j.html#I_DBINFO">対話型環境におけるデータベース情報の表示方法</a>
+  <LI><A HREF="usage/usage08-j.html#C_DBINFO">シェルスクリプトにおけるデータベース情報の表示方法</a>
+</UL>
+<BR>
+<LI><A HREF="usage/usage10-j.html">ラージオブジェクトの取扱</A><BR>
+<BR>
+<UL>
+  <LI><A HREF="usage/usage10-j.html#LO_IMPORT">_lo_import</a>
+  <LI><A HREF="usage/usage10-j.html#LO_EXPORT">_lo_export</a>
+  <LI><A HREF="usage/usage10-j.html#LO_UNLINK">_lo_unlink</a>
+  <LI><A HREF="usage/usage10-j.html#LO_LIST">_lo_list</a>
+  <LI><A HREF="usage/usage10-j.html#DESCRIPTION">pgbash_descriptionテーブル</a>
+</UL>
+<BR>
+<LI><A HREF="usage/usage11-j.html">使用制限</A><BR>
+<BR>
+<UL>
+  <LI><A HREF="usage/usage11-j.html#BASH">bashコマンド</a>
+  <LI><A HREF="usage/usage11-j.html#SHELLVAR">シェル変数の制限</a>
+  <LI><A HREF="usage/usage11-j.html#VERSION">PostgreSQLのバージョンと互換性</a>
+</UL>
+<BR>
+</OL>
+
+</BLOCKQUOTE>
+<HR>
+</TD></TR></TABLE>
+
+
+<TABLE BORDER=0><TR><TD>
+[<a href="index-j.html">Home</A>] 
+[<a href="download-j.html">ダウンロード</A>] 
+[<a href="install-j.html">インストール</A>] 
+[<a href="usage-j.html">使用方法</A>] 
+[<a href="example-j.html">使用例</A>] 
+[<a href="faq-j.html">FAQ</A>] 
+</TD></TR></TABLE>
+
+<BR>
+</CENTER>
+
+</TD></TR></TABLE>
+</CENTER>
+
+</BODY>
+</HTML>

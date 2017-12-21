@@ -1,0 +1,117 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV=Content-Language CONTENT=ja>
+   <META HTTP-EQUIV=Content-Type CONTENT="text/html; charset=UTF-8">
+</HEAD>
+
+<BODY BGCOLOR=#eeeeff text=#000000 ALINK=#ff0000>
+<BLOCKQUOTE><center>
+
+<CENTER>
+<table border=0 width=640><tr><td>
+
+<HR>
+<CENTER>
+<B>Example of a Web application.</B>
+</center>
+<HR>
+
+<OL>
+<B>HTML</B>
+<TABLE BORDER=1 CELLPADDING=4 CELLSPACING=1><TR><TD>
+<pre>
+&lt;HTML&gt;
+&lt;HEAD&gt;
+&lt;META HTTP-EQUIV=Content-Language CONTENT=ja&gt;
+&lt;META HTTP-EQUIV=Content-Type CONTENT='text/html; charset=UTF-8'&gt;
+&lt;/HEAD&gt;
+&lt;BODY BGCOLOR=#DDDDDD&gt;
+
+&lt;FORM METHOD="POST" ACTION="/cgi-bin/<B>webapi.cgi</B>"&gt;
+
+Database <input type=text name=pgdatabase   length=32>
+         <font color=0000ff>&lt;input type="text" name="<B>pgdatabase</B>" length=32&gt;</font>
+Username <input type=text name=pguser2      length=32>
+         <font color=0000ff>&lt;input type="text" name="<B>pguser2</B>" length=32&gt;</font>
+Password <input type=text name=pgpassword2  length=32>
+         <font color=0000ff>&lt;input type="text" name="<B>pgpassword2</B>" length=32&gt;</font>
+
+&lt;INPUT TYPE=SUBMIT VALUE="submit"&gt;
+&lt;/FORM&gt;
+
+&lt;/BODY&gt;
+&lt;/HTML&gt;
+</pre>
+</td></tr></table>
+<br>
+<B>Web application (CGI) --  "webapi.cgi"</B>
+<TABLE BORDER=1 CELLPADDING=4 CELLSPACING=1><TR><TD>
+<pre>
+#!/usr/local/bin/pgbash
+##########################################################################
+#  "webapi.cgi"
+#
+#   $pgdatabase   # database name
+#   $pguser2      # database user
+#   $pgpassword2  # database password
+#  
+##########################################################################
+exec 2&gt;&1
+echo "Content-type:  text/html"
+echo ""
+<B>set EXEC_SQL_OPTION CGI;</B>
+
+#--------- start HTML ----------
+echo "&lt;HTML&gt;"
+echo "&lt;HEAD&gt;"
+echo "&lt;META HTTP-EQUIV=Content-Language CONTENT=ja&gt;"
+echo "&lt;META HTTP-EQUIV=Content-Type CONTENT='text/html; charset=UTF-8'&gt;"
+echo "&lt;/HEAD&gt;"
+echo "&lt;BODY BGCOLOR=#DDDDDD&gt;"
+
+#-------- connect to DATABASE ---------
+<B>connect to <font color=0000ff>$pgdatabase</font> user <font color=0000ff>$pguser2  $pgpassword2;</font></B>
+
+if(( SQLCODE != 0 )); then
+   exit
+fi
+
+#---------- client_encoding -----------
+<B>set client_encoding='UTF8';</B>
+
+#------------ execute SQL -------------
+<B>select * from member;</B>
+
+if (( SQLCODE == 0 && SQLNTUPLE == 0 )); then
+echo "&lt;H2&gt;Data not found.&lt;/H2&gt;"
+fi
+
+#------- disconnect DATABASE ----------
+<B>disconnect all;</B>
+
+echo "&lt;/BODY&gt;"
+echo "&lt;/HTML&gt;"
+</pre>
+</TD></TR></TABLE>
+<BR>
+<B>Output</B>
+
+<table border=1 bgcolor="ffffff">
+<tr><th>userid</th><th>name</th><th>email</th><th>tel</th><th>kind</th><td> ....</td></tr>
+<tr><td align=right>1220</td><td align=left>XXXXXXX</td><td align=left>mmmmmmmm@nifty.ne.jp</td><td align=left>0726-76-9999</td><td align=left>*</td><td> &nbsp; </td></tr>
+<tr><td align=right>1249</td><td align=left>XXXXXX</td><td align=left>mmmmmmm@email.ne.jp</td><td align=left>090-7103-9999</td><td align=left>*</td><td> &nbsp; </td></tr>
+<tr><td align=right>1217</td><td align=left>XXXX</td><td align=left>mmmmmmmm@nifty.ne.jp</td><td align=left>042-571-9999</td><td align=left>NET</td><td> &nbsp; </td></tr>
+<tr><td align=right>1221</td><td align=left>XXXX</td><td align=left>mmmmm@mbg.sphere.ne.jp</td><td align=left>0726-27-9999</td><td align=left>*</td><td> &nbsp; </td></tr>
+<tr><td align=right>1250</td><td align=left>XXXX</td><td align=left>mmmmmmm@oct.zaq.ne.jp</td><td align=left>06-6622-9999</td><td align=left>*</td><td> &nbsp; </td></tr>
+<tr><td align=right>1271</td><td align=left>XXXXX</td><td align=left>mmmmmmmm@nifty.ne.jp</td><td align=left>06-6872-9999</td><td align=left>*</td><td> &nbsp; </td></tr>
+<tr><td align=right>1222</td><td align=left>XXXX</td><td align=left>mmmmmmmm@nifty.ne.jp</td><td align=left>0798-72-9999</td><td align=left>*</td><td> &nbsp; </td></tr>
+<tr><td align=right>1212</td><td align=left>XXXX</td><td align=left>mmmmmm@sannet.ne.jp</td><td align=left>0725-20-9999</td><td align=left>*</td><td> &nbsp; </td></tr>
+<tr><td align=right>1203</td><td align=left>XXXX</td><td align=left>mmmm@computer.com</td><td align=left>0742-40-9999</td><td align=left>*</td><td> &nbsp; </td></tr>
+<tr><td align=right>1223</td><td align=left>XXXX</td><td align=left>mmmmmmmm@nifty.ne.jp</td><td align=left>0742-45-9999</td><td align=left>*</td><td> &nbsp; </td></tr>
+</table>
+
+
+</td></tr></table>
+</center></BLOCKQUOTE>
+</BODY>
+</HTML>

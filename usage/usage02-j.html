@@ -1,0 +1,342 @@
+<HTML>
+
+<HEAD>
+  <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=Shift_JIS">
+  <META NAME="Description" CONTENT="pgbashは、bash シェルにPostgreSQL用の直接SQL/埋込SQLインターフェイスの機能を組みこんだシェルです。">
+  <META NAME="KeyWords" CONTENT="PostgreSQL,pgbash,bash,SQLインターフェイス">   
+
+  <TITLE>PostgreSQL pgbash usage</TITLE>
+
+<!----- Google翻訳 -----
+<meta name="google-translate-customization" content="9976512c82eecf53-1de49aa12773be16-gb030048913b3edb5-28"></meta>
+----------------------->
+
+</HEAD>
+
+<BODY BGCOLOR=#eeeeff text=#000000 ALINK=#ff0000>
+
+<!----- Google翻訳 -----
+<div id="google_translate_element"></div><script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({pageLanguage: 'ja', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+}
+</script><script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+------------------------>
+
+<BASEFONT SIZE=3>
+<CENTER>
+<BLOCKQUOTE>
+<TABLE BORDER=0><TR><TD width=640>
+
+<CENTER>
+
+<TABLE BORDER=0 width=90%><TR>
+<TD align=left>  [<a href="usage01-j.html">Prev</A>] </TD>
+<TD align=middle>[<a href="../usage-j.html" align=middle>Menu</A>] </TD>
+<TD align=right> [<a href="usage03-j.html">Next</A>] </TD>
+</TR></TABLE>
+<hr>
+<FONT SIZE=5 COLOR="#0000ff"><B>SQLの指定方法</B></FONT><BR>
+<hr>
+<BR>
+
+<TABLE BORDER=0><TR><TD>
+
+<UL>
+<A name="SQL">
+<font size=4><B><LI>SQLの記述方法</B></font><BR>
+</A>
+<OL>
+<BR>
+<B><U><li> 記述方法</U></B><BR>
+<p>
+<B>[timespec] <font color=0000ff size=4>SQL;</font> [pipeline][redirection][&]</B></p>
+もしくは<BR>
+<p>
+<B>[timespec] <font color=0000ff size=4>exec_sql </font>[option] <font color=0000ff size=4>"SQL" </font> [pipeline][redirection][&]</B></p>
+<p>
+　対話型環境およびシェルスクリプトのいずれも、SQL文をそのまま入力(記述)するだけでSQLを実行することができます。 SQL文は、timespec、パイプ、リダイレクション、バックグランドジョブの指定と伴に実行することができます。また、exec_sqlは、一時的なオプションを付けて、SQLを実行することができます。</p>
+<p>
+SQL; は pgbash内部で exec_sql "SQL"に変換されて実行されます。従いまして、 SQL; と exec_sql "SQL" とは全く同じ意味になります。</p>
+<p>
+<B><U><li> SQLの終端子</U></B></p>
+<p>
+SQL文を直接記述する場合は、SQLの終端子（セミコロン）は必須です。しかし、exec_sql "SQL"と記述した場合、SQLの終端子は有っても無くてもかまいません。</p>
+<p>
+<B><U><li> SQL文の途中の改行</U></B></p>
+<p>
+　SQL文は<B>単語の切れ目で自由に改行</B>することができます。対話型環境では、改行すると > プロンプトが表示されますので続けてSQL文を入力します。セミコロンが現れた時点でSQLの終了とみなします。</p>
+<pre>
+(対話型環境の例)
+  pgbash> <font color="0000ff"><B>insert into test values(111,</B></font>
+  <B>></B><font color="0000ff"><B>    'aaa','bbb'</B></font>
+  <B>></B><font color="0000ff"><B>);</B></font>
+
+(シェルスクリプトの例)
+<table border=1><tr><td>
+insert into test values(111,
+'aaa','bbb'
+);
+</td></tr></table>
+</pre>
+
+<BR>
+<B><U><li> シェル変数の利用</U></B><BR>
+<BR>
+　SQL のなかで、シェル変数を利用することができます。シェル変数は、値を参照する場合は頭に $ マークを付けます。<BR>
+<pre>
+例)
+<font color=0000ff>_aa</font>='123'
+<font color=0000ff>_bb</font>='name'
+<font color=0000ff>_cc</font>='address'
+insert into test values(<font color=0000ff>$_aa</font>, '$_bb', '$_cc');
+<font color=0000ff>COL1</font>='氏名'
+<font color=0000ff>VAL1</font>='鈴木一郎'
+select $COL1, $COL2 from test where <font color=0000ff>$COL1</font>='<font color=0000ff>$VAL1</font>';
+<font color=0000ff>SQL</font>="select * from test"
+exec_sql "<font color=0000ff>$SQL</font>"
+</pre>
+シングルクォート文字データが有る場合、<B><font color=ff0000>\'</font></B> で囲む必要があります。</p>
+<pre>
+例)
+DATA="name'123"
+select * from test where name=<B><font color=ff0000>\'</font></B>$DATA<B><font color=ff0000>\'</B></font>;
+</pre>
+</OL>
+<BR>
+<A name="EXEC_SQL">
+<font size=4><B><LI>SQLの実行方法</B></font><BR>
+</A>
+<OL>
+<BR>
+<B><U><LI> 対話型環境における実行</U></B><BR>
+<BR>
+対話型環境においてSQLを入力すると、即座に実行されます。SELECTなどの検索命令は、検索結果が即座に画面に表示されます。<BR>
+<PRE>
+例)
+select * from test; | more .................. パイプの例
+select * from test; &> /tmp/xx.dat .......... リダイレクションの例
+select * from test; & ....................... バックグランドジョブの例
+time select * from test; .................... timespecの例
+select * from test; &> /tmp/xx.dat & ........ リダイレクションとバックグランドジョブ
+
+exec_sql "select * from test" | more
+exec_sql "select * from test"  &> /tmp/xx.dat 
+</PRE>
+ここで、| more は、表示行数が多い場合に、画面のサイズに合わせて表示を一旦停止する指定です。また、timespec は、処理時間を表示する場合に使用します。"&>"は、既にファイルが存在していても強制的に上書でファイルを作成します。<BR>
+<BR>
+<B><U><li> シェルスクリプトにおける実行</U></B><BR>
+<BR>
+上記の対話型環境と同様の処理を行なうには、次のようにします。<BR>
+<pre>
+例)
+シェルスクリプト"sel.bat"
+<table border=1><tr><td>
+<PRE>
+#!/usr/local/bin/pgbash
+connect to postgres user postgres;
+select * from test;
+disconnect all;  ...... disconnect は無くてもかまいません
+</PRE>
+</td></tr></table>
+
+pgbash> sel.bat | more .................. パイプの例
+pgbash> sel.bat &> /tmp/xx.dat .......... リダイレクションの例
+pgbash> sel.bat & ....................... バックグランドジョブの例
+pgbash> time sel.bat .................... timespecの例
+pgbash> sel.bat &> /tmp/xx.dat & ........ リダイレクションとバックグランドジョブ
+</pre>
+<BR>
+<B><U><LI> 検索結果の表示の中断</U></B><BR>
+<BR>
+検索結果が画面に表示されている途中に、その表示をとめたい場合は、<font color=ff0000><B>Ctrl+C </B></FONT> を押します。但し、Ctrl+C を押しても、画面表示はすぐには止まりません。数十行は表示されてしまいます。<BR>
+
+<BR>
+<B><U><LI> メモリオーバー</U></B><BR>
+<BR>
+検索結果は、メモリに一時的に保管されますので、あまりに多くの検索結果を表示すると、メモリオーバ－のエラーになる可能性があります。大量の結果を表示する場合は、limit をつけてください。<BR>
+<BR>
+例）<BR>
+pgbash> select * from test limit 500; | more  ............. 最大500行表示<BR>
+pgbash> select * from test limit 500 offset 100; | more  .. 100行目から最大500行表示<BR>
+
+</OL>
+<BR>
+
+<A name="LIMIT">
+<font size=4><B><LI>SQLの指定方法の制限</B></font><BR>
+</A>
+<OL>
+<BR>
+
+<B><U><LI> SQLの位置</U></B><BR>
+<BR>
+SQL; は timespec や 空白 を除いて、行の先頭から記述しなければなりません。if文、while文の後ろに記述することはできません。<BR>
+<table border=1 cellpadding=4 cellspacing=1> 
+<TR> <TH> 間違いの例</TH><TH> 正しい例</TH></TR>
+<TR>
+<TD>
+ <PRE>
+  if <B>SQL * from test;</B>
+  then
+  ...
+  fi
+  </PRE>
+</TD>
+<TD>
+<pre>
+select * from test;
+if (( SQLCODE == 0 )); then
+   ...
+fi
+</PRE>
+</TD>
+</TR>
+</TABLE>
+<BR>
+SQLの実行状態を知りたい場合は、SQLCODE シェル変数を利用します。<BR>
+<BR>
+<BR>
+<B><U><LI> 予約語</U></B><BR>
+<BR>
+Pgbashは、次の予約語がコマンド並びの先頭もしくは timespecの直後にあった場合、それを SQL文だと判断します。<BR>
+<br>
+(PostgreSQL-8.1の予約語の例)<br>
+<table border=1 cellpadding=4 cellspacing=1><tr><td>
+<PRE>
+ABORT                     CREATE LANGUAGE           DROP VIEW
+ALTER AGGREGATE           CREATE OPERATOR CLASS     END
+ALTER CONVERSION          CREATE OPERATOR           EXECUTE
+ALTER DATABASE            CREATE ROLE               EXPLAIN
+ALTER DOMAIN              CREATE RULE               FETCH
+ALTER FUNCTION            CREATE SCHEMA             GRANT
+ALTER GROUP               CREATE SEQUENCE           INSERT
+ALTER INDEX               CREATE TABLE              LISTEN
+ALTER LANGUAGE            CREATE TABLE AS           LOAD
+ALTER OPERATOR CLASS      CREATE TABLESPACE         LOCK
+ALTER OPERATOR            CREATE TRIGGER            MOVE
+ALTER ROLE                CREATE TYPE               NOTIFY
+ALTER SCHEMA              CREATE USER               PREPARE
+ALTER SEQUENCE            CREATE VIEW               PREPARE TRANSACTION
+ALTER TABLE               DEALLOCATE                REINDEX
+ALTER TABLESPACE          DECLARE                   RELEASE SAVEPOINT
+ALTER TRIGGER             DELETE                    RESET
+ALTER TYPE                DROP AGGREGATE            REVOKE
+ALTER USER                DROP CAST                 ROLLBACK
+ANALYZE                   DROP CONVERSION           ROLLBACK PREPARED
+BEGIN                     DROP DATABASE             ROLLBACK TO SAVEPOINT
+CHECKPOINT                DROP DOMAIN               SAVEPOINT
+CLOSE                     DROP FUNCTION             SELECT
+CLUSTER                   DROP GROUP                SELECT INTO
+COMMENT                   DROP INDEX                SET
+COMMIT                    DROP LANGUAGE             SET CONSTRAINTS
+COMMIT PREPARED           DROP OPERATOR CLASS       SET ROLE
+COPY                      DROP OPERATOR             SET SESSION AUTHORIZATION
+CREATE AGGREGATE          DROP ROLE                 SET TRANSACTION
+CREATE CAST               DROP RULE                 SHOW
+CREATE CONSTRAINT TRIGGER DROP SCHEMA               START TRANSACTION
+CREATE CONVERSION         DROP SEQUENCE             TRUNCATE
+CREATE DATABASE           DROP TABLE                UNLISTEN
+CREATE DOMAIN             DROP TABLESPACE           UPDATE
+CREATE FUNCTION           DROP TRIGGER              VACUUM
+CREATE GROUP              DROP TYPE
+CREATE INDEX              DROP USER
+</PRE>
+</td></tr></table>
+<BR>
+PgbashがSQL文だと判断した場合、<B>セミコロンが現れるまで入力を要求</B>します。<BR>
+<BR>
+<B><U><li> SQL入力の中断</U></B><BR>
+<BR>
+SQL入力を途中で中断したい場合は、次のようにしてください。<BR>
+<BR>
+a. 1行目の途中であれば、<font color=ff0000><B>Ctrl+C</B></font><BR>
+b. 2行目以降の途中であれば、<font color=ff0000><B>Ctrl+D</B></font><BR>
+<BR>
+もしくは、セミコロンを入力してSQLを実行させシンタックスエラー終了させます。<BR>
+<BR>
+<B><U><li> SQL予約語とプログラム名が重なった場合</U></B><BR>
+<BR>
+もしプログラム名と、上記の予約が重なった場合は、プログラムの実行時にパスを指定します。例えば、"ALTER"という名前のプログラムがあった場合は次です。<BR>
+<BR>
+pgbash&gt; <B>./ALTER</B>  ........... カレントの"ALTER"プログラム<BR>
+pgbash&gt; <B>/home/admin/ALTER</B> .. /home/adminの"ALTER"プログラム<BR>
+<BR>
+<BR>
+<A name="QUOTATION">
+<font size=4><B><LI>SQL文中のシングルクォート／ダブルクォート</B><BR>
+</A>
+<BR>
+SQL文では、1個のシングルクォート文字データはシングルクォートを２個並べる必要があります。<BR>
+<BR>
+例) insert into test values(111,'aaa''aaa');<BR>
+<BR>
+シングルクォート１個をシングルクォート文字データとして取り扱うには、<font color=ff0000><B>\'</B></font> で囲まなければなりません。<BR>
+<BR>
+例) DATA="aaa'aaa"<BR>
+insert into test values(111,<font color=ff0000><B>\'</B></font>aaa'aaa<font color=ff0000><B>\'</B></font>);<BR>
+insert into test values(111,<font color=ff0000><B>\'</B></font>$DATA<font color=ff0000><B>\'</B></font>);<BR>
+<BR>
+SQL文中のダブルクォートは、pgbash-2.4a.1までは、\" にしなければなりませんでしたが、pgbash-2.4a.2 より、\ は不要になりました。<BR>
+<BR>
+例） select aa as "Name", bb as "Tom's Type" from test;<BR>
+</OL>
+<BR>
+
+<A name="COMMENT">
+<font size=4><B><LI>SQL文中のコメント</B></font><BR>
+</A>
+<OL>
+<BR>
+
+SQL文中に '#' が現れた場合、'#'から改行までをコメントとみなします。<BR>
+<PRE>
+例)
+create table member (
+#---------------------------------------------------------------
+   userid       int4                     # ユーザコード
+                primary key not null,    # プライマリーキー
+#---------------------------------------------------------------
+   kind         varchar(12)              # 会員種別
+                check(kind in ('A','B')),# ('A', or 'B')
+#---------------------------------------------------------------
+   name         varchar(32) not null,    # ユーザ名
+
+#---------------------------------------------------------------
+   zip          char(8)                  # 郵便番号
+                default '000-0000',
+#---------------------------------------------------------------
+   address      varchar(64) not null,    # 住所
+
+#---------------------------------------------------------------
+   tel          varchar(16) not null,    # 電話番号
+
+#----------------------------------------------------------------
+   email        varchar(64),             # E-mailアドレス
+
+#----------------------------------------------------------------
+   up_date      timestamp                # 更新日
+                default 'now'            #(初期値：現在の日時)
+#----------------------------------------------------------------
+);
+</PRE>
+</OL>
+
+</UL>
+</TD></TR></TABLE>
+
+<HR>
+<TABLE BORDER=0 width=90%><TR>
+<TD align=left>  [<a href="usage01-j.html">Prev</A>] </TD>
+<TD align=middle>[<a href="../usage-j.html" align=middle>Menu</A>] </TD>
+<TD align=right> [<a href="usage03-j.html">Next</A>] </TD>
+</TR></TABLE>
+
+<BR>
+
+</CENTER>
+</TD></TR></TABLE>
+</BLOCKQUOTE>
+</CENTER>
+</BODY>
+</HTML>

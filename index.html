@@ -1,0 +1,220 @@
+<HTML>
+
+<HEAD>
+  <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=Shift_JIS">
+  <META NAME="Description" CONTENT="pgbashは、bash2シェルにPostgreSQL用の直接SQL/埋込SQLインターフェイスの機能を組みこんだシェルです。">
+  <META NAME="KeyWords" CONTENT="PostgreSQL,pgbash,bash,SQLインターフェイス">   
+
+  <TITLE>PostgreSQL pgbash</TITLE>
+
+<!----- Google翻訳----->
+<meta name="google-translate-customization" content="be4938db9def2fa0-4a599cb46c5d9bfa-gf33525a49e05931b-14"></meta>
+
+</HEAD>
+<!--
+<BODY BACKGROUND="back.gif">
+-->
+<BODY BGCOLOR=#eeeeff text=#000000 ALINK=#ff0000>
+
+<!----- Google翻訳----->
+<div id="google_translate_element"></div><script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({pageLanguage: 'ja', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+}
+</script><script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+<BASEFONT SIZE=3>
+<CENTER>
+<BLOCKQUOTE>
+<TABLE BORDER=0><TR><TD width=640>
+
+<CENTER>
+
+<TABLE BORDER=0><TR><TD>
+[<a href="index-j.html">Home</A>] 
+[<a href="download-j.html">ダウンロード</A>] 
+[<a href="install-j.html">インストール</A>] 
+[<a href="usage-j.html">使用方法</A>] 
+[<a href="example-j.html">使用例</A>] 
+[<a href="faq-j.html">FAQ</A>] 
+</TD></TR></TABLE>
+<BR>
+
+<TABLE BORDER=0 CELLPADDING=15 BGCOLOR=0000FF><TR><TD>
+<FONT SIZE=15 COLOR="#ffffff"><B> p g b a s h </B></FONT>
+</TD></TR></TABLE>
+</center>
+<BR>
+<CENTER>
+<TABLE BORDER=0 BGCOLOR=ddddff CELLPADDING=10><TR><TD>
+pgbashは、bashシェルの中に PostgreSQL用のデータベースアクセス機能を組み込んだ<font color=ff0000><B>シェル</B></font>です。
+<a href="examples/example01.html">シェルスクリプト</A>を作成してバッチ処理で SQLを実行したり、
+端末から<a href="examples/example02.html">対話的に SQLを直接実行</A>することができます。
+また、簡易的な<a href="examples/example03.html">Webアプリケーション</a>を作成することができます。<BR>
+</TD></TR></TABLE>
+<BR>
+<!--
+[<A href="index-j.html">Japanese</A>] [<A HREF="index-e.html">English</A>]<BR>
+--->
+<BR>
+<HR>
+(pgbash最新バージョン)<br>
+<!--
+<font color="ff0000" size=4><a href="ftp://db.psn.ne.jp/pub/pgbash/pgbash-8r2.05.tar.gz"> pgbash-8r2.05 </a></font> ... bash-2.05aベース<br>
+<font color="ff0000" size=4><a href="ftp://db.psn.ne.jp/pub/pgbash/pgbash-8r3.2.tar.gz"> pgbash-8r3.2 </a></font> ... bash-3.2.48ベース<br>
+<font color="ff0000" size=4><a href="ftp://db.psn.ne.jp/pub/pgbash/pgbash-8r4.1.tar.gz"> pgbash-8r4.1 </a></font> ... bash-4.1.10ベース<br>
+-->
+<font color="000000" size=4>pgbash-8r3.2</font>  (bash-3.2.48 を使用)<br>
+<font color="000000" size=4>pgbash-8r4.1</font>  (bash-4.1.10 を使用)<br>
+<br>
+(環境設定ファイル)<br>
+<font color="ff0000" size=4><a href="ftp://db.psn.ne.jp/pub/pgbash/pgbashrc-7.4"> pgbashrc-7.4 </a></font> ... PostgreSQL-7.4用<br>
+<font color="ff0000" size=4><a href="ftp://db.psn.ne.jp/pub/pgbash/pgbashrc-8.1"> pgbashrc-8.1 </a></font> ... PostgreSQL-8.1用<br>
+<font color="ff0000" size=4><a href="ftp://db.psn.ne.jp/pub/pgbash/pgbashrc-8.2"> pgbashrc-8.2 </a></font> ... PostgreSQL-8.2用<br>
+<font color="ff0000" size=4><a href="ftp://db.psn.ne.jp/pub/pgbash/pgbashrc-8.3"> pgbashrc-8.3 </a></font> ... PostgreSQL-8.3用<br>
+<font color="ff0000" size=4><a href="ftp://db.psn.ne.jp/pub/pgbash/pgbashrc-8.4"> pgbashrc-8.4 </a></font> ... PostgreSQL-8.4用<br>
+<font color="ff0000" size=4><a href="ftp://db.psn.ne.jp/pub/pgbash/pgbashrc-9.0"> pgbashrc-9.0 </a></font> ... PostgreSQL-9.0用<br>
+<HR>
+<BR>
+<TABLE BORDER=0><TR><TD>
+
+<font size=4><B>◎ pgbashの概要</B></font><BR>
+<UL>
+<B><LI>データベース・インターフェイス</B><BR>
+pgbashは、bashシェルの中に PostgreSQL用の直接SQL/埋込SQLインターフェイスを組み込んでいます。
+ここで、「直接SQL」とは、SQLを入力すると即座に実行してその結果を標準出力に出力する機能を表します。また、「埋込SQL」とは、検索結果をシェル変数に代入し、シェルスクリプト言語で処理する機能を表します。Pgbashでは、SELECT_INTO文 もしくは　FTECH_INTO文を「埋込SQL」として使用することができます。<BR>
+<BR>
+<B><LI>対話型でSQLを実行</B><BR>
+Pgbashを、ログインシェルもしくはサブシェル（親のシェルから起動された子のシェル）として起動し、コマンドラインにSQL文を入力して即座に実行することができます。また、SQL文とパイプライン／リダイレクション、バックグランドジョブ命令などを組み合わて実行することもできます。<BR>
+<BR>
+<B><LI>シェルスクリプトを作成可能</B><BR>
+Pgbashは、bashシェルが持っているシェルスクリプト機能を使用して、シェルスクリプトを作成することができます。bashシェルのIF/WHILEなどの制御文、SQL文や埋込SQL文を使用してシェルスクリプトを作成します。<BR>
+<BR>
+<B><LI>Webアプリケーションを作成可能</B><BR>
+Pgbashは、Webアプリケーション(CGI プログラム)として使用するために、GET/POSTメソッドのデータをシェル変数に自動的にセットする機能を備えています。<BR>
+<BR>
+<B><LI>実行環境</B><BR>
+Pgbashは、Unix環境もしくは WindowsのCygwin環境で実行可能です。Pgbashは、psql とほぼ同等の機能があり実行環境も psqlと同様になります。<br>
+<BR>
+<B><LI>対話型環境設定ファイル</B><BR>
+Pgbashの対話型環境では、bashシェルと同様に .bash_profile(ログインシェル用)、.bashrc(サブシェル用)環境設定ファイルなどが必要になります。 <BR>
+<br>
+また、データベース環境設定ファイルとして <font size=4><B>pgbashrc</B></font> が必要です。pgbashrcは、対話環境で操作する上で便利なコマンドや、データベース情報を表示するための各種コマンドが設定されています。<br>
+<br>
+pgbashrc は、まず ~/.pgbashrc を読み、存在していなければ /etc/pgbashrc を読みます。Pgbashを起動中は、source コマンドによって再読み込みすることができます。<BR>
+  <BR>
+  <!-------------------------------------------------
+Pgbashrc の最新バージョンは、<font color="ff0000" size=4><B><a href="pgbashrc-7.3">pgbashrc-7.3</A></B></font> です。<BR>
+  <BR>
+対話型環境で pgbash が起動されたとき、pgbashは、まず最初にユーザのホームディレクトリに有る ~/<B>.pgbashrc</B> を読み、それが存在していない場合は、<B>/etc/pgbashrc</B> を読みます。但し、pgbashをシェルスクリプトとして使用する場合は、pgbashrc を自動的に読み込まれませんので、シェルスクリプトの中で、sourceコマンドを使用して読み込む必要があります。<BR>
+  <BR>
+Pgbashが起動すると、親のシェルから環境変数を受け継ぎます。そのため、通常は、~/.bashrc は無くてもかまいません。もし、~/.bashrc が存在していた場合は、Pgbashは、まず ~/.bashrc を読み、その後 pgbashrc を読むことになります。<BR>
+------------------------------------------------------->
+</UL>
+<BR>
+<font size=4><B>◎ pgbashの特徴</B></font><BR>
+<UL>
+<LI>対話型環境における機能
+<OL>
+<LI>pgbashは、psql と同等のデータベースアクセス機能が有ります。
+<LI>pgbashは、pgbashrc を使用してユーザ独自の対話型環境を簡単に設定できます。
+<LI>pgbashは、bashの標準機能である alias、function、操作履歴の利用などの<B>柔軟な対話型の操作環境</B>を提供することができます。
+<LI>pgbashは、SQLと<B>パイプライン、リダイレクション、バックグランドジョブ</B>とを組み合わせて実行することができます。
+</OL>
+<BR>
+<LI>pgbash独自のSQL拡張機能
+<OL>
+<LI>pgbashは、CONNECT, DISCONNECT, SET CONNECTIONを用いて、<B>複数のデータベースにアクセス</B>することができます。
+<LI>pgbashは、「SELECT INTO ：ホスト変数」文や「FETCH INTO ：ホスト変数」文によって<B>検索結果をシェル変数に代入する機能</B>があります。
+<LI>pgbashは、SQL実行後のエラーコード、SELECTの結果のタプル数、列数、列名などをシェル変数に保管します。
+</OL>
+<BR>
+<LI>Webアプリケーションとしての機能
+<OL>
+<LI>pgbashは、SQL出力をHTMLに切り替え、GET/POSTメソッドによるデータの読込、HTTP_COOKIE の値の読込などを自動的に行う機能があります。
+<LI>pgbashは、SELECTの結果を自動的にHTMLのTABLE形式で出力できます。その際に、TABLE タグ、ヘッダー部の TRタグ、THタグ、ボディ部の TDタグを変更することができます。
+<!---
+<LI>pgbashは、SELECTの結果を出力する際に、値を INPUTタグ形式で表示できます。これを利用すると、SELECTしてUPDATEする Webアプリケーションが簡単に作成できます。
+--->
+</OL>
+</UL>
+<HR>
+<BR>
+<font size=3><B>◎ 開発履歴</B></font><BR>
+<UL>
+<font size=2>
+<LI>1999.07.初 : pgsql-jp メーリングリスト(ML)にてインターフェイスの検討。
+<LI>1999.07.中 : 久保健洋さんが pqbashを作成して pgsql-jp MLで公開。
+<LI>1999.07.末 : 直接SQL/埋込SQLのpgbashを pgsql-jp MLで検討。
+<LI>1999.08.31 : pgbash-1.0-beta を公開。
+<LI>1999.09.30 : pgbash-1.1.0を公開(CGI機能の追加、出力形式の統一）
+<LI>1999.10.30 : pgbash-1.2.1を公開(操作環境の整備とCOPY文の機能追加）
+<LI>1999.11.22 : pgbash-1.2.3を公開(SQLOIDシェル変数の追加)<BR>
+<LI>1999.12.25 : pgbash-2.0を公開 (bash-2.03本体を修正してSQL実行機能を追加)
+<LI>2000.01.07 : pgbash-2.0.1を公開(MB関数リンク、システムメッセージ出力制御追加)
+<LI>2000.05.16 : pgbash-2.1(bash-2.03) を公開(PostgreSQL-6.5/7.0に対応)
+<LI>2001.05.01 : pgbash-2.2(bash-2.03/2.04/2.05)を公開(PostgreSQL-6.5/7.0/7.1に対応)
+<LI>2001.12.15 : pgbash-2.4(PostgreSQL-7.0/7.1/7.2に対応)を公開
+<LI>2002.02.10 : pgbash-2.4a(bash-2.05aに対応)を公開
+<LI>2002.05.10 : pgbash-2.4a.1を公開
+<LI>2002.07.22 : pgbash-2.4a.2を公開
+<LI>2003.02.10 : pgbash-7.3を公開
+<LI>2003.10.14 : pgbash-7.3a(pgbash-7.3 bug fix) by Tomo Nomura.
+<li>2011.08.15 : <font color="0000ff">pgbash-8r2.05 </font>を公開
+<li>2011.08.20 : <font color="0000ff">pgbash-8r3.2 </font>を公開
+<li>2011.08.25 : <font color="0000ff">pgbash-8r4.1 </font>を公開
+</font>
+</UL>
+<BR>
+<font size=3><B>◎ 主な更新内容</B>(2011年8月)</font><BR>
+<UL>
+<li>PostrgeSQL 7.4,8.0, 8.1, 8.2, 8.3, 8.4, 9.0 に対応<br>
+<li>bash 2.05a, bash-3.2.48, bash-4.1.10 に対応<br>
+<li>pgbash独自のCOPY機能を削除<br>
+<li>Webアプリケーション作成時の EXEC_SQL_PREPARE機能を削除<br>
+</UL>
+<br>
+
+<font size=3><B>◎ 関連ページ</B></font><BR>
+<UL>
+<font size=2>
+<LI>PostgreSQL本家のページです。<BR>
+<a href="http://www.postgresql.org">http://www.postgresql.org</a> <BR>
+<LI>日本PostgreSQLユーザ会のページです。<BR>
+  <A href="http://www.postgresql.jp/">http://www.postgresql.jp/</A><BR>
+<LI>石井さんのPostgreSQLに関するページです。<BR>
+<a href="http://www2b.biglobe.ne.jp/~caco/pgpage/">http://www2b.biglobe.ne.jp/~caco/pgpage/</a><br>
+<LI>ふかふかさんの「ふかふかの部屋」に、PostgreSQLをSSL付きにした場合の Pgbashの修正方法が書かれています。<BR>
+<a href="http://www1.plala.or.jp/fukafuka/install/pgbash.html">http://www1.plala.or.jp/fukafuka/install/pgbash.html</A><BR>
+
+<LI>技術評論社殿のご厚意により、<A href="pgbash_sd.pdf">Software Design 2000年6月号のpgbashの記事</A>をPDFファイルで公開できることになりました。但し、印刷配布およびCD-ROMなどのメディアへの転載は禁止です。<BR>
+<LI>あるセミナーでpgbashを紹介したときの<a href="pgbash_peak.pdf">プレゼンテーション資料</a>です。<br>
+
+<!---
+<LI>谷田さんのページです。Cygwin用PostgreSQLの情報が有ります。<BR>
+  <A href="http://www.s34.co.jp/~luster/pgsql/">http://www.s34.co.jp/~luster/pgsql/</A><BR>
+<LI>久保健洋さんのページです。(Oracleの話題がたくさん有ります(^^;;)<BR>
+<a href="http://terry.nikkeibp.co.jp/~kubo/">http://terry.nikkeibp.co.jp/~kubo/</a><BR>
+<LI>石田さんの「PgBashComplete」のページです。pgbashでtabキーによる入力補完が可能になります。<BR>
+<a href="http://pjam.jpweb.net/cgi/wiki/yukiwiki.cgi?mycmd=read&mypage=PgBashComplete">http://pjam.jpweb.net/cgi/wiki/yukiwiki.cgi?mycmd=read&mypage=PgBashComplete</a><BR>
+-->
+<BR>
+  
+</font>
+</UL>
+</TD></TR></TABLE>
+<BR>
+<HR>
+<!--
+SAKAIDA Masaaki&lt;<a href="mailto:sakaida@psn.co.jp">sakaida@psn.co.jp</a>&gt;<BR>
+-->
+</CENTER>
+<img src="/cgi-bin/Count.cgi?df=pgbash-jp|dd=E|ft=2" align=right>
+
+Last Modified at 2011/08/25<BR>
+
+</TD></TR></TABLE>
+</BLOCKQUOTE>
+</CENTER>
+</BODY>
+</HTML>

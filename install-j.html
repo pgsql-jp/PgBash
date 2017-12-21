@@ -1,0 +1,202 @@
+<HTML>
+<HEAD>
+  <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=Shift_JIS">
+  <META NAME="Description" CONTENT="pgbashは、bash シェルにPostgreSQL用の直接SQL/埋込SQLインターフェイスの機能を組みこんだシェルです。">
+  <META NAME="KeyWords" CONTENT="PostgreSQL,pgbash,bash,SQLインターフェイス">     <TITLE>PostgreSQL pgbash install</TITLE>
+
+<!----- Google翻訳 ----->
+<meta name="google-translate-customization" content="d9d6e0b0e67f3c99-945fcafda4d761d6-g5126a2678b9900aa-22"></meta>
+
+</HEAD>
+<BODY BGCOLOR=#eeeeff text=#000000 ALINK=#ff0000>
+
+<!----- Google翻訳 ----->
+<div id="google_translate_element"></div><script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({pageLanguage: 'ja', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+}
+</script><script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+<BASEFONT SIZE=3>
+<CENTER>
+
+<BLOCKQUOTE>
+<TABLE BORDER=0><TR><TD width=640>
+
+<CENTER>
+<TABLE BORDER=0><TR><TD>
+[<a href="index-j.html">Home</A>] 
+[<a href="download-j.html">ダウンロード</A>] 
+[<a href="install-j.html">インストール</A>] 
+[<a href="usage-j.html">使用方法</A>] 
+[<a href="example-j.html">使用例</A>] 
+[<a href="faq-j.html">FAQ</A>] 
+</TD></TR></TABLE>
+<BR>
+
+
+<FONT SIZE=5 COLOR="#0000ff"><B>pgbash のインストール</B></FONT><BR>
+</center>
+<BR>
+<CENTER>
+<TABLE BORDER=0 BGCOLOR=ddddff CELLPADDING=10><TR><TD>
+pgbash のインストール方法について説明します。pgbash のバージョン番号が変更された場合は、以下の説明にあるバージョン番号を新しい番号に置き換えてください。<BR>
+</TD></TR></TABLE>
+</center>
+<BR>
+<HR>
+<BR>
+<a NAME="pgsql">
+<font size=4><B>◎ PostgreSQL開発環境のインストール</B></font><BR>
+</A>
+<UL>
+pgbashは、libpq-fe.h および PostgreSQL関連インクルードファイル、libpqライブラリを必要とします。そのため、pgbashをインストールする前に PostgreSQLの開発環境をインストールしておく必要があります。<br>
+<br>
+例えば、 yum や Cygwin では <B>postrgesql-devel</B> をインストールしておきます。<br>
+</UL>
+<BR>
+
+<HR>
+<BR>
+<a NAME="install">
+<font size=4><B>◎ pgbashのインストール</B></font><BR>
+</A>
+<OL>
+
+<B><LI>pgbash-8rx.x.tar.gz の展開</B><BR>
+<BR>
+tar xvfz pgbash-8rx.x.tar.gz<br>
+<BR>
+pgbash-8rx.x ディレクトリの中に次のようなディレクトリおよびファイルが作成されます。<BR>
+<table border=1 cellspacing=1 cellpadding=2><tr><TD>
+<pre>
+ChangeLog    ........... 変更情報のファイル
+INSTALL      ........... インストール方法の説明ファイル
+README       ........... pgbashの説明ファイル
+rc/          ........... pgbashrcファイル格納ディレクトリ
+src/         ........... pgbashのソース格納ディレクトリ
+</pre></TD></TR></TABLE>
+<BR>
+srcディレクトリに移動します。<br>
+<B>cd pgbash-8rx.x/src</B><br>
+<BR>
+<BR>
+<B><LI>Configure</B><BR>
+<BR>
+pgbashは libpq.so ライブラリを必要とします。もし、libpq.a ライブラリのみ存在している場合は、次のように"Makefile.in"ファイルを編集した後に configure してください。<br>
+<br>
+("<B>Makefile.in</B>"ファイルの編集)<br>
+変更前：<B>POSTGRESQL_LIBS= @pglib_prefix@/libpq.so</B><br>
+変更後：<B>POSTGRESQL_LIBS= @pglib_prefix@/libpq.a</B><br>
+<BR>
+<BR>
+<B>CFLAGS='-O2'  ./configure</B> &nbsp;&nbsp;&nbsp; &lt;---- デバッグオプション無し<BR>
+もしくは<BR>
+<B>./configure</B> &nbsp;&nbsp;&nbsp; &lt; ---- デバッグオプション有り(CFLAGS='-g -O2')<BR>
+<BR>
+<BR>
+<B>/usr/include</B> に libpq-fe.h 、<B>/usr/lib</B> に libpq.so(もしくは libpq.a)が存在していない場合は、--pginc-prefix, --pglib-prefix オプションでディレクトリを指定します。<BR>
+<pre>
+(例) 
+CFLAGS='-O2' ./configure --pginc-prefix=/usr/local/include   \
+                         --pglib-prefix=/usr/local/lib
+</PRE>
+<BR>
+<B><LI>Makeとインストール</B> (GNU makeを使用)<BR>
+<BR>
+<B>make</B><BR>
+<B>su</B><BR>
+<B>make install</B>　　　&lt;--- pgbashのインストール<BR>
+<B>cd ../rc</B><BR>
+<B>make install</B>　　　&lt;--- pgbashrcのインストール<BR>
+<BR>
+Unixスーパユーザになって <B>make install</B>を実行します。make install は、pgbashを /usr/local/bin へ、pgbashrcを /etc/ へコピーします。<br>
+<br>
+もし、Unixスーパユーザで作業できない場合は、pgbash を適当なディレクトリにコピーしてください。また、pgbashrc を .pgbashrc にしてホームディレクトリへコピーしてください。<BR>
+</OL>
+<BR>
+
+<HR>
+<BR>
+<a NAME="env">
+<font size=4><B>◎ 環境の設定</B></font><BR>
+</A>
+<UL>
+Pgbashを対話型で使用する場合、pgbash起動時は bashシェルと同様に環境設定ファイル(~/.bash_profile, ~/.bashrcなど）を読み込みます。 <br>
+<br>
+その後、pgbashは、ホームディレクトリの.pgbashrc(<B>~/.pgbashrc</B>)を検索し、無ければ <B>/etc/pgbashrc</B> を読み込みます。<br>
+<br>
+<B><LI> PostgreSQLサーバ・バージョンに合わせたpgbashrcを使用</B> <br>
+<br>
+pgbashrcは、PostgreSQLサーバのバージョンに合わせて次の pgbashrc を使用する必要があります。<BR>
+<BR>
+<TABLE border=1 cellpadding=1 cellspacing=1>
+<tr><th>PostgreSQL<br>サーバ・バージョン</th> <th> 使用する pgbashrc </th></tr>
+<tr><td>PostgreSQL 7.4</td> <td> pgbashrc-7.4 </td></tr>
+<tr><td>PostgreSQL 8.0</td> <td> pgbashrc-8.0 </td></tr>
+<tr><td>PostgreSQL 8.1</td> <td> pgbashrc-8.1 </td></tr>
+<tr><td>PostgreSQL 8.2</td> <td> pgbashrc-8.2 </td></tr>
+<tr><td>PostgreSQL 8.3</td> <td> pgbashrc-8.3 </td></tr>
+<tr><td>PostgreSQL 8.4</td> <td> pgbashrc-8.4 </td></tr>
+<tr><td>PostgreSQL 9.0</td> <td> pgbashrc-9.0 </td></tr>
+</td></tr>
+</table>
+<br>
+<font color=ff0000>
+例えば、サーバにPostgreSQL-8.1 を使用している場合、pgbashrc-8.1 を /etc/pgbashrc(もしくは ~/.pgbashrc) としてコピーします。<br>
+</font>
+<br>
+
+<B><LI> ユーザ固有の環境設定ファイル(pgbashrc)を作成したい場合</B> <br>
+<BR>
+ユーザ固有の環境を設定したい場合は、pgbashrc を ~/.pgbashrc としてコピーし、そのファイルを編集します。<BR>
+<BR>
+<B><LI> pgbashをログインシェルとして使用する場合</B> <br>
+<br>
+"/etc/passwd"ファイルを編集してログイン時起動プログラムに /usr/local/bin/pgbash を指定し、"/etc/shells"ファイルに /usr/local/bin/pgbash の追加を行なう必要があります。<br>
+<br>
+通常は、.bash_profile は .bashrc を読み込むだけの命令を記述し、環境設定は .bashrc に設定します。そうすれば、ログインシェルとサブシェルは同じ環境になります。<br>
+<br>
+(".bash_profile"の例)<br>
+<TABLE border=1 cellpadding=1 cellspacing=1><tr><td><pre>
+if [ -f ~/.bashrc ]; then
+    . ~/.bashrc
+fi
+</pre></td></tr></table>
+<br>
+
+<B><LI> 動作確認</B><BR>
+<BR>
+<B>/usr/local/bin/pgbash</B>を実行すると次のように表示されます。<BR>
+prompt&gt; <B>/usr/local/bin/pgbash</B>
+<table border=1 cellspacing=1 cellpadding=2><tr><TD>
+Welcome to Pgbash ( bash-x.x.x-release ) Patch Ver.8 rX.X
+<pre>
+  Type '?'  for help with pgbash commands.
+  Type 'exit' or 'Ctrl+D' to terminate Pgbash.
+</pre>
+</td></tr></table>
+
+ <BR>
+</UL>
+<BR>
+
+</TD></TR></TABLE>
+<BR>
+
+<HR>
+<TABLE BORDER=0><TR><TD>
+[<a href="index-j.html">Home</A>] 
+[<a href="download-j.html">ダウンロード</A>] 
+[<a href="install-j.html">インストール</A>] 
+[<a href="usage-j.html">使用方法</A>] 
+[<a href="example-j.html">使用例</A>] 
+[<a href="faq-j.html">FAQ</A>] 
+</TD></TR></TABLE>
+<BR>
+
+</TD></TR></TABLE>
+</BLOCKQUOTE>
+</CENTER>
+</BODY>
+</HTML>

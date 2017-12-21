@@ -1,0 +1,166 @@
+<HTML>
+
+<HEAD>
+  <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=Shift_JIS">
+  <META NAME="Description" CONTENT="pgbashは、bash シェルにPostgreSQL用の直接SQL/埋込SQLインターフェイスの機能を組みこんだシェルです。">
+  <META NAME="KeyWords" CONTENT="PostgreSQL,pgbash,bash,SQLインターフェイス">   
+
+  <TITLE>PostgreSQL pgbash usage</TITLE>
+</HEAD>
+
+<BODY BGCOLOR=#eeeeff text=#000000 ALINK=#ff0000>
+<BASEFONT SIZE=3>
+<CENTER>
+<BLOCKQUOTE>
+<TABLE BORDER=0><TR><TD width=640>
+
+<CENTER>
+
+<TABLE BORDER=0 width=90%><TR>
+<TD align=left>  [<a href="usage03-j.html">Prev</A>] </TD>
+<TD align=middle>[<a href="../usage-j.html" align=middle>Menu</A>] </TD>
+<TD align=right> [<a href="usage05-j.html">Next</A>] </TD>
+</TR></TABLE>
+
+<HR>
+<font color=0000ff size=5><B>検索結果の出力</B></font><BR>
+<HR>
+<BR>
+
+<table border=0><TR><TD>
+<UL>
+<A name="DIRECT">
+<font size=4><B><LI> 検索結果を表を即座に表示</B></font><BR>
+</A>
+<BR>
+(1) <u>対話的な操作</U><BR>
+<BR>
+端末から操作している場合、select文を実行すると検索結果の表は即座に端末に表示されます。例えば、端末から、connect文やselect文を直接入力した場合を次ぎに示します。<BR>
+<BR>
+pgbash> connect to postgres_db user xxx NULL;<BR>
+pgbash> select * from friends;<BR>
+<table border=1 cellpadding=4 cellspacing=1><tr><td>
+<pre>
+ user_id | name     | zip      | pref_id | address      
+---------+----------+----------+---------+------------
+      22 | 野xx洋子 | 611-2222 |      77 | 神戸市西区   
+      23 | 木xx忠志 | 622-3333 |      75 | 神戸市東区   
+      24 | 鈴xx信彦 | 633-4444 |      77 | 神戸市南区   
+....
+(12 rows)
+</pre>
+</td></TR></TABLE>
+<BR>
+(2) <u>シェルスクリプトを実行</U><BR>
+<BR>
+シェルスクリプトを実行した場合も対話的な操作と同様で、select文を実行すると検索結果の表は即座に端末に表示されます。例えば、"go.bat"シュルスクリプトファイルを作成して実行した場合を次に示します。<BR>
+<BR>
+["go.bat"ファイル作成]<BR>
+<table border=1><tr><TD><pre>
+#!/usr/local/bin/pgbash
+connect to postgres_db user xxx NULL;
+select * from from friends;
+</pre></td></tr></table>
+<BR>
+pgbash> chmod +x go.bat ...........パーミッションの設定<BR>
+pgbash> go.bat  ...................go.batの実行<BR>
+<BR>
+<BR>
+
+<A name="SHELL">
+<font size=4><B><LI> 検索結果の値をシェル変数に代入</B></font><BR>
+</A>
+<BR>
+「SELECT INTO ：ホスト変数」文もしくは「FETCH INTO ：ホスト変数」文を使用して、検索結果の値をシェル変数に読み込むことができます。この場合、検索結果の表は端末には表示されません。<BR>
+<PRE>
+SELECT  列名並び 
+<B>   [INTO :host_var1 [[INDICATOR] :ind_var1], ...
+            :host_varN [[INDICATOR] :ind_varN]] </B>
+      ..
+
+FETCH [オプション] [IN] カーソル名
+<B>   [INTO :host_var1 [[INDICATOR] :ind_var1], ...
+            :host_varN [[INDICATOR] :ind_varN]]; </B>
+
+host_var...... ホスト変数(データ読み込み用シェル変数)
+ind_var....... インディケータ変数(NULLのとき"1"、以外は"0")
+</PRE>
+<BR>
+(例)<BR>
+<TABLE BORDER=1 CELLPADDING=4><TR><TD><PRE>
+select col1, col2 into <font color=0000ff>:col1, :col2</font> from test where code='111';
+select version() into <font color=0000ff>:version</font>;
+select count(*) into  <font color=0000ff>:count</font>  from test;
+
+begin; 
+declare cur cursor for select * from test;
+declares -i x ; let x=0;  while ((x < <font color=0000ff>$count</font>))  
+do
+   FETCH IN CUR INTO <font color=0000ff>:code INDICATOR :ind_c,
+                     :name:ind_n, :address :ind_a</font>;
+    if (( SQLCODE == SQL_OK )); then
+        if ((<font color=0000ff>ind_n</font> != SQL_NULL || <font color=0000ff>ind_a</font> != SQL_NULL)); then
+            echo "<font color=0000ff>$code, $name, $address</font>"
+            let x=x+1
+        fi
+    else
+        if(( SQLCODE == SQL_NOT_FOUND )); then
+                let x=11
+        else
+                echo "$SQLERRMC"
+                let x=x+1
+        fi
+    fi
+done
+end;
+</TD></TR></TABLE>
+<BR>
+INTO句を使用する場合は、検索結果が１行でなければなりません。検索結果が複数行になった場合は、シェル変数には代入されずに標準出力に出力されます。<BR>
+<BR>
+  ここで、SQLCODEは SQLエラーコードを、$SQLERRMCは SQLエラーメッセージを表すシェル変数です。また、SQL_NULL, SQL_NOT_FOUNDは pgbashが初期設定している値です。(エラーコードを参照)<BR>
+<BR>
+FETCH INTO に使用するホスト変数(シェル変数）は、<B>英小文字</B>を使用した方が無難です。なぜなら、pgbashは先頭が SQL, OPTION, POSTGRESQL などの大文字のシェル変数を使用しているからです。<BR>
+<BR>
+# (( ))演算式のなかでは、整数型シェル変数の先頭'$'は省略することができます。<BR><BR>
+<BR>
+<A name="PIPE">
+<font size=4><B><LI> 検索結果を１ページごと表示</B></font><BR>
+</A>
+<BR>
+Pgbashは、SELECTの検索結果を連続的に表示します。psqlのように１ページごとに表示を停止する表示方法ではありません。そのため、１ページごと表示したい場合は、SQL; のうしろにパイプ('|')と more (もしくは less) が付ける必要があります。(詳細は、Unixのパイプを参照）<BR>
+<BR>
+例)<BR>
+pgbash> select * from test; | more (もしくは less)<BR>
+<BR>
+<A name="REDIRECT">
+<font size=4><B><LI> 検索結果をファイルに書き出す</B></font><BR>
+</A>
+<BR>
+Pgbashで、検索結果をファイルに書き出すことは実に簡単です。SQL; のうしろに &> ファイル名　とします。<BR>
+<BR>
+例) <BR>
+pgbash> select * from test; &> /tmp/sel.dat ... "/tmp/sel.dat"ファイルに書き出す<BR>
+<BR>
+ファイルが存在していない場合は、> だけでもかまいません。&> は、もしファイルが存在していたらそのファイルを削除して書き直します。(詳細は、Unixのリダイレクションを参照）<BR>
+
+
+
+
+</UL>
+</TD></TR></TABLE>
+
+<HR>
+<TABLE BORDER=0 width=90%><TR>
+<TD align=left>  [<a href="usage03-j.html">Prev</A>] </TD>
+<TD align=middle>[<a href="../usage-j.html" align=middle>Menu</A>] </TD>
+<TD align=right> [<a href="usage05-j.html">Next</A>] </TD>
+</TR></TABLE>
+
+<BR>
+
+</CENTER>
+</TD></TR></TABLE>
+</BLOCKQUOTE>
+</CENTER>
+</BODY>
+</HTML>
