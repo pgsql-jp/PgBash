@@ -1,13 +1,13 @@
 <HTML>
 
 <HEAD>
-  <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=Shift_JIS">
-  <META NAME="Description" CONTENT="pgbash�́Abash �V�F����PostgreSQL�p�̒���SQL/����SQL�C���^�[�t�F�C�X�̋@�\��g�݂��񂾃V�F���ł��B">
-  <META NAME="KeyWords" CONTENT="PostgreSQL,pgbash,bash,SQL�C���^�[�t�F�C�X">   
+  <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+  <META NAME="Description" CONTENT="pgbashは、bash シェルにPostgreSQL用の直接SQL/埋込SQLインターフェイスの機能を組みこんだシェルです。">
+  <META NAME="KeyWords" CONTENT="PostgreSQL,pgbash,bash,SQLインターフェイス">   
 
   <TITLE>PostgreSQL pgbash usage</TITLE>
 
-<!----- Google�|�� -----
+<!----- Google翻訳 -----
 <meta name="google-translate-customization" content="9976512c82eecf53-1de49aa12773be16-gb030048913b3edb5-28"></meta>
 ----------------------->
 
@@ -15,7 +15,7 @@
 
 <BODY BGCOLOR=#eeeeff text=#000000 ALINK=#ff0000>
 
-<!----- Google�|�� -----
+<!----- Google翻訳 -----
 <div id="google_translate_element"></div><script type="text/javascript">
 function googleTranslateElementInit() {
   new google.translate.TranslateElement({pageLanguage: 'ja', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
@@ -36,7 +36,7 @@ function googleTranslateElementInit() {
 <TD align=right> [<a href="usage03-j.html">Next</A>] </TD>
 </TR></TABLE>
 <hr>
-<FONT SIZE=5 COLOR="#0000ff"><B>SQL�̎w����@</B></FONT><BR>
+<FONT SIZE=5 COLOR="#0000ff"><B>SQLの指定方法</B></FONT><BR>
 <hr>
 <BR>
 
@@ -44,35 +44,35 @@ function googleTranslateElementInit() {
 
 <UL>
 <A name="SQL">
-<font size=4><B><LI>SQL�̋L�q���@</B></font><BR>
+<font size=4><B><LI>SQLの記述方法</B></font><BR>
 </A>
 <OL>
 <BR>
-<B><U><li> �L�q���@</U></B><BR>
+<B><U><li> 記述方法</U></B><BR>
 <p>
 <B>[timespec] <font color=0000ff size=4>SQL;</font> [pipeline][redirection][&]</B></p>
-��������<BR>
+もしくは<BR>
 <p>
 <B>[timespec] <font color=0000ff size=4>exec_sql </font>[option] <font color=0000ff size=4>"SQL" </font> [pipeline][redirection][&]</B></p>
 <p>
-�@�Θb�^������уV�F���X�N���v�g�̂�������ASQL�������̂܂ܓ���(�L�q)���邾����SQL�����s���邱�Ƃ��ł��܂��B SQL���́Atimespec�A�p�C�v�A���_�C���N�V�����A�o�b�N�O�����h�W���u�̎w��Ɣ��Ɏ��s���邱�Ƃ��ł��܂��B�܂��Aexec_sql�́A�ꎞ�I�ȃI�v�V������t���āASQL�����s���邱�Ƃ��ł��܂��B</p>
+　対話型環境およびシェルスクリプトのいずれも、SQL文をそのまま入力(記述)するだけでSQLを実行することができます。 SQL文は、timespec、パイプ、リダイレクション、バックグランドジョブの指定と伴に実行することができます。また、exec_sqlは、一時的なオプションを付けて、SQLを実行することができます。</p>
 <p>
-SQL; �� pgbash������ exec_sql "SQL"�ɕϊ�����Ď��s����܂��B�]���܂��āA SQL; �� exec_sql "SQL" �Ƃ͑S�������Ӗ��ɂȂ�܂��B</p>
+SQL; は pgbash内部で exec_sql "SQL"に変換されて実行されます。従いまして、 SQL; と exec_sql "SQL" とは全く同じ意味になります。</p>
 <p>
-<B><U><li> SQL�̏I�[�q</U></B></p>
+<B><U><li> SQLの終端子</U></B></p>
 <p>
-SQL���𒼐ڋL�q����ꍇ�́ASQL�̏I�[�q�i�Z�~�R�����j�͕K�{�ł��B�������Aexec_sql "SQL"�ƋL�q�����ꍇ�ASQL�̏I�[�q�͗L���Ă������Ă����܂��܂���B</p>
+SQL文を直接記述する場合は、SQLの終端子（セミコロン）は必須です。しかし、exec_sql "SQL"と記述した場合、SQLの終端子は有っても無くてもかまいません。</p>
 <p>
-<B><U><li> SQL���̓r���̉��s</U></B></p>
+<B><U><li> SQL文の途中の改行</U></B></p>
 <p>
-�@SQL����<B>�P��̐؂�ڂŎ��R�ɉ��s</B>���邱�Ƃ��ł��܂��B�Θb�^���ł́A���s����� > �v�����v�g���\������܂��̂ő�����SQL������͂��܂��B�Z�~�R���������ꂽ���_��SQL�̏I���Ƃ݂Ȃ��܂��B</p>
+　SQL文は<B>単語の切れ目で自由に改行</B>することができます。対話型環境では、改行すると > プロンプトが表示されますので続けてSQL文を入力します。セミコロンが現れた時点でSQLの終了とみなします。</p>
 <pre>
-(�Θb�^���̗�)
+(対話型環境の例)
   pgbash> <font color="0000ff"><B>insert into test values(111,</B></font>
   <B>></B><font color="0000ff"><B>    'aaa','bbb'</B></font>
   <B>></B><font color="0000ff"><B>);</B></font>
 
-(�V�F���X�N���v�g�̗�)
+(シェルスクリプトの例)
 <table border=1><tr><td>
 insert into test values(111,
 'aaa','bbb'
@@ -81,99 +81,99 @@ insert into test values(111,
 </pre>
 
 <BR>
-<B><U><li> �V�F���ϐ��̗��p</U></B><BR>
+<B><U><li> シェル変数の利用</U></B><BR>
 <BR>
-�@SQL �̂Ȃ��ŁA�V�F���ϐ��𗘗p���邱�Ƃ��ł��܂��B�V�F���ϐ��́A�l���Q�Ƃ���ꍇ�͓��� $ �}�[�N��t���܂��B<BR>
+　SQL のなかで、シェル変数を利用することができます。シェル変数は、値を参照する場合は頭に $ マークを付けます。<BR>
 <pre>
-��)
+例)
 <font color=0000ff>_aa</font>='123'
 <font color=0000ff>_bb</font>='name'
 <font color=0000ff>_cc</font>='address'
 insert into test values(<font color=0000ff>$_aa</font>, '$_bb', '$_cc');
-<font color=0000ff>COL1</font>='����'
-<font color=0000ff>VAL1</font>='��؈�Y'
+<font color=0000ff>COL1</font>='氏名'
+<font color=0000ff>VAL1</font>='鈴木一郎'
 select $COL1, $COL2 from test where <font color=0000ff>$COL1</font>='<font color=0000ff>$VAL1</font>';
 <font color=0000ff>SQL</font>="select * from test"
 exec_sql "<font color=0000ff>$SQL</font>"
 </pre>
-�V���O���N�H�[�g�����f�[�^���L��ꍇ�A<B><font color=ff0000>\'</font></B> �ň͂ޕK�v������܂��B</p>
+シングルクォート文字データが有る場合、<B><font color=ff0000>\'</font></B> で囲む必要があります。</p>
 <pre>
-��)
+例)
 DATA="name'123"
 select * from test where name=<B><font color=ff0000>\'</font></B>$DATA<B><font color=ff0000>\'</B></font>;
 </pre>
 </OL>
 <BR>
 <A name="EXEC_SQL">
-<font size=4><B><LI>SQL�̎��s���@</B></font><BR>
+<font size=4><B><LI>SQLの実行方法</B></font><BR>
 </A>
 <OL>
 <BR>
-<B><U><LI> �Θb�^���ɂ�������s</U></B><BR>
+<B><U><LI> 対話型環境における実行</U></B><BR>
 <BR>
-�Θb�^���ɂ�����SQL����͂���ƁA�����Ɏ��s����܂��BSELECT�Ȃǂ̌������߂́A�������ʂ������ɉ�ʂɕ\������܂��B<BR>
+対話型環境においてSQLを入力すると、即座に実行されます。SELECTなどの検索命令は、検索結果が即座に画面に表示されます。<BR>
 <PRE>
-��)
-select * from test; | more .................. �p�C�v�̗�
-select * from test; &> /tmp/xx.dat .......... ���_�C���N�V�����̗�
-select * from test; & ....................... �o�b�N�O�����h�W���u�̗�
-time select * from test; .................... timespec�̗�
-select * from test; &> /tmp/xx.dat & ........ ���_�C���N�V�����ƃo�b�N�O�����h�W���u
+例)
+select * from test; | more .................. パイプの例
+select * from test; &> /tmp/xx.dat .......... リダイレクションの例
+select * from test; & ....................... バックグランドジョブの例
+time select * from test; .................... timespecの例
+select * from test; &> /tmp/xx.dat & ........ リダイレクションとバックグランドジョブ
 
 exec_sql "select * from test" | more
 exec_sql "select * from test"  &> /tmp/xx.dat 
 </PRE>
-�����ŁA| more �́A�\���s���������ꍇ�ɁA��ʂ̃T�C�Y�ɍ��킹�ĕ\������U��~����w��ł��B�܂��Atimespec �́A�������Ԃ�\������ꍇ�Ɏg�p���܂��B"&>"�́A���Ƀt�@�C�������݂��Ă��Ă������I�ɏ㏑�Ńt�@�C�����쐬���܂��B<BR>
+ここで、| more は、表示行数が多い場合に、画面のサイズに合わせて表示を一旦停止する指定です。また、timespec は、処理時間を表示する場合に使用します。"&>"は、既にファイルが存在していても強制的に上書でファイルを作成します。<BR>
 <BR>
-<B><U><li> �V�F���X�N���v�g�ɂ�������s</U></B><BR>
+<B><U><li> シェルスクリプトにおける実行</U></B><BR>
 <BR>
-��L�̑Θb�^���Ɠ��l�̏������s�Ȃ��ɂ́A���̂悤�ɂ��܂��B<BR>
+上記の対話型環境と同様の処理を行なうには、次のようにします。<BR>
 <pre>
-��)
-�V�F���X�N���v�g"sel.bat"
+例)
+シェルスクリプト"sel.bat"
 <table border=1><tr><td>
 <PRE>
 #!/usr/local/bin/pgbash
 connect to postgres user postgres;
 select * from test;
-disconnect all;  ...... disconnect �͖����Ă����܂��܂���
+disconnect all;  ...... disconnect は無くてもかまいません
 </PRE>
 </td></tr></table>
 
-pgbash> sel.bat | more .................. �p�C�v�̗�
-pgbash> sel.bat &> /tmp/xx.dat .......... ���_�C���N�V�����̗�
-pgbash> sel.bat & ....................... �o�b�N�O�����h�W���u�̗�
-pgbash> time sel.bat .................... timespec�̗�
-pgbash> sel.bat &> /tmp/xx.dat & ........ ���_�C���N�V�����ƃo�b�N�O�����h�W���u
+pgbash> sel.bat | more .................. パイプの例
+pgbash> sel.bat &> /tmp/xx.dat .......... リダイレクションの例
+pgbash> sel.bat & ....................... バックグランドジョブの例
+pgbash> time sel.bat .................... timespecの例
+pgbash> sel.bat &> /tmp/xx.dat & ........ リダイレクションとバックグランドジョブ
 </pre>
 <BR>
-<B><U><LI> �������ʂ̕\���̒��f</U></B><BR>
+<B><U><LI> 検索結果の表示の中断</U></B><BR>
 <BR>
-�������ʂ���ʂɕ\������Ă���r���ɁA���̕\�����Ƃ߂����ꍇ�́A<font color=ff0000><B>Ctrl+C </B></FONT> �������܂��B�A���ACtrl+C �������Ă��A��ʕ\���͂����ɂ͎~�܂�܂���B���\�s�͕\������Ă��܂��܂��B<BR>
+検索結果が画面に表示されている途中に、その表示をとめたい場合は、<font color=ff0000><B>Ctrl+C </B></FONT> を押します。但し、Ctrl+C を押しても、画面表示はすぐには止まりません。数十行は表示されてしまいます。<BR>
 
 <BR>
-<B><U><LI> �������I�[�o�[</U></B><BR>
+<B><U><LI> メモリオーバー</U></B><BR>
 <BR>
-�������ʂ́A�������Ɉꎞ�I�ɕۊǂ���܂��̂ŁA���܂�ɑ����̌������ʂ�\������ƁA�������I�[�o�|�̃G���[�ɂȂ�\��������܂��B��ʂ̌��ʂ�\������ꍇ�́Alimit �����Ă��������B<BR>
+検索結果は、メモリに一時的に保管されますので、あまりに多くの検索結果を表示すると、メモリオーバ−のエラーになる可能性があります。大量の結果を表示する場合は、limit をつけてください。<BR>
 <BR>
-��j<BR>
-pgbash> select * from test limit 500; | more  ............. �ő�500�s�\��<BR>
-pgbash> select * from test limit 500 offset 100; | more  .. 100�s�ڂ���ő�500�s�\��<BR>
+例）<BR>
+pgbash> select * from test limit 500; | more  ............. 最大500行表示<BR>
+pgbash> select * from test limit 500 offset 100; | more  .. 100行目から最大500行表示<BR>
 
 </OL>
 <BR>
 
 <A name="LIMIT">
-<font size=4><B><LI>SQL�̎w����@�̐���</B></font><BR>
+<font size=4><B><LI>SQLの指定方法の制限</B></font><BR>
 </A>
 <OL>
 <BR>
 
-<B><U><LI> SQL�̈ʒu</U></B><BR>
+<B><U><LI> SQLの位置</U></B><BR>
 <BR>
-SQL; �� timespec �� �� �������āA�s�̐擪����L�q���Ȃ���΂Ȃ�܂���Bif���Awhile���̌��ɋL�q���邱�Ƃ͂ł��܂���B<BR>
+SQL; は timespec や 空白 を除いて、行の先頭から記述しなければなりません。if文、while文の後ろに記述することはできません。<BR>
 <table border=1 cellpadding=4 cellspacing=1> 
-<TR> <TH> �ԈႢ�̗�</TH><TH> ��������</TH></TR>
+<TR> <TH> 間違いの例</TH><TH> 正しい例</TH></TR>
 <TR>
 <TD>
  <PRE>
@@ -194,14 +194,14 @@ fi
 </TR>
 </TABLE>
 <BR>
-SQL�̎��s��Ԃ�m�肽���ꍇ�́ASQLCODE �V�F���ϐ��𗘗p���܂��B<BR>
+SQLの実行状態を知りたい場合は、SQLCODE シェル変数を利用します。<BR>
 <BR>
 <BR>
-<B><U><LI> �\���</U></B><BR>
+<B><U><LI> 予約語</U></B><BR>
 <BR>
-Pgbash�́A���̗\��ꂪ�R�}���h���т̐擪�������� timespec�̒���ɂ������ꍇ�A����� SQL�����Ɣ��f���܂��B<BR>
+Pgbashは、次の予約語がコマンド並びの先頭もしくは timespecの直後にあった場合、それを SQL文だと判断します。<BR>
 <br>
-(PostgreSQL-8.1�̗\���̗�)<br>
+(PostgreSQL-8.1の予約語の例)<br>
 <table border=1 cellpadding=4 cellspacing=1><tr><td>
 <PRE>
 ABORT                     CREATE LANGUAGE           DROP VIEW
@@ -244,79 +244,79 @@ CREATE INDEX              DROP USER
 </PRE>
 </td></tr></table>
 <BR>
-Pgbash��SQL�����Ɣ��f�����ꍇ�A<B>�Z�~�R�����������܂œ��͂�v��</B>���܂��B<BR>
+PgbashがSQL文だと判断した場合、<B>セミコロンが現れるまで入力を要求</B>します。<BR>
 <BR>
-<B><U><li> SQL���͂̒��f</U></B><BR>
+<B><U><li> SQL入力の中断</U></B><BR>
 <BR>
-SQL���͂�r���Œ��f�������ꍇ�́A���̂悤�ɂ��Ă��������B<BR>
+SQL入力を途中で中断したい場合は、次のようにしてください。<BR>
 <BR>
-a. 1�s�ڂ̓r���ł���΁A<font color=ff0000><B>Ctrl+C</B></font><BR>
-b. 2�s�ڈȍ~�̓r���ł���΁A<font color=ff0000><B>Ctrl+D</B></font><BR>
+a. 1行目の途中であれば、<font color=ff0000><B>Ctrl+C</B></font><BR>
+b. 2行目以降の途中であれば、<font color=ff0000><B>Ctrl+D</B></font><BR>
 <BR>
-�������́A�Z�~�R��������͂���SQL�����s�����V���^�b�N�X�G���[�I�������܂��B<BR>
+もしくは、セミコロンを入力してSQLを実行させシンタックスエラー終了させます。<BR>
 <BR>
-<B><U><li> SQL�\���ƃv���O���������d�Ȃ����ꍇ</U></B><BR>
+<B><U><li> SQL予約語とプログラム名が重なった場合</U></B><BR>
 <BR>
-�����v���O�������ƁA��L�̗\�񂪏d�Ȃ����ꍇ�́A�v���O�����̎��s���Ƀp�X���w�肵�܂��B�Ⴆ�΁A"ALTER"�Ƃ������O�̃v���O�������������ꍇ�͎��ł��B<BR>
+もしプログラム名と、上記の予約が重なった場合は、プログラムの実行時にパスを指定します。例えば、"ALTER"という名前のプログラムがあった場合は次です。<BR>
 <BR>
-pgbash&gt; <B>./ALTER</B>  ........... �J�����g��"ALTER"�v���O����<BR>
-pgbash&gt; <B>/home/admin/ALTER</B> .. /home/admin��"ALTER"�v���O����<BR>
+pgbash&gt; <B>./ALTER</B>  ........... カレントの"ALTER"プログラム<BR>
+pgbash&gt; <B>/home/admin/ALTER</B> .. /home/adminの"ALTER"プログラム<BR>
 <BR>
 <BR>
 <A name="QUOTATION">
-<font size=4><B><LI>SQL�����̃V���O���N�H�[�g�^�_�u���N�H�[�g</B><BR>
+<font size=4><B><LI>SQL文中のシングルクォート／ダブルクォート</B><BR>
 </A>
 <BR>
-SQL���ł́A1�̃V���O���N�H�[�g�����f�[�^�̓V���O���N�H�[�g���Q���ׂ�K�v������܂��B<BR>
+SQL文では、1個のシングルクォート文字データはシングルクォートを２個並べる必要があります。<BR>
 <BR>
-��) insert into test values(111,'aaa''aaa');<BR>
+例) insert into test values(111,'aaa''aaa');<BR>
 <BR>
-�V���O���N�H�[�g�P���V���O���N�H�[�g�����f�[�^�Ƃ��Ď�舵���ɂ́A<font color=ff0000><B>\'</B></font> �ň͂܂Ȃ���΂Ȃ�܂���B<BR>
+シングルクォート１個をシングルクォート文字データとして取り扱うには、<font color=ff0000><B>\'</B></font> で囲まなければなりません。<BR>
 <BR>
-��) DATA="aaa'aaa"<BR>
+例) DATA="aaa'aaa"<BR>
 insert into test values(111,<font color=ff0000><B>\'</B></font>aaa'aaa<font color=ff0000><B>\'</B></font>);<BR>
 insert into test values(111,<font color=ff0000><B>\'</B></font>$DATA<font color=ff0000><B>\'</B></font>);<BR>
 <BR>
-SQL�����̃_�u���N�H�[�g�́Apgbash-2.4a.1�܂ł́A\" �ɂ��Ȃ���΂Ȃ�܂���ł������Apgbash-2.4a.2 ���A\ �͕s�v�ɂȂ�܂����B<BR>
+SQL文中のダブルクォートは、pgbash-2.4a.1までは、\" にしなければなりませんでしたが、pgbash-2.4a.2 より、\ は不要になりました。<BR>
 <BR>
-��j select aa as "Name", bb as "Tom's Type" from test;<BR>
+例） select aa as "Name", bb as "Tom's Type" from test;<BR>
 </OL>
 <BR>
 
 <A name="COMMENT">
-<font size=4><B><LI>SQL�����̃R�����g</B></font><BR>
+<font size=4><B><LI>SQL文中のコメント</B></font><BR>
 </A>
 <OL>
 <BR>
 
-SQL������ '#' �����ꂽ�ꍇ�A'#'������s�܂ł��R�����g�Ƃ݂Ȃ��܂��B<BR>
+SQL文中に '#' が現れた場合、'#'から改行までをコメントとみなします。<BR>
 <PRE>
-��)
+例)
 create table member (
 #---------------------------------------------------------------
-   userid       int4                     # ���[�U�R�[�h
-                primary key not null,    # �v���C�}���[�L�[
+   userid       int4                     # ユーザコード
+                primary key not null,    # プライマリーキー
 #---------------------------------------------------------------
-   kind         varchar(12)              # ������
+   kind         varchar(12)              # 会員種別
                 check(kind in ('A','B')),# ('A', or 'B')
 #---------------------------------------------------------------
-   name         varchar(32) not null,    # ���[�U��
+   name         varchar(32) not null,    # ユーザ名
 
 #---------------------------------------------------------------
-   zip          char(8)                  # �X�֔ԍ�
+   zip          char(8)                  # 郵便番号
                 default '000-0000',
 #---------------------------------------------------------------
-   address      varchar(64) not null,    # �Z��
+   address      varchar(64) not null,    # 住所
 
 #---------------------------------------------------------------
-   tel          varchar(16) not null,    # �d�b�ԍ�
+   tel          varchar(16) not null,    # 電話番号
 
 #----------------------------------------------------------------
-   email        varchar(64),             # E-mail�A�h���X
+   email        varchar(64),             # E-mailアドレス
 
 #----------------------------------------------------------------
-   up_date      timestamp                # �X�V��
-                default 'now'            #(�����l�F���݂̓���)
+   up_date      timestamp                # 更新日
+                default 'now'            #(初期値：現在の日時)
 #----------------------------------------------------------------
 );
 </PRE>

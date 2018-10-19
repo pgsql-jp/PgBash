@@ -1,9 +1,9 @@
 <HTML>
 
 <HEAD>
-  <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=Shift_JIS">
-  <META NAME="Description" CONTENT="pgbash�́Abash �V�F����PostgreSQL�p�̒���SQL/����SQL�C���^�[�t�F�C�X�̋@�\��g�݂��񂾃V�F���ł��B">
-  <META NAME="KeyWords" CONTENT="PostgreSQL,pgbash,bash,SQL�C���^�[�t�F�C�X">   
+  <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+  <META NAME="Description" CONTENT="pgbashは、bash シェルにPostgreSQL用の直接SQL/埋込SQLインターフェイスの機能を組みこんだシェルです。">
+  <META NAME="KeyWords" CONTENT="PostgreSQL,pgbash,bash,SQLインターフェイス">   
 
   <TITLE>PostgreSQL pgbash usage</TITLE>
 </HEAD>
@@ -23,7 +23,7 @@
 </TR></TABLE>
 
 <hr>
-<FONT SIZE=5 COLOR="#0000ff"><B>���[�W�I�u�W�F�N�g�̎戵</B></FONT><BR>
+<FONT SIZE=5 COLOR="#0000ff"><B>ラージオブジェクトの取扱</B></FONT><BR>
 <hr>
 <BR>
 
@@ -34,11 +34,11 @@
 <font size=4><B><LI>_lo_import</B></font><BR>
 </A>
 <BR>
-  <B>_lo_import �t�@�C���� '����'</B><BR>
+  <B>_lo_import ファイル名 '注釈'</B><BR>
   <BR>
-  _lo_import �́A�t�@�C�����ƒ��߂��w�肵�āA���[�W�I�u�W�F�N�g���f�[�^�x�[�X�ɓo�^���܂��B����ɓo�^���ꂽ�ꍇ�́A"BEGIN","INSERT OID","COMMIT"�̃��b�Z�[�W���\������܂��B<BR>
+  _lo_import は、ファイル名と注釈を指定して、ラージオブジェクトをデータベースに登録します。正常に登録された場合は、"BEGIN","INSERT OID","COMMIT"のメッセージが表示されます。<BR>
   <BR>
-��)<BR>
+例)<BR>
 pgbash> _lo_import member.dat 'member data'<BR>
 BEGIN<BR>
 INSERT 118868 1<BR>
@@ -50,9 +50,9 @@ COMMIT<BR>
 <font size=4><B><LI>_lo_export</B></font><BR>
 </A>
 <BR>
-_lo_export �́A�f�[�^�x�[�X�ɓo�^���ꂽ���[�W�I�u�W�F�N�g���t�@�C���Ɏ��o���܂��B�Ⴆ�΁AOID�� 11885 �̃��[�W�I�u�W�F�N�g�� /tmp/mm �t�@�C���Ɏ��o���ɂ͎��̂悤�ɂ��܂��B<BR>
+_lo_export は、データベースに登録されたラージオブジェクトをファイルに取り出します。例えば、OIDが 11885 のラージオブジェクトを /tmp/mm ファイルに取り出すには次のようにします。<BR>
 <BR>
-��)<BR>
+例)<BR>
 _lo_export 11885 /tmp/mm<BR>
 <BR>
 <BR>
@@ -60,9 +60,9 @@ _lo_export 11885 /tmp/mm<BR>
 <font size=4><B><LI>_lo_unlink</B></font><BR>
 </A>
 <BR>
-_lo_unlink �́A�f�[�^�x�[�X�ɓo�^���ꂽ���[�W�I�u�W�F�N�g�����폜���܂��B����ɍ폜���ꂽ�ꍇ�́A"BEGIN","DELETE ����","COMMIT"�̃��b�Z�[�W���\������܂��B<BR>
+_lo_unlink は、データベースに登録されたラージオブジェクト情報を削除します。正常に削除された場合は、"BEGIN","DELETE 件数","COMMIT"のメッセージが表示されます。<BR>
 <BR>
-��)<BR>
+例)<BR>
 _lo_unlink 11885<BR>
 BEGIN<BR>
 DELETE 1<BR>
@@ -73,7 +73,7 @@ COMMIT<BR>
 <font size=4><B><LI>_lo_list</B></font><BR>
 </A>
 <BR>
-_lo_list �́A�o�^����Ă��郉�[�W�I�u�W�F�N�g�̈ꗗ��\�����܂��B<BR>
+_lo_list は、登録されているラージオブジェクトの一覧を表示します。<BR>
 <BR>
 pgbash> _lo_list<BR>
 <pre>
@@ -85,12 +85,12 @@ pgbash> _lo_list<BR>
 </pre>
 <BR>
 <A NAME="DESCRIPTION">
-<font size=4><B><LI>pgbash_description �e�[�u��</B></font><BR>
+<font size=4><B><LI>pgbash_description テーブル</B></font><BR>
 </A>
 <BR>
-Pgbash�́A���[�W�I�u�W�F�N�g��OID�ƒ��߂��A"pgbash_description"�e�[�u���ɓo�^���܂��B"pgbash_description"�e�[�u���́A�n�߂� _lo_import �����s���ꂽ�Ƃ��Ɏ����I�ɍ쐬����܂��B<BR>
+Pgbashは、ラージオブジェクトのOIDと注釈を、"pgbash_description"テーブルに登録します。"pgbash_description"テーブルは、始めて _lo_import が実行されたときに自動的に作成されます。<BR>
 <BR>
-pgbash_description�e�[�u���́A���[�U�̌����ō쐬����邽�߁APostgres�X�[�p���[�U�łȂ��Ă��A���[�W�I�u�W�F�N�g�̓o�^���\�ł��B<BR>
+pgbash_descriptionテーブルは、ユーザの権限で作成されるため、Postgresスーパユーザでなくても、ラージオブジェクトの登録が可能です。<BR>
 
 
 </UL>

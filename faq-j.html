@@ -1,9 +1,9 @@
 <HTML>
 
 <HEAD>
-  <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=Shift_JIS">
-  <META NAME="Description" CONTENT="pgbash�́Abash �V�F����PostgreSQL�p�̒���SQL/����SQL�C���^�[�t�F�C�X�̋@�\��g�݂��񂾃V�F���ł��B">
-  <META NAME="KeyWords" CONTENT="PostgreSQL,pgbash,bash,SQL�C���^�[�t�F�C�X">   
+  <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+  <META NAME="Description" CONTENT="pgbashは、bash シェルにPostgreSQL用の直接SQL/埋込SQLインターフェイスの機能を組みこんだシェルです。">
+  <META NAME="KeyWords" CONTENT="PostgreSQL,pgbash,bash,SQLインターフェイス">   
 
   <TITLE>PostgreSQL pgbash FAQ</TITLE>
 </HEAD>
@@ -20,77 +20,77 @@
 
 <TABLE BORDER=0><TR><TD>
 [<a href="index-j.html">Home</A>] 
-[<a href="download-j.html">�_�E�����[�h</A>] 
-[<a href="install-j.html">�C���X�g�[��</A>] 
-[<a href="usage-j.html">�g�p���@</A>] 
-[<a href="example-j.html">�g�p��</A>] 
+[<a href="download-j.html">ダウンロード</A>] 
+[<a href="install-j.html">インストール</A>] 
+[<a href="usage-j.html">使用方法</A>] 
+[<a href="example-j.html">使用例</A>] 
 [<a href="faq-j.html">FAQ</A>] 
 </TD></TR></TABLE>
 <BR>
 
-<FONT SIZE=6 COLOR="#0000ff"><B>�e �` �p</B></FONT><BR>
+<FONT SIZE=6 COLOR="#0000ff"><B>Ｆ Ａ Ｑ</B></FONT><BR>
 </center>
 <BR>
 <CENTER>
 <!-----
 <TABLE BORDER=0 BGCOLOR=ddddff CELLPADDING=10><TR><TD>
-pgbash�̂悭���鎿����܂Ƃ߂Ă܂��B
+pgbashのよくある質問をまとめてます。
 
-���A<A href="http://www2.psn.ne.jp/psn/pgbash/">pgbash�f����</A>�i�t���[���AJava Script�g�p)��p�ӂ��Ă܂��̂�pgbash�Ɋւ��鎿���v�]�Ȃǂ���܂����珑������ł��������B���̌f���ɏ����ꂽ���e�́AFAQ�Ƃ��Ă��̃y�[�W�Ɍf�ڂ���\��������܂��̂ł��������肢���܂��B
+尚、<A href="http://www2.psn.ne.jp/psn/pgbash/">pgbash掲示板</A>（フレーム、Java Script使用)を用意してますのでpgbashに関する質問や要望などありましたら書きこんでください。この掲示板に書かれた内容は、FAQとしてこのページに掲載する可能性がありますのでご了承お願いします。
 </TD></TR></TABLE>
 ---->
 <BR>
 
 </CENTER>
 
-<B>�C���X�g�[���Ɋւ���FAQ</B><BR>
+<B>インストールに関するFAQ</B><BR>
 <UL>
-<LI><A HREF="#Q1030">pgbash�́Abash�̂ǂ̃o�[�W�������g�p���܂����H</A>
-<LI><A HREF="#Q1031">pgbash�́APostgreSQL�̂ǂ̃o�[�W�������g�p���܂����H</A>
-<LI><A HREF="#Q1041">�Ǝ��̑Θb�^��������쐬�����̂ł����ǂ�����Ηǂ��ł����H</A>
-<LI><A HREF="#Q1042">�V�F���X�N���v�g�͑��݂��Ă��邪"No such file or directory"�Ŏ��s�ł��܂���B</A>
+<LI><A HREF="#Q1030">pgbashは、bashのどのバージョンを使用しますか？</A>
+<LI><A HREF="#Q1031">pgbashは、PostgreSQLのどのバージョンを使用しますか？</A>
+<LI><A HREF="#Q1041">独自の対話型操作環境を作成したのですがどうすれば良いですか？</A>
+<LI><A HREF="#Q1042">シェルスクリプトは存在しているが"No such file or directory"で実行できません。</A>
 </UL>
 <BR>
 
-<B>bash�̑���Ɋւ���FAQ</B><BR>
+<B>bashの操作に関するFAQ</B><BR>
 <UL>
-<LI><A HREF="#Q1040">�V�F���X�N���v�g�� alias�����̎w�肪�ł��܂����H</A>
-<LI><A HREF="#Q1060">pgbash�̕W���G���[�o�͂�W���o�͂ɐ؂�ւ��邱�Ƃ��ł��܂����H</A>
+<LI><A HREF="#Q1040">シェルスクリプトで alias相当の指定ができますか？</A>
+<LI><A HREF="#Q1060">pgbashの標準エラー出力を標準出力に切り替えることができますか？</A>
 </UL>
 <BR>
 
-<B>�f�[�^�x�[�X�̐ڑ��Ɋւ���FAQ</B><BR>
+<B>データベースの接続に関するFAQ</B><BR>
 <UL>
-<LI><A HREF="#Q2001">CONNECT�����g�p���Ȃ��Ă������I�Ƀf�[�^�x�[�X�ɐڑ����Ă���܂����H</A>
-<LI><A HREF="#Q2002">CONNECT���Őڑ������w�肵�Ȃ������ꍇ�͂ǂ��Ȃ�܂����H</A>
-<LI><A HREF="#Q2009">�Z�b�V�������؂ꂽ�ꍇ backend�͏I�����܂����H</A>
-<LI><A HREF="#Q2010">SQL�g�p����backend�����񂾏ꍇ�͂ǂ��Ȃ�܂����H</A>
+<LI><A HREF="#Q2001">CONNECT文を使用しなくても自動的にデータベースに接続してくれますか？</A>
+<LI><A HREF="#Q2002">CONNECT文で接続名を指定しなかった場合はどうなりますか？</A>
+<LI><A HREF="#Q2009">セッションが切れた場合 backendは終了しますか？</A>
+<LI><A HREF="#Q2010">SQL使用中にbackendが死んだ場合はどうなりますか？</A>
 </UL>
 <BR>
 
-<B>SQL�̑���Ɋւ���FAQ</B><BR>
+<B>SQLの操作に関するFAQ</B><BR>
 <UL>
-<LI><A HREF="#Q3010">SQL���͂��̂܂� backend �ɑ��M����܂����H</A>
-<LI><A HREF="#Q3060">��̒l��NULL�ł��邱�Ɣ��f�ł��܂����H</A>
-<LI><A HREF="#Q3070">�f�[�^�x�[�X����\������R�}���h�͂ǂ̂悤�ȁ@QUERY ���o�b�N�G���h�ɑ��M���Ă���̂ł����H</A>
+<LI><A HREF="#Q3010">SQL文はそのまま backend に送信されますか？</A>
+<LI><A HREF="#Q3060">列の値がNULLであること判断できますか？</A>
+<LI><A HREF="#Q3070">データベース情報を表示するコマンドはどのような　QUERY をバックエンドに送信しているのですか？</A>
 </UL>
 <BR>
 
-<B>�������ʂ̏o�͂Ɋւ���FAQ</B><BR>
+<B>検索結果の出力に関するFAQ</B><BR>
 <UL>
-<LI><A HREF="#Q4009">pgbash �̌������ʂ� psql �̌������ʂ͓����ł����H</A>
-<LI><A HREF="#Q4040">Select Into ���Ō������ʂ������^�v���̏ꍇ�͂ǂ��Ȃ�܂����H</A>
-<LI><A HREF="#Q4050">Fetch Into ���Ł@�������Ƃ�'ALL'���w�肵����ǂ��Ȃ�܂����H</A>
-<LI><A HREF="#Q4090">�X�y�[�X��NULL�ƃ[���r�b�g(��)�Ƃ���ʂ��ĕ\���ł��܂����H</A>
-<LI><A HREF="#Q4100">SELECT�̌��ʂ�CSV�`���Ńt�@�C���ɏo�͂��邱�Ƃ��ł��܂����H</A>
-<LI><A HREF="#Q4200">�����������̗񖼂��擾������@�͂���܂����H</A>
+<LI><A HREF="#Q4009">pgbash の検索結果と psql の検索結果は同じですか？</A>
+<LI><A HREF="#Q4040">Select Into 文で検索結果が複数タプルの場合はどうなりますか？</A>
+<LI><A HREF="#Q4050">Fetch Into 文で　検索数とか'ALL'を指定したらどうなりますか？</A>
+<LI><A HREF="#Q4090">スペースとNULLとゼロビット(空)とを区別して表示できますか？</A>
+<LI><A HREF="#Q4100">SELECTの結果をCSV形式でファイルに出力することができますか？</A>
+<LI><A HREF="#Q4200">検索した時の列名を取得する方法はありますか？</A>
 </UL>
 <BR>
 
-<B>Web�A�v���P�[�V�����Ɋւ���FAQ</B><BR>
+<B>Webアプリケーションに関するFAQ</B><BR>
 <UL>
-<LI><A HREF="#Q5100">pgbash��CGI�v���O�����Ƃ��ė��p���邱�Ƃ��ł��܂����H</A>
-<LI><A HREF="#Q5110">HTTP �N�b�L�[������������@���񋟂���Ă��܂����H</A>
+<LI><A HREF="#Q5100">pgbashはCGIプログラムとして利用することができますか？</A>
+<LI><A HREF="#Q5110">HTTP クッキーを処理する方法が提供されていますか？</A>
 </UL>
 <BR>
 
@@ -104,34 +104,34 @@ pgbash�̂悭���鎿����܂Ƃ߂Ă܂��B
 
 <!-------------->
 <A NAME="Q1030">
-<font color="0000ff"><B>�p�Dpgbash�́Abash�̂ǂ̃o�[�W�������g�p���܂����H</B></font><BR>
+<font color="0000ff"><B>Ｑ．pgbashは、bashのどのバージョンを使用しますか？</B></font><BR>
 <UL>
-  pgbash-8r2.05�� bash-2.05a, pgbash-8r3.2 �� bash-3.2.48, pgbash-8r4.1 �� bash-4.1.10 �̃\�[�X�t�@�C�����g�p���܂��B<BR>
+  pgbash-8r2.05は bash-2.05a, pgbash-8r3.2 は bash-3.2.48, pgbash-8r4.1 は bash-4.1.10 のソースファイルを使用します。<BR>
 </UL>
 <!-------------->
 <A NAME="Q1031">
-<font color="0000ff"><B>�p�Dpgbash�́APostgreSQL�̂ǂ̃o�[�W�������g�p���܂����H</B></font><BR>
+<font color="0000ff"><B>Ｑ．pgbashは、PostgreSQLのどのバージョンを使用しますか？</B></font><BR>
 <UL>
-pgbash �́@PostgreSQL-7.4�ȍ~�� libpq���C�u�������g�p���܂��B �����āAPostgreSQL-7.4, PostgreSQL-8.0 ���� 8.4 ����� PostgreSQL 9.0 �T�[�o�ɐڑ��ł��܂��Blibpq���C�u������PostgreSQL�o�[�W�����ƁA�T�[�o����PostgreSQL�o�[�W�����͈�v���Ȃ��Ă����܂��܂���B<br>
+pgbash は　PostgreSQL-7.4以降の libpqライブラリを使用します。 そして、PostgreSQL-7.4, PostgreSQL-8.0 から 8.4 および PostgreSQL 9.0 サーバに接続できます。libpqライブラリのPostgreSQLバージョンと、サーバ側のPostgreSQLバージョンは一致しなくてもかまいません。<br>
 </UL>
 <!-------------->
 <A NAME="Q1041">
-<font color="0000ff"><B>�p�D�Ǝ��̑Θb�^��������쐬�����̂ł����ǂ�����Ηǂ��ł����H</FONT></B><BR>
+<font color="0000ff"><B>Ｑ．独自の対話型操作環境を作成したのですがどうすれば良いですか？</FONT></B><BR>
 <UL>
-�@/etc/pgbashrc ���z�[���f�B���N�g���� .pgbashrc �Ƃ��ăR�s�[���A���̃t�@�C���ɓƎ��̑Θb�^�������ǉ����Ă��������B<BR>
+　/etc/pgbashrc をホームディレクトリに .pgbashrc としてコピーし、そのファイルに独自の対話型操作環境を追加してください。<BR>
 <BR>
 </UL>
 <!-------------->
 <A NAME="Q1042">
-<font color="0000ff"><B>�p�D�V�F���X�N���v�g�͑��݂��Ă��邪"No such file or directory"�Ŏ��s�ł��܂���B</FONT></B><BR>
+<font color="0000ff"><B>Ｑ．シェルスクリプトは存在しているが"No such file or directory"で実行できません。</FONT></B><BR>
 <UL>
-�V�F���X�N���v�g�̉��s�R�[�h��'<B>LF</B>'�ł��B'CR+LF'�R�[�h�ɂȂ��Ă���ƁA���̃G���[�ɂȂ�܂��B�������A�p�X���Ԉ���Ă������ł��B<BR>
+シェルスクリプトの改行コードは'<B>LF</B>'です。'CR+LF'コードになっていると、このエラーになります。もちろん、パスが間違っても同じです。<BR>
 </UL>
 <!-------------->
 <A NAME="Q1040">
-<font color="0000ff"><B>�p�D�V�F���X�N���v�g�� alias�����̎w�肪�ł��܂����H</FONT></B><BR>
+<font color="0000ff"><B>Ｑ．シェルスクリプトで alias相当の指定ができますか？</FONT></B><BR>
 <UL>
-  �V�F���X�N���v�g���ł� alias �͎g�p�ł��܂���B�Ⴆ�΁A���̂悤�� function ���`���� alias �Ɠ��l�Ɏg�p���邱�Ƃ��ł��܂��B
+  シェルスクリプト内では alias は使用できません。例えば、次のように function を定義して alias と同様に使用することができます。
 <PRE>
  #!/usr/local/bin/pgbash
  function E {
@@ -144,9 +144,9 @@ pgbash �́@PostgreSQL-7.4�ȍ~�� libpq���C�u�������g�p���܂��B �����āAPostgreSQL
 
 <!-------------->
 <A NAME="Q1060">
-<font color="0000ff"><B>�p�Dpgbash�̕W���G���[�o�͂�W���o�͂ɐ؂�ւ��邱�Ƃ��ł��܂����H</FONT></B><BR>
+<font color="0000ff"><B>Ｑ．pgbashの標準エラー出力を標準出力に切り替えることができますか？</FONT></B><BR>
 <UL>
-  �͂��A�ł��܂��B<B>exec 2>&1</B> �Ƃ��܂��BCGI�p�̃V�F���X�N���v�g���쐬����ꍇ�́A�v���O�����̐擪�ŕK���w�肵�������ǂ��ł��傤�B
+  はい、できます。<B>exec 2>&1</B> とします。CGI用のシェルスクリプトを作成する場合は、プログラムの先頭で必ず指定した方が良いでしょう。
 <PRE>
  #!/usr/local/bin/pgbash
  <B>exec  2>&1 </B>
@@ -161,18 +161,18 @@ pgbash �́@PostgreSQL-7.4�ȍ~�� libpq���C�u�������g�p���܂��B �����āAPostgreSQL
 
 <!-------------->
 <A NAME="Q2001">
-<font color="0000ff"><B>�p�DCONNECT�����g�p���Ȃ��Ă������I�Ƀf�[�^�x�[�X�ɐڑ����Ă���܂����H</B></font><BR>
+<font color="0000ff"><B>Ｑ．CONNECT文を使用しなくても自動的にデータベースに接続してくれますか？</B></font><BR>
 <UL>
-  CONNECT�������s������ SQL�������s�����ꍇ�́A<B>���O�C�����[�U�������[�U��</B>�Ƃ��A<B>���[�U���Ɠ������O�̃f�[�^�x�[�X��</B>�ɑ΂��Ď����I�ɐڑ����܂��B<BR>
-  �Ⴆ�΁A���O�C�����[�U���� admin �̏ꍇ�́A<B>connect to default;</B> �� <B>connect to admin user admin;</B>�����s���ꂽ���ƂƓ����ɂȂ�܂��B<BR>
+  CONNECT文を実行せずに SQL文を実行した場合は、<B>ログインユーザ名をユーザ名</B>とし、<B>ユーザ名と同じ名前のデータベース名</B>に対して自動的に接続します。<BR>
+  例えば、ログインユーザ名が admin の場合は、<B>connect to default;</B> は <B>connect to admin user admin;</B>が実行されたことと同じになります。<BR>
 <BR>
-�@�A���A�p�X���[�h���ݒ肳��Ă���f�[�^�x�[�X�́A"CONNECT �f�[�^�x�[�X�� user <B>���[�U�� [�p�X���[�h]</B>"�̌`���� CONNECT�������s���Ȃ���΂Ȃ�܂���BCONNECT���̍Ō�Ƀp�X���[�h���L�q���Ȃ������ꍇ�́A�p�X���[�h�̓��͗v�����b�Z�[�W���\������܂��̂ŁA����ɂ��������ăp�X���[�h����͂��Ȃ���΂Ȃ�܂���B<BR>
+　但し、パスワードが設定されているデータベースは、"CONNECT データベース名 user <B>ユーザ名 [パスワード]</B>"の形式で CONNECT文を実行しなければなりません。CONNECT文の最後にパスワードを記述しなかった場合は、パスワードの入力要求メッセージが表示されますので、それにしたがってパスワードを入力しなければなりません。<BR>
 </UL>
 <!-------------->
 <A NAME="Q2002">
-<font color="0000ff"><B>�p�DCONNECT���Őڑ������w�肵�Ȃ������ꍇ�͂ǂ��Ȃ�܂����H</B></font><BR>
+<font color="0000ff"><B>Ｑ．CONNECT文で接続名を指定しなかった場合はどうなりますか？</B></font><BR>
 <UL>
-  "CONNECT TO �f�[�^�x�[�X�� AS �ڑ���"�@�̐ڑ������ȗ������ꍇ�́A�f�[�^�x�[�X���Ɠ������O�ɂȂ�܂��B���̗�ł͐ڑ����͂������"admin"�ł��B
+  "CONNECT TO データベース名 AS 接続名"　の接続名を省略した場合は、データベース名と同じ名前になります。次の例では接続名はいずれも"admin"です。
 <PRE>
   connect to admin;
   connect to admin@www.psn.co.jp:5432;
@@ -181,22 +181,22 @@ pgbash �́@PostgreSQL-7.4�ȍ~�� libpq���C�u�������g�p���܂��B �����āAPostgreSQL
 </UL>
 <!-------------->
 <A NAME="Q2009">
-<font color="0000ff"><B>�p�D�Z�b�V�������؂ꂽ�ꍇ backend�͏I�����܂����H</B></font><BR>
+<font color="0000ff"><B>Ｑ．セッションが切れた場合 backendは終了しますか？</B></font><BR>
 <UL>
-  pgbash�̃V�F���X�N���v�g���I������ƁA�Z�b�V�������؂�Abackend�͎����I�ɏI�����܂��B�Θb�^��pgbash���g�p���Ă���ꍇ�́A���O�A�E�g���邩�������́A"disconnect �ڑ����܂���ALL"�� backend�͏I�����܂��B
+  pgbashのシェルスクリプトが終了すると、セッションが切れ、backendは自動的に終了します。対話型でpgbashを使用している場合は、ログアウトするかもしくは、"disconnect 接続名またはALL"で backendは終了します。
 </UL>
 
 <!-------------->
 <A NAME="Q2010">
-<font color="0000ff"><B>�p�DSQL�g�p����backend�����񂾏ꍇ�͂ǂ��Ȃ�܂����H</B></font><BR>
+<font color="0000ff"><B>Ｑ．SQL使用中にbackendが死んだ場合はどうなりますか？</B></font><BR>
 <UL>
- SQL�g�p���ɁAbackend�v���Z�X�����炩�̗��R�Ŏ��ʂƁAbackend���ċN�����Ă�"SQL_BAD_RESPONSE"�̃G���[���������ăf�[�^���삪�ł��Ȃ��Ȃ�܂��B���̂����ꂩ�̏������s��Ȃ���΂Ȃ�܂���B<BR>
+ SQL使用中に、backendプロセスが何らかの理由で死ぬと、backendを再起動しても"SQL_BAD_RESPONSE"のエラーが発生してデータ操作ができなくなります。次のいずれかの処理を行わなければなりません。<BR>
 <BR>
-(�Ώ�)<BR>
- �E disconnect all; �Ńf�[�^�x�[�X�̐ؒf���s���B<BR>
- �E connect to xxx as db123�G�̂悤�ɐV�����ڑ����Őڑ�����B<BR>
- �E pgbash�����O�C���V�F���Ƃ��Ďg�p���Ă���ꍇ�A���O�A�E�g���čēx���O�C������B<BR>
- �E pgbash���T�u�V�F���Ƃ��Ďg�p���Ă���ꍇ�́Aexit ���Ă��čēxpgbash���N������B<BR>
+(対処)<BR>
+ ・ disconnect all; でデータベースの切断を行う。<BR>
+ ・ connect to xxx as db123；のように新しい接続名で接続する。<BR>
+ ・ pgbashをログインシェルとして使用している場合、ログアウトして再度ログインする。<BR>
+ ・ pgbashをサブシェルとして使用している場合は、exit してして再度pgbashを起動する。<BR>
 <BR>
 </UL>
 
@@ -205,24 +205,24 @@ pgbash �́@PostgreSQL-7.4�ȍ~�� libpq���C�u�������g�p���܂��B �����āAPostgreSQL
 
 <!-------------->
 <A NAME="Q3010">
-<font color="0000ff"><B>�p�DSQL���͂��̂܂� backend �ɑ��M����܂����H
+<font color="0000ff"><B>Ｑ．SQL文はそのまま backend に送信されますか？
 </FONT></B><BR>
 <UL>
-  ����SQL���́Apgbash�̓����ŏ�������܂��B<BR>
+  次のSQL文は、pgbashの内部で処理されます。<BR>
 <BR>
- �E CONNECT ���A DISCONNECT ���A SET CONNECTION ��<BR>
- �E SET EXEC_SQL_OPTION���ASET OPTION_NAME=VALUE; ��<BR>
- �E FETCH INTO ���� INTO��@(INTO������������� backend �ɑ��M�����)<BR>
- �E SELECT INTO ���� INTO��@(INTO������������� backend �ɑ��M�����)<BR>
+ ・ CONNECT 文、 DISCONNECT 文、 SET CONNECTION 文<BR>
+ ・ SET EXEC_SQL_OPTION文、SET OPTION_NAME=VALUE; 文<BR>
+ ・ FETCH INTO 文の INTO句　(INTO句を除いた文が backend に送信される)<BR>
+ ・ SELECT INTO 文の INTO句　(INTO句を除いた文が backend に送信される)<BR>
 <BR>
-  ��L��SQL�������������̑S�Ă�SQL���͂��̂܂� backend �ɑ��M����܂��B<BR>
+  上記のSQL文を除いた他の全てのSQL文はそのまま backend に送信されます。<BR>
 </UL>
 
 <!-------------->
 <A NAME="Q3060">
-<font color="0000ff"><B>�p�D��̒l��NULL�ł��邱�Ƃ𔻒f�ł��܂����H</FONT></B><BR>
+<font color="0000ff"><B>Ｑ．列の値がNULLであることを判断できますか？</FONT></B><BR>
 <UL>
-�@�͂��A���f�ł��܂��B�Ⴆ�΁A
+　はい、判断できます。例えば、
 <PRE>
   begin;
   declare cur cursor for select * from test;
@@ -232,13 +232,13 @@ pgbash �́@PostgreSQL-7.4�ȍ~�� libpq���C�u�������g�p���܂��B �����āAPostgreSQL
   fi
   end;
 </PRE>
-  �̂悤�� fetch into �̕W���ϐ�(�C���f�B�P�[�^)�� SQL_NULL�Ɠ��������ƂŔ��f�ł��܂��B���Ȃ݂ɁA���̂Ƃ��̃V�F���ϐ�($aaa)�ɂ� '\0' (�P�o�C�g�ڂ��r�b�g�I�t)���������Ă��܂��Becho $aaa�Ƃ��Ă������\������܂���B<BR>
+  のように fetch into の標識変数(インディケータ)が SQL_NULLと等しいことで判断できます。ちなみに、そのときのシェル変数($aaa)には '\0' (１バイト目がビットオフ)が代入されています。echo $aaaとしても何も表示されません。<BR>
 </UL>
 <!-------------->
 <A NAME="Q3070">
-<font color="0000ff"><B>�p�D�f�[�^�x�[�X����\������R�}���h�͂ǂ̂悤�ȁ@QUERY ���o�b�N�G���h�ɑ��M���Ă���̂ł����H</FONT></B><BR>
+<font color="0000ff"><B>Ｑ．データベース情報を表示するコマンドはどのような　QUERY をバックエンドに送信しているのですか？</FONT></B><BR>
 <UL>
-�@�����m��ɂ́A<B>E+</B> ����͂�����Ƀf�[�^�x�[�X���\���R�}���h�����s���Ă��������B�\�����ʂ̐擪�ɁA�o�b�N�G���h�ɑ��M����� QUERY ���\������܂��B���ɖ߂��ɂ́@<B>E-</B> ����͂��܂��B<BR>
+　これを知るには、<B>E+</B> を入力した後にデータベース情報表示コマンドを実行してください。表示結果の先頭に、バックエンドに送信される QUERY が表示されます。元に戻すには　<B>E-</B> を入力します。<BR>
 <PRE>
    pgbash&gt; E+
    pgbash&gt; ?l
@@ -267,31 +267,31 @@ pgbash �́@PostgreSQL-7.4�ȍ~�� libpq���C�u�������g�p���܂��B �����āAPostgreSQL
 
 <!-------------->
 <A NAME="Q4009">
-<font color="0000ff"><B>�p�Dpgbash �̌������ʂ� psql �̌������ʂ͓����ł����H</B></font><BR>
+<font color="0000ff"><B>Ｑ．pgbash の検索結果と psql の検索結果は同じですか？</B></font><BR>
 <UL>
-  �͂��A��{�I�ɂ͓����ł��B�A���Apgbash�͎��̋@�\���g�����Ă��܂��B<BR>
+  はい、基本的には同じです。但し、pgbashは次の機能を拡張しています。<BR>
 <BR>
- �E�O�g�r���̏o�͗L���̃R���g���[��<BR>
- �ENULL�� ZERO(�����^��All bit off)�ɓK���ȕ������\������@�\<BR>
- �E�\�`���̏o�͂ɂ����āACHAR�^�ł����Ă��f�[�^�̌��̃X�y�[�X���폜���Čr���𑵂��܂��B<BR>
+ ・外枠罫線の出力有無のコントロール<BR>
+ ・NULLや ZERO(文字型のAll bit off)に適当な文字列を表示する機能<BR>
+ ・表形式の出力において、CHAR型であってもデータの後ろのスペースを削除して罫線を揃えます。<BR>
 </UL>
 <!-------------->
 <A NAME="Q4040">
-<font color="0000ff"><B>�p�DSelect Into ���Ō������ʂ������^�v���̏ꍇ�͂ǂ��Ȃ�܂����H</FONT></B><BR>
+<font color="0000ff"><B>Ｑ．Select Into 文で検索結果が複数タプルの場合はどうなりますか？</FONT></B><BR>
 <UL>
-�������ʂ������^�v���̏ꍇ�́Ainto��̏���(�V�F���ϐ��Ɍ������ʂ����j�͂���܂���B�������ʂ́A�W���o��(���)�ɏo�͂���Ă��܂��܂��B<BR>
+検索結果が複数タプルの場合は、into句の処理(シェル変数に検索結果を代入）はされません。検索結果は、標準出力(画面)に出力されてしまいます。<BR>
 </UL>
 <!-------------->
 <A NAME="Q4050">
-<font color="0000ff"><B>�p�DFetch Into ���Ł@�������Ƃ�'ALL'���w�肵����ǂ��Ȃ�܂����H</FONT></B><BR>
+<font color="0000ff"><B>Ｑ．Fetch Into 文で　検索数とか'ALL'を指定したらどうなりますか？</FONT></B><BR>
 <UL>
-�@fetch ALL in cur into :aaa, :bbb, :ccc; �̂悤�ɂ����ꍇ�A�������ʂ������^�v���̏ꍇ�́Ainto��̏����͂���܂���B�W���o��(���)�ɏo�͂���Ă��܂��܂��BALL���w�肵�Ă��������ʂ��P�^�v���̏ꍇ�́Ainto��͏�������A�V�F���ϐ� aaa,bbb, ccc �ɒl���Z�b�g����܂��B��ʓI�ɂ́Ainto����w�肷��ꍇ�͌������Ƃ�'ALL'�͎w�肵�܂���B
+　fetch ALL in cur into :aaa, :bbb, :ccc; のようにした場合、検索結果が複数タプルの場合は、into句の処理はされません。標準出力(画面)に出力されてしまいます。ALLを指定しても検索結果が１タプルの場合は、into句は処理され、シェル変数 aaa,bbb, ccc に値がセットされます。一般的には、into句を指定する場合は検索数とか'ALL'は指定しません。
 </UL>
 <!-------------->
 <A NAME="Q4090">
-<font color="0000ff"><B>�p�D�X�y�[�X��NULL�ƃ[���r�b�g(��)�Ƃ���ʂ��ĕ\���ł��܂����H</FONT></B><BR>
+<font color="0000ff"><B>Ｑ．スペースとNULLとゼロビット(空)とを区別して表示できますか？</FONT></B><BR>
 <UL>
-�@�͂��A�\�ł��B�Ⴆ�΁ANULL��"-NULL-"�A���"-0-"�ɂ����ꍇ�͎��̂悤�ɂ��܂��B
+　はい、可能です。例えば、NULLを"-NULL-"、空を"-0-"にした場合は次のようにします。
 <PRE>
 set OPTION_NULLSTRING="-NULL-";
 set OPTION_ZEROSTRING="-0-";
@@ -307,26 +307,26 @@ code  |name      |address
 
 <!-------------->
 <A NAME="Q4100">
-<font color="0000ff"><B>�p�DSELECT�̌��ʂ�CSV�`���Ńt�@�C���ɏo�͂��邱�Ƃ��ł��܂����H</FONT></B><BR>
+<font color="0000ff"><B>Ｑ．SELECTの結果をCSV形式でファイルに出力することができますか？</FONT></B><BR>
 <UL>
-�͂��A�\�ł��B�ꎞ�I��CSV�`���ɂ���ɂ́A<BR>
+はい、可能です。一時的にCSV形式にするには、<BR>
 <BR>
 exec_sql -S ',' -TBA "select ... from ... where ..."<BR>
 <BR>
-�S�Ă̏o�͂� CSV�`���ɂ���ꍇ�́A���̕����֗��ł��B<BR>
+全ての出力を CSV形式にする場合は、次の方が便利です。<BR>
 <BR>
 set OPTION_SEPARATOR=',';<BR>
 set OPTION_HEADER=OFF;<BR>
 set OPTION_BOTTOM=OFF;<BR>
 set OPTION_ALIGNMENT=OFF;<BR>
-�̂悤�ɃI�v�V�������w�肵�Ă����āASELECT�����s���܂��B<BR>
+のようにオプションを指定しておいて、SELECTを実行します。<BR>
 </UL>
 
 <!-------------->
 <A NAME="Q4200">
-<font color="0000ff"><B>�p�D�����������̗񖼂��擾������@�͂���܂����H</FONT></B><BR>
+<font color="0000ff"><B>Ｑ．検索した時の列名を取得する方法はありますか？</FONT></B><BR>
 <UL>
-  �͂��A����܂��B$SQLNFIELD �ɗ񐔁A${SQLFIELDNAME[i]}�ɗ񖼂��Z�b�g����Ă��܂��B�Ⴆ�΁A���̂悤�ȕ��@�ŗ񖼂�\�����邱�Ƃ��ł��܂��B
+  はい、あります。$SQLNFIELD に列数、${SQLFIELDNAME[i]}に列名がセットされています。例えば、次のような方法で列名を表示することができます。
 <PRE>
   select * from test;
   declares -i x; let x=0; while(( x &lt; <B>SQLNFIELD</B> ))
@@ -342,23 +342,23 @@ set OPTION_ALIGNMENT=OFF;<BR>
 
 <!-------------->
 <A NAME="Q5100">
-<font color="0000ff"><B>�p�Dpgbash��CGI�v���O�����Ƃ��ė��p���邱�Ƃ��ł��܂����H</B></font><BR>
+<font color="0000ff"><B>Ｑ．pgbashはCGIプログラムとして利用することができますか？</B></font><BR>
 <UL>
-�@�͂��A�ł��܂��B���ׂĂ̏o�͂� HTML�o�͂ɐ؂�ւ��AGET/POST���\�b�h�Ƀf�[�^��ǂݍ��݃V�F���ϐ��ɃZ�b�g����@�\������܂��Bpgbash��CGI�v���O�����Ƃ���ɂ͎��̕����K�v�ł��B�A���Aexec 2>&1 �͕K�{�ł͂���܂���B
+　はい、できます。すべての出力を HTML出力に切り替え、GET/POSTメソッドにデータを読み込みシェル変数にセットする機能があります。pgbashをCGIプログラムとするには次の文が必要です。但し、exec 2>&1 は必須ではありません。
 <PRE>
  #!/usr/local/bin/pgbash
- <B>exec 2>&1    ................ pgbash�̕W���G���[�o�͂�W���o�͂ɐ؂�ւ���</B>
+ <B>exec 2>&1    ................ pgbashの標準エラー出力を標準出力に切り替える</B>
  <B>echo "Content-type: text/html"</B>
  <B>echo ""</B>
- <B>set EXEC_SQL_OPTION CGI; .... HTML�o�́AGET/POST�̃f�[�^����</B>
+ <B>set EXEC_SQL_OPTION CGI; .... HTML出力、GET/POSTのデータ処理</B>
 </PRE>
 </UL>
 
 <!-------------->
 <A NAME="Q5110">
-<font color="0000ff"><B>�p�DHTTP �N�b�L�[������������@���񋟂���Ă��܂����H</B></font><BR>
+<font color="0000ff"><B>Ｑ．HTTP クッキーを処理する方法が提供されていますか？</B></font><BR>
 <UL>
-  �͂��A�񋟂���Ă��܂��Bset EXEX_SQL_OPTION CGI; �����s����� $HTTP_NCOOKIE�ɃN�b�L�[�̌��A${HTTP_COOKIEKEY[i]}�ɃL�[���A${HTTP_COOKIEVAL[i]}�ɃN�b�L�[�̒l���Z�b�g����܂��B�i�N�b�L�[�̕������ $HTTP_COOKIE �ɃZ�b�g����Ă��܂��j
+  はい、提供されています。set EXEX_SQL_OPTION CGI; を実行すると $HTTP_NCOOKIEにクッキーの個数、${HTTP_COOKIEKEY[i]}にキー名、${HTTP_COOKIEVAL[i]}にクッキーの値がセットされます。（クッキーの文字列は $HTTP_COOKIE にセットされています）
 <PRE>
  #!/usr/local/bin/pgbash
  exec 2>&1
@@ -382,10 +382,10 @@ set OPTION_ALIGNMENT=OFF;<BR>
 <HR>
 <TABLE BORDER=0><TR><TD>
 [<a href="index-j.html">Home</A>] 
-[<a href="download-j.html">�_�E�����[�h</A>] 
-[<a href="install-j.html">�C���X�g�[��</A>] 
-[<a href="usage-j.html">�g�p���@</A>] 
-[<a href="example-j.html">�g�p��</A>] 
+[<a href="download-j.html">ダウンロード</A>] 
+[<a href="install-j.html">インストール</A>] 
+[<a href="usage-j.html">使用方法</A>] 
+[<a href="example-j.html">使用例</A>] 
 [<a href="faq-j.html">FAQ</A>] 
 </TD></TR></TABLE>
 

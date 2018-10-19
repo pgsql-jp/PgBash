@@ -1,9 +1,9 @@
 <HTML>
 
 <HEAD>
-  <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=Shift_JIS">
-  <META NAME="Description" CONTENT="pgbash�́Abash �V�F����PostgreSQL�p�̒���SQL/����SQL�C���^�[�t�F�C�X�̋@�\��g�݂��񂾃V�F���ł��B">
-  <META NAME="KeyWords" CONTENT="PostgreSQL,pgbash,bash,SQL�C���^�[�t�F�C�X">   
+  <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+  <META NAME="Description" CONTENT="pgbashは、bash シェルにPostgreSQL用の直接SQL/埋込SQLインターフェイスの機能を組みこんだシェルです。">
+  <META NAME="KeyWords" CONTENT="PostgreSQL,pgbash,bash,SQLインターフェイス">   
 
   <TITLE>PostgreSQL pgbash usage</TITLE>
 </HEAD>
@@ -23,45 +23,45 @@
 </TR></TABLE>
 
 <hr>
-<FONT SIZE=5 COLOR="#0000ff"><B>Pgbash ���g�p����V�F���ϐ�</B></FONT><BR>
+<FONT SIZE=5 COLOR="#0000ff"><B>Pgbash が使用するシェル変数</B></FONT><BR>
 <hr>
 <BR>
 
 <TABLE BORDER=0><TR><TD>
 
 <UL>
-Pgbash�́A�擪�̕����� SQL, OPTION, POSTGRESQL �̃V�F���ϐ����g�p���܂��B��������啶���ł��B���[�U���A�Ǝ��̃V�F���ϐ����g�p����ꍇ�A�p���������g�p���Ă��������B��������΁APgbash�������I�ɍ쐬����V�F���ϐ��Əd�Ȃ邱�Ƃ͂���܂���B<BR>
+Pgbashは、先頭の文字列が SQL, OPTION, POSTGRESQL のシェル変数を使用します。いずれも大文字です。ユーザが、独自のシェル変数を使用する場合、英小文字を使用してください。そうすれば、Pgbashが自動的に作成するシェル変数と重なることはありません。<BR>
 <BR>
 <A name="STATUS">
-<B><LI>SQL�̎��s��Ԃ�\���V�F���ϐ�</B><BR>
+<B><LI>SQLの実行状態を表すシェル変数</B><BR>
 </A>
 <BR>
-�@Pgbash�́ASQL���s��̏������ʂ����̃V�F���ϐ��ɃZ�b�g���܂��B<BR>
+　Pgbashは、SQL実行後の処理結果を次のシェル変数にセットします。<BR>
 <BR>
 <TABLE BORDER=1><TR><TD>
 <PRE>
-  <B>$SQLOID </B>    :(�����^) �ŐV��insert��OID�̒l
-�@<B>$SQLCODE</B>    :(�����^) SQL�G���[�R�[�h (9.�G���[�R�[�h�Q��)
-                 0    --- ����I��          
+  <B>$SQLOID </B>    :(整数型) 最新のinsertのOIDの値
+　<B>$SQLCODE</B>    :(整数型) SQLエラーコード (9.エラーコード参照)
+                 0    --- 正常終了          
                  100  --- EOF(Eond Of File)  
-                 ���l --- SQL�G���[         
-  <B>$SQLERRMC</B>   :(�����^) SQL�G���[���b�Z�[�W(�ő�70��)
-�@<B>$SQLERRML</B>   :(�����^) SQL �G���[���b�Z�[�W�̒���(<70)
-  <B>$SQLERRD2</B>   :(�����^) �������ʂ̍s��(PQntuples()�̒l)
-  <B>$SQLERRD3</B>   :(�����^) �������ʂ̗�(PQnfields()�̒l)
-  <B>$SQLNTUPLE</B>  :(�����^) SQLERRD2�Ɠ���
-  <B>$SQLNFIELD</B>  :(�����^) SQLERRD3�Ɠ���
+                 負値 --- SQLエラー         
+  <B>$SQLERRMC</B>   :(文字型) SQLエラーメッセージ(最大70字)
+　<B>$SQLERRML</B>   :(整数型) SQL エラーメッセージの長さ(<70)
+  <B>$SQLERRD2</B>   :(整数型) 検索結果の行数(PQntuples()の値)
+  <B>$SQLERRD3</B>   :(整数型) 検索結果の列数(PQnfields()の値)
+  <B>$SQLNTUPLE</B>  :(整数型) SQLERRD2と同じ
+  <B>$SQLNFIELD</B>  :(整数型) SQLERRD3と同じ
 
-  <B>${SQLFIELDNAME[i]}</B> : �񖼕���(i �� 0 ���� SQLNFIELD-1 �܂�)
+  <B>${SQLFIELDNAME[i]}</B> : 列名並び(i は 0 から SQLNFIELD-1 まで)
 </PRE>
 </TD></TR></TABLE>
 <BR>
 <BR>
 <A name="VAR">
-<B><LI>�I�v�V�����p�̃V�F���ϐ�</B><BR>
+<B><LI>オプション用のシェル変数</B><BR>
 </A>
 <BR>
-'set option_name[=value]; '���g�p���ăZ�b�g���ꂽ�l�́A�I�v�V�����p�̃V�F���ϐ��ɕۊǂ���܂��B<BR>
+'set option_name[=value]; 'を使用してセットされた値は、オプション用のシェル変数に保管されます。<BR>
 <BR>
 <TABLE BORDER=1><TR><TD>
 <PRE>
@@ -84,11 +84,11 @@ Pgbash�́A�擪�̕����� SQL, OPTION, POSTGRESQL �̃V�F���ϐ����g�p���܂��B�����
 <BR>
 
 <A NAME="ERRCODE">
-<B><LI> �G���[�R�[�h�p�̃V�F���ϐ�</B><BR>
+<B><LI> エラーコード用のシェル変数</B><BR>
 </A>
 <BR>
-Pgbash�́ASQL�G���[�R�[�h�����̃V�F���ϐ��ɃZ�b�g���Ă��܂��B<br>
-�Θb�^���ł́A'<B>??sqlcode</B>'�Ƃ���ƃG���[�R�[�h��\�����邱�Ƃ��ł��܂��B<BR>
+Pgbashは、SQLエラーコードを次のシェル変数にセットしています。<br>
+対話型環境では、'<B>??sqlcode</B>'とするとエラーコードを表示することができます。<BR>
 <BR>
 pgbash> ??sqlcode
 <TABLE BORDER=1><TR><TD>
@@ -138,16 +138,16 @@ pgbash> ??sqlcode
 </PRE>
 </TD></TR></TABLE>
 <BR>
-�@�G���[�R�[�h�́A(( ))���Z���𗘗p���ăV�F���X�N���v�g�̒��Ŏ��̂悤�Ɏg�p���܂��B
+　エラーコードは、(( ))演算式を利用してシェルスクリプトの中で次のように使用します。
 <PRE>
-(��) insert into test values(111,'aaa','bbb');
+(例) insert into test values(111,'aaa','bbb');
      if(( SQLCODE < SQL_OK )); then
         echo $SQLERRMC
      fi
 </PRE>
-  �܂��ASQL���s���'<B>?sta</B>'�Ƃ���ƁA�G���[�R�[�h�Ȃǂ�\�����邱�Ƃ��ł��܂��B
+  また、SQL実行後に'<B>?sta</B>'とすると、エラーコードなどを表示することができます。
 <PRE>
-(��) pgbash> ?sta
+(例) pgbash> ?sta
   # Status after executing SQL
   SQLCODE   = 0         (SQL error code)
   SQLNTUPLE = 4         (number of tuples)
@@ -156,25 +156,25 @@ pgbash> ??sqlcode
 </PRE>
 <BR>
 <A NAME="ETC">
-<B><LI> ���̑��̃V�F���ϐ�</B><BR>
+<B><LI> その他のシェル変数</B><BR>
 </a>
 <BR>
-(1) <B>$SQLNFILED�A${SQLFILEDNAME[i]}</B>�V�F���ϐ�<BR>
-    select ���ʂ̗񐔂Ɨ񖼂�ۊǂ��Ă��܂��B<BR>
+(1) <B>$SQLNFILED、${SQLFILEDNAME[i]}</B>シェル変数<BR>
+    select 結果の列数と列名を保管しています。<BR>
 <BR>
-(2) <B>$SQLOID</B>�V�F���ϐ�<BR>
-    ���O��insert�� OID�̒l��ۊǂ��Ă��܂��B<BR>
+(2) <B>$SQLOID</B>シェル変数<BR>
+    直前のinsertの OIDの値を保管しています。<BR>
 <BR>
-(3) <B>$POSTGRESQL_VERSION</B> �V�F���ϐ�<BR>
-  POSTGRESQL_VERSION�́A�ڑ������T�[�o��PostgreSQL�o�[�W�����ԍ���ۊǂ��Ă��܂��B<BR>
+(3) <B>$POSTGRESQL_VERSION</B> シェル変数<BR>
+  POSTGRESQL_VERSIONは、接続したサーバのPostgreSQLバージョン番号を保管しています。<BR>
 <br>
-(4) �N�b�L�[�p�̃V�F���ϐ�<BR>
-Web�A�v���P�[�V�����ɂ����āA���̃N�b�L�[�̒l���Q�Ƃ��邱�Ƃ��ł��܂��B<BR>
+(4) クッキー用のシェル変数<BR>
+Webアプリケーションにおいて、次のクッキーの値を参照することができます。<BR>
 <PRE>
-<B> $HTTP_NCOOKIE        </B>: �N�b�L�[�̌�
-<B> ${HTTP_COOKIEKEY[i]} </B>: �N�b�L�[�̃L�[��
-<B> ${HTTP_COOKIEVAL[i]} </B>: �N�b�L�[�̒l   
- (�A���Ai �� 0 ���� HTTP_NCOOKIE-1 �܂łł��B)
+<B> $HTTP_NCOOKIE        </B>: クッキーの個数
+<B> ${HTTP_COOKIEKEY[i]} </B>: クッキーのキー名
+<B> ${HTTP_COOKIEVAL[i]} </B>: クッキーの値   
+ (但し、i は 0 から HTTP_NCOOKIE-1 までです。)
 </PRE>
 
 </UL>

@@ -1,9 +1,9 @@
 <HTML>
 
 <HEAD>
-  <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=Shift_JIS">
-  <META NAME="Description" CONTENT="pgbash�́Abash �V�F����PostgreSQL�p�̒���SQL/����SQL�C���^�[�t�F�C�X�̋@�\��g�݂��񂾃V�F���ł��B">
-  <META NAME="KeyWords" CONTENT="PostgreSQL,pgbash,bash,SQL�C���^�[�t�F�C�X">   
+  <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+  <META NAME="Description" CONTENT="pgbashは、bash シェルにPostgreSQL用の直接SQL/埋込SQLインターフェイスの機能を組みこんだシェルです。">
+  <META NAME="KeyWords" CONTENT="PostgreSQL,pgbash,bash,SQLインターフェイス">   
 
   <TITLE>PostgreSQL pgbash usage</TITLE>
 </HEAD>
@@ -23,19 +23,19 @@
 </TR></TABLE>
 
 <HR>
-<font color=0000ff size=5><B>�������ʂ̏o��</B></font><BR>
+<font color=0000ff size=5><B>検索結果の出力</B></font><BR>
 <HR>
 <BR>
 
 <table border=0><TR><TD>
 <UL>
 <A name="DIRECT">
-<font size=4><B><LI> �������ʂ�\�𑦍��ɕ\��</B></font><BR>
+<font size=4><B><LI> 検索結果を表を即座に表示</B></font><BR>
 </A>
 <BR>
-(1) <u>�Θb�I�ȑ���</U><BR>
+(1) <u>対話的な操作</U><BR>
 <BR>
-�[�����瑀�삵�Ă���ꍇ�Aselect�������s����ƌ������ʂ̕\�͑����ɒ[���ɕ\������܂��B�Ⴆ�΁A�[������Aconnect����select���𒼐ړ��͂����ꍇ�������Ɏ����܂��B<BR>
+端末から操作している場合、select文を実行すると検索結果の表は即座に端末に表示されます。例えば、端末から、connect文やselect文を直接入力した場合を次ぎに示します。<BR>
 <BR>
 pgbash> connect to postgres_db user xxx NULL;<BR>
 pgbash> select * from friends;<BR>
@@ -43,50 +43,50 @@ pgbash> select * from friends;<BR>
 <pre>
  user_id | name     | zip      | pref_id | address      
 ---------+----------+----------+---------+------------
-      22 | ��xx�m�q | 611-2222 |      77 | �_�ˎs����   
-      23 | ��xx���u | 622-3333 |      75 | �_�ˎs����   
-      24 | ��xx�M�F | 633-4444 |      77 | �_�ˎs���   
+      22 | 野xx洋子 | 611-2222 |      77 | 神戸市西区   
+      23 | 木xx忠志 | 622-3333 |      75 | 神戸市東区   
+      24 | 鈴xx信彦 | 633-4444 |      77 | 神戸市南区   
 ....
 (12 rows)
 </pre>
 </td></TR></TABLE>
 <BR>
-(2) <u>�V�F���X�N���v�g�����s</U><BR>
+(2) <u>シェルスクリプトを実行</U><BR>
 <BR>
-�V�F���X�N���v�g�����s�����ꍇ���Θb�I�ȑ���Ɠ��l�ŁAselect�������s����ƌ������ʂ̕\�͑����ɒ[���ɕ\������܂��B�Ⴆ�΁A"go.bat"�V�����X�N���v�g�t�@�C�����쐬���Ď��s�����ꍇ�����Ɏ����܂��B<BR>
+シェルスクリプトを実行した場合も対話的な操作と同様で、select文を実行すると検索結果の表は即座に端末に表示されます。例えば、"go.bat"シュルスクリプトファイルを作成して実行した場合を次に示します。<BR>
 <BR>
-["go.bat"�t�@�C���쐬]<BR>
+["go.bat"ファイル作成]<BR>
 <table border=1><tr><TD><pre>
 #!/usr/local/bin/pgbash
 connect to postgres_db user xxx NULL;
 select * from from friends;
 </pre></td></tr></table>
 <BR>
-pgbash> chmod +x go.bat ...........�p�[�~�b�V�����̐ݒ�<BR>
-pgbash> go.bat  ...................go.bat�̎��s<BR>
+pgbash> chmod +x go.bat ...........パーミッションの設定<BR>
+pgbash> go.bat  ...................go.batの実行<BR>
 <BR>
 <BR>
 
 <A name="SHELL">
-<font size=4><B><LI> �������ʂ̒l���V�F���ϐ��ɑ��</B></font><BR>
+<font size=4><B><LI> 検索結果の値をシェル変数に代入</B></font><BR>
 </A>
 <BR>
-�uSELECT INTO �F�z�X�g�ϐ��v���������́uFETCH INTO �F�z�X�g�ϐ��v�����g�p���āA�������ʂ̒l���V�F���ϐ��ɓǂݍ��ނ��Ƃ��ł��܂��B���̏ꍇ�A�������ʂ̕\�͒[���ɂ͕\������܂���B<BR>
+「SELECT INTO ：ホスト変数」文もしくは「FETCH INTO ：ホスト変数」文を使用して、検索結果の値をシェル変数に読み込むことができます。この場合、検索結果の表は端末には表示されません。<BR>
 <PRE>
-SELECT  �񖼕��� 
+SELECT  列名並び 
 <B>   [INTO :host_var1 [[INDICATOR] :ind_var1], ...
             :host_varN [[INDICATOR] :ind_varN]] </B>
       ..
 
-FETCH [�I�v�V����] [IN] �J�[�\����
+FETCH [オプション] [IN] カーソル名
 <B>   [INTO :host_var1 [[INDICATOR] :ind_var1], ...
             :host_varN [[INDICATOR] :ind_varN]]; </B>
 
-host_var...... �z�X�g�ϐ�(�f�[�^�ǂݍ��ݗp�V�F���ϐ�)
-ind_var....... �C���f�B�P�[�^�ϐ�(NULL�̂Ƃ�"1"�A�ȊO��"0")
+host_var...... ホスト変数(データ読み込み用シェル変数)
+ind_var....... インディケータ変数(NULLのとき"1"、以外は"0")
 </PRE>
 <BR>
-(��)<BR>
+(例)<BR>
 <TABLE BORDER=1 CELLPADDING=4><TR><TD><PRE>
 select col1, col2 into <font color=0000ff>:col1, :col2</font> from test where code='111';
 select version() into <font color=0000ff>:version</font>;
@@ -115,33 +115,33 @@ done
 end;
 </TD></TR></TABLE>
 <BR>
-INTO����g�p����ꍇ�́A�������ʂ��P�s�łȂ���΂Ȃ�܂���B�������ʂ������s�ɂȂ����ꍇ�́A�V�F���ϐ��ɂ͑�����ꂸ�ɕW���o�͂ɏo�͂���܂��B<BR>
+INTO句を使用する場合は、検索結果が１行でなければなりません。検索結果が複数行になった場合は、シェル変数には代入されずに標準出力に出力されます。<BR>
 <BR>
-  �����ŁASQLCODE�� SQL�G���[�R�[�h���A$SQLERRMC�� SQL�G���[���b�Z�[�W��\���V�F���ϐ��ł��B�܂��ASQL_NULL, SQL_NOT_FOUND�� pgbash�������ݒ肵�Ă���l�ł��B(�G���[�R�[�h���Q��)<BR>
+  ここで、SQLCODEは SQLエラーコードを、$SQLERRMCは SQLエラーメッセージを表すシェル変数です。また、SQL_NULL, SQL_NOT_FOUNDは pgbashが初期設定している値です。(エラーコードを参照)<BR>
 <BR>
-FETCH INTO �Ɏg�p����z�X�g�ϐ�(�V�F���ϐ��j�́A<B>�p������</B>���g�p������������ł��B�Ȃ��Ȃ�Apgbash�͐擪�� SQL, OPTION, POSTGRESQL �Ȃǂ̑啶���̃V�F���ϐ����g�p���Ă��邩��ł��B<BR>
+FETCH INTO に使用するホスト変数(シェル変数）は、<B>英小文字</B>を使用した方が無難です。なぜなら、pgbashは先頭が SQL, OPTION, POSTGRESQL などの大文字のシェル変数を使用しているからです。<BR>
 <BR>
-# (( ))���Z���̂Ȃ��ł́A�����^�V�F���ϐ��̐擪'$'�͏ȗ����邱�Ƃ��ł��܂��B<BR><BR>
+# (( ))演算式のなかでは、整数型シェル変数の先頭'$'は省略することができます。<BR><BR>
 <BR>
 <A name="PIPE">
-<font size=4><B><LI> �������ʂ��P�y�[�W���ƕ\��</B></font><BR>
+<font size=4><B><LI> 検索結果を１ページごと表示</B></font><BR>
 </A>
 <BR>
-Pgbash�́ASELECT�̌������ʂ�A���I�ɕ\�����܂��Bpsql�̂悤�ɂP�y�[�W���Ƃɕ\�����~����\�����@�ł͂���܂���B���̂��߁A�P�y�[�W���ƕ\���������ꍇ�́ASQL; �̂�����Ƀp�C�v('|')�� more (�������� less) ���t����K�v������܂��B(�ڍׂ́AUnix�̃p�C�v���Q�Ɓj<BR>
+Pgbashは、SELECTの検索結果を連続的に表示します。psqlのように１ページごとに表示を停止する表示方法ではありません。そのため、１ページごと表示したい場合は、SQL; のうしろにパイプ('|')と more (もしくは less) が付ける必要があります。(詳細は、Unixのパイプを参照）<BR>
 <BR>
-��)<BR>
-pgbash> select * from test; | more (�������� less)<BR>
+例)<BR>
+pgbash> select * from test; | more (もしくは less)<BR>
 <BR>
 <A name="REDIRECT">
-<font size=4><B><LI> �������ʂ��t�@�C���ɏ����o��</B></font><BR>
+<font size=4><B><LI> 検索結果をファイルに書き出す</B></font><BR>
 </A>
 <BR>
-Pgbash�ŁA�������ʂ��t�@�C���ɏ����o�����Ƃ͎��ɊȒP�ł��BSQL; �̂������ &> �t�@�C�����@�Ƃ��܂��B<BR>
+Pgbashで、検索結果をファイルに書き出すことは実に簡単です。SQL; のうしろに &> ファイル名　とします。<BR>
 <BR>
-��) <BR>
-pgbash> select * from test; &> /tmp/sel.dat ... "/tmp/sel.dat"�t�@�C���ɏ����o��<BR>
+例) <BR>
+pgbash> select * from test; &> /tmp/sel.dat ... "/tmp/sel.dat"ファイルに書き出す<BR>
 <BR>
-�t�@�C�������݂��Ă��Ȃ��ꍇ�́A> �����ł����܂��܂���B&> �́A�����t�@�C�������݂��Ă����炻�̃t�@�C�����폜���ď��������܂��B(�ڍׂ́AUnix�̃��_�C���N�V�������Q�Ɓj<BR>
+ファイルが存在していない場合は、> だけでもかまいません。&> は、もしファイルが存在していたらそのファイルを削除して書き直します。(詳細は、Unixのリダイレクションを参照）<BR>
 
 
 

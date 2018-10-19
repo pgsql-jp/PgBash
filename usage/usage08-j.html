@@ -1,9 +1,9 @@
 <HTML>
 
 <HEAD>
-  <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=Shift_JIS">
-  <META NAME="Description" CONTENT="pgbash�́Abash �V�F����PostgreSQL�p�̒���SQL/����SQL�C���^�[�t�F�C�X�̋@�\��g�݂��񂾃V�F���ł��B">
-  <META NAME="KeyWords" CONTENT="PostgreSQL,pgbash,bash,SQL�C���^�[�t�F�C�X">   
+  <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+  <META NAME="Description" CONTENT="pgbashは、bash シェルにPostgreSQL用の直接SQL/埋込SQLインターフェイスの機能を組みこんだシェルです。">
+  <META NAME="KeyWords" CONTENT="PostgreSQL,pgbash,bash,SQLインターフェイス">   
 
   <TITLE>PostgreSQL pgbash usage</TITLE>
 </HEAD>
@@ -23,7 +23,7 @@
 </TR></TABLE>
 
 <hr>
-<FONT SIZE=5 COLOR="#0000ff"><B>�w���v����уf�[�^�x�[�X���̕\���ɂ���</B></FONT><BR>
+<FONT SIZE=5 COLOR="#0000ff"><B>ヘルプおよびデータベース情報の表示について</B></FONT><BR>
 <hr>
 <BR>
 
@@ -31,10 +31,10 @@
 
 <UL>
 <A NAME="HELPMENU">
-<font size=4><B><LI>�w���v���j���[�̕\�����@</B></FONT><BR>
+<font size=4><B><LI>ヘルプメニューの表示方法</B></FONT><BR>
 </A>
 <BR>
-�Θb�^�̑�����ɂ����āA�H���^�C�v����ƁA���̃w���v���j���[���\������܂��B<BR>
+対話型の操作環境において、？をタイプすると、次のヘルプメニューが表示されます。<BR>
 <BR>
 pgbash&gt; <B>?</B>
 <TABLE BORDER=1><TR><TD>
@@ -103,14 +103,14 @@ Pgbash help
   ??exec_sql     : help with 'exec_sql' usage
 </PRE>
 </TD></TR></TABLE>
-(PostgreSQL-8.1�̏ꍇ)<br>
+(PostgreSQL-8.1の場合)<br>
 <BR>
 <BR>
 <A NAME="RESERVED">
-<font size=4><B><LI>SQL�\���ꗗ�̃w���v</B></FONT><BR>
+<font size=4><B><LI>SQL予約語一覧のヘルプ</B></FONT><BR>
 </A>
 <BR>
-�Θb�^���ɂ����āA�H���@���^�C�v����ƁA����SQL�\���ꗗ���\������܂��B<BR>
+対話型環境において、？ｈ　をタイプすると、次のSQL予約語一覧が表示されます。<BR>
 <BR>
 pgbash&gt; <B>?h</B>
 <TABLE BORDER=1><TR><TD>
@@ -154,14 +154,14 @@ CREATE GROUP              DROP TYPE
 CREATE INDEX              DROP USER
 </PRE>
 </TD></TR></TABLE>
-(PostgreSQL-8.1�̏ꍇ)<br>
+(PostgreSQL-8.1の場合)<br>
 <BR>
 <BR>
 <A NAME="SQLSYNTAX">
-<font size=4><B><LI>SQL���@�̃w���v</B></FONT><BR>
+<font size=4><B><LI>SQL文法のヘルプ</B></FONT><BR>
 </A>
 <BR>
-SQL���@��m�肽���������́A�u�H�� SQL���̐擪�̗\���v ���^�C�v���܂��B<br>
+SQL文法を知りたいたおきは、「？ｈ SQL文の先頭の予約語」 をタイプします。<br>
 <BR>
 pgbash&gt; <B>?h alter database</B>
 <TABLE BORDER=1><TR><TD>
@@ -185,10 +185,10 @@ ALTER DATABASE name OWNER TO new_owner
 </TD></TR></TABLE>
 <BR>
 <A NAME="INFORMATION">
-<FONT size=4><B><LI>�Θb�^���ɂ�����f�[�^�x�[�X���̕\�����@</B></FONT><BR>
+<FONT size=4><B><LI>対話型環境におけるデータベース情報の表示方法</B></FONT><BR>
 </A>
 <BR>
-�f�[�^�x�[�X����m�肽���ꍇ�́A���̃w���v�R�}���h���^�C�v���܂��B<BR>
+データベース情報を知りたい場合は、次のヘルプコマンドをタイプします。<BR>
 <BR>
 <PRE>
   ?l[+]          : list databases
@@ -208,7 +208,7 @@ ALTER DATABASE name OWNER TO new_owner
   ?dT[+]         : list data_types
   ?du            : list roles (users), same as ?dg
 </PRE>
-(�\����j<BR>
+(表示例）<BR>
 <BR>
 pgbash&gt; ?du
 <TABLE BORDER=1><TR><TD>

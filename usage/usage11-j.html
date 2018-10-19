@@ -1,9 +1,9 @@
 <HTML>
 
 <HEAD>
-  <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=Shift_JIS">
-  <META NAME="Description" CONTENT="pgbash�́Abash �V�F����PostgreSQL�p�̒���SQL/����SQL�C���^�[�t�F�C�X�̋@�\��g�݂��񂾃V�F���ł��B">
-  <META NAME="KeyWords" CONTENT="PostgreSQL,pgbash,bash,SQL�C���^�[�t�F�C�X">   
+  <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+  <META NAME="Description" CONTENT="pgbashは、bash シェルにPostgreSQL用の直接SQL/埋込SQLインターフェイスの機能を組みこんだシェルです。">
+  <META NAME="KeyWords" CONTENT="PostgreSQL,pgbash,bash,SQLインターフェイス">   
 
   <TITLE>PostgreSQL pgbash usage</TITLE>
 </HEAD>
@@ -26,64 +26,64 @@
 </TR></TABLE>
 
 <hr>
-<FONT SIZE=5 COLOR="#0000ff"><B>�g�p����</B></FONT><BR>
+<FONT SIZE=5 COLOR="#0000ff"><B>使用制限</B></FONT><BR>
 <hr>
 <BR>
 
 <TABLE BORDER=0><TR><TD>
 
 <UL>
-Pgbash�̎g�p��̐����ɂ��Đ������܂��B�iSQL �̎w����@�̐����ɂ��܂��ẮA<a href="usage02-j.html#LIMIT">SQL�̎w����@</A>���Q�Ƃ��Ă��������B�j<BR>
+Pgbashの使用上の制限について説明します。（SQL の指定方法の制限につきましては、<a href="usage02-j.html#LIMIT">SQLの指定方法</A>を参照してください。）<BR>
 <BR>
 <BR>
 <A NAME="BASH">
-<font size=4><B><LI>bash�R�}���h</B></font><BR>
+<font size=4><B><LI>bashコマンド</B></font><BR>
 </A>
 <BR>
-�@bash�� declare�Aset�Aselect�R�}���h�́ASQL���̐擪��Ɠ����ɂȂ�܂��Bpgbash�ł́ASQL����D��I�Ɏ�舵���܂��̂ŁAbash�̃R�}���h�������̂悤�ɕύX���Ă܂��B<BR><B>
+　bashの declare、set、selectコマンドは、SQL文の先頭語と同じになります。pgbashでは、SQL文を優先的に取り扱いますので、bashのコマンド名を次のように変更してます。<BR><B>
 <pre>
-  bash��declare�R�}���h ==&gt; <font size=4><B>declares</B></font>
-  bash��set�R�}���h     ==&gt; <font size=4><B>sets</B></font>
-  bash��select�R�}���h  ==&gt; <font size=4><B>selects</B></font>
+  bashのdeclareコマンド ==&gt; <font size=4><B>declares</B></font>
+  bashのsetコマンド     ==&gt; <font size=4><B>sets</B></font>
+  bashのselectコマンド  ==&gt; <font size=4><B>selects</B></font>
 </pre></B>
 <BR>
 <A NAME="SHELLVAR">
-<font size=4><B><LI>�V�F���ϐ��̐���</B></font><BR>
+<font size=4><B><LI>シェル変数の制限</B></font><BR>
 </A>
 <BR>
-<B><U>(1) SQLCODE�V�F���ϐ�</U></B><BR>
+<B><U>(1) SQLCODEシェル変数</U></B><BR>
 <BR>
-SQLCODE�V�F���ϐ�($SQLCODE�Ȃ�)�́ASQL�̎��s���ʃR�[�h��ۊǂ����V�F���ϐ��ł��BSQL���p�C�v���C������( | more �Ȃ�)��o�b�N�O�����h�W���u(SQL; & )�Ŏ��s�����ꍇ�ASQLCODE�V�F���ϐ��̒l���Q�Ƃ��邱�Ƃ͂ł��܂���B<BR>
+SQLCODEシェル変数($SQLCODEなど)は、SQLの実行結果コードを保管したシェル変数です。SQLをパイプライン処理( | more など)やバックグランドジョブ(SQL; & )で実行した場合、SQLCODEシェル変数の値を参照することはできません。<BR>
   <BR>
-  ����́A�p�C�v���C�������ƃo�b�N�O�����h�������A�ʃv���Z�X�ŋN������邽�߁A���Ƃ̃v���Z�X�ɃV�F���ϐ��̒l��Ԃ��Ȃ�����ł��B�Ⴆ�Ύ��̂悤�Ȏg�����͐���������܂���B<BR>
+  これは、パイプライン処理とバックグランド処理が、別プロセスで起動されるため、もとのプロセスにシェル変数の値を返せないからです。例えば次のような使い方は正しくありません。<BR>
 <PRE>
-��)
-pgbash> select * from test; | more  .... �p�C�v���g�p
-pgbash> echo $SQLCODE (�܂��� ?s)   <B>...���select���̎��s���ʂ͎Q�Ƃł��܂���B</B>
-pgbash> select * from test; & ........... �o�b�N�O�����h�W���u
-pgbash> echo $SQLCODE (�܂��� ?s)   <B>...���select���̎��s���ʂ͎Q�Ƃł��܂���B</B>
+例)
+pgbash> select * from test; | more  .... パイプを使用
+pgbash> echo $SQLCODE (または ?s)   <B>...上のselect文の実行結果は参照できません。</B>
+pgbash> select * from test; & ........... バックグランドジョブ
+pgbash> echo $SQLCODE (または ?s)   <B>...上のselect文の実行結果は参照できません。</B>
 </PRE>
 <BR>
-<B><U>(2) �������ʂ��󂯎��V�F���ϐ�</U></B><BR>
+<B><U>(2) 検索結果を受け取るシェル変数</U></B><BR>
 <BR>
-��L�Ő����������R�Ɠ������R�ŁA�p�C�v��o�b�N�O�����h�W���u���g�p����ƁA�������ʂ��󂯎��V�F���ϐ��̒l���Q�Ƃ��邱�Ƃ��ł��܂���B<BR>
+上記で説明した理由と同じ理由で、パイプやバックグランドジョブを使用すると、検索結果を受け取るシェル変数の値を参照することができません。<BR>
 <PRE>
 pgbash> select col1,col2 into :aa, :bb from test; | more 
-        <B>... $aa, $bb�̒l���Q�Ƃł��܂���</B>
+        <B>... $aa, $bbの値を参照できません</B>
 pgbash> select col1,col2 into :aa, :bb from test; & 
-        <B>... $aa, $bb�̒l���Q�Ƃł��܂���</B>
+        <B>... $aa, $bbの値を参照できません</B>
 </PRE>
 <BR>
-<B><U>(3) ���[�U���g�p����V�F���ϐ�</U></B><BR>
+<B><U>(3) ユーザが使用するシェル変数</U></B><BR>
 <BR>
-  <a href=usage07-j.html>Pgbash�͉p�啶���̃V�F���ϐ����g�p</a>���Ă��܂��̂ŁA���[�U���g�p����V�F���ϐ��͉p�������̕�������ł��B <BR>
+  <a href=usage07-j.html>Pgbashは英大文字のシェル変数を使用</a>していますので、ユーザが使用するシェル変数は英小文字の方が無難です。 <BR>
 <BR>
 <BR>
 <A NAME="VERSION">
-<font size=4><B><LI>PostgreSQL�T�[�o�o�[�W�����ƌ݊���</B></font><BR>
+<font size=4><B><LI>PostgreSQLサーババージョンと互換性</B></font><BR>
 </A>
 <BR>
-Pgbash�́APostgreSQL-7.4 �ȍ~�ɑΉ����Ă܂��B��{�I�ɂ́APgbash�̓����N���� libpq �̃o�[�W�����ƁA�A�N�Z�X����f�[�^�x�[�X�̃o�[�W�������قȂ��Ă��Ă���肠��܂���B<BR>
+Pgbashは、PostgreSQL-7.4 以降に対応してます。基本的には、Pgbashはリンクした libpq のバージョンと、アクセスするデータベースのバージョンが異なっていても問題ありません。<BR>
 <BR>
 <BR>
 

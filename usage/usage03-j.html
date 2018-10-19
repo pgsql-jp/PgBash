@@ -1,9 +1,9 @@
 <HTML>
 
 <HEAD>
-  <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=Shift_JIS">
-  <META NAME="Description" CONTENT="pgbash�́Abash �V�F����PostgreSQL�p�̒���SQL/����SQL�C���^�[�t�F�C�X�̋@�\��g�݂��񂾃V�F���ł��B">
-  <META NAME="KeyWords" CONTENT="PostgreSQL,pgbash,bash,SQL�C���^�[�t�F�C�X">   
+  <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+  <META NAME="Description" CONTENT="pgbashは、bash シェルにPostgreSQL用の直接SQL/埋込SQLインターフェイスの機能を組みこんだシェルです。">
+  <META NAME="KeyWords" CONTENT="PostgreSQL,pgbash,bash,SQLインターフェイス">   
 
   <TITLE>PostgreSQL pgbash usage</TITLE>
 </HEAD>
@@ -23,7 +23,7 @@
 </TR></TABLE>
 
 <hr>
-<FONT SIZE=5 COLOR="#0000ff"><B>�f�[�^�x�[�X�̐ڑ��Ɛؒf</B></FONT><BR>
+<FONT SIZE=5 COLOR="#0000ff"><B>データベースの接続と切断</B></FONT><BR>
 <hr>
 <BR>
 
@@ -31,12 +31,12 @@
 <TABLE BORDER=0><TR><TD>
 <UL>
 <A name="CONNECT">
-<fonr size=4><B> <LI> �f�[�^�x�[�X�̐ڑ�</B></font><BR>
+<fonr size=4><B> <LI> データベースの接続</B></font><BR>
 </A>
 <BR>
-�f�[�^�x�[�X�ɐڑ�����ɂ́ACONNECT�����g�p���܂��BCONNECT�����s�����Ɂ@SELECT�Ȃǂ�SQL�����s�����ꍇ�́A�����I��"<B>CONNECT TO DEFAULT</B>"�����s����܂��B<br>
+データベースに接続するには、CONNECT文を使用します。CONNECTを実行せずに　SELECTなどのSQLを実行した場合は、自動的に"<B>CONNECT TO DEFAULT</B>"が発行されます。<br>
 <br>
-DEFAULT�́A"<B>Unix���O�C����</B>" ���f�[�^�x�[�X������уf�[�^�x�[�X���[�U���Ƃ��Ďg�p���܂��B<BR>
+DEFAULTは、"<B>Unixログイン名</B>" をデータベース名およびデータベースユーザ名として使用します。<BR>
 <BR>
 <B> CONNECT TO dbname[@server[:port]] | DEFAULT  [AS connect_name]  <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -44,43 +44,43 @@ DEFAULT�́A"<B>Unix���O�C����</B>" ���f�[�^�x�[�X������уf�[�^�x�[�X���[�U���Ƃ
 </B>
 <BR>
 <PRE>
-dbname..........�f�[�^�x�[�X��
-server..........�T�[�o�� (�Ⴆ�΁Adb.xxx.co.jp)
-port............PostgreSQL�̃|�[�g�ԍ�(�w�肪�Ȃ���� 5432)
-connect_name....�R�l�N�V������(�w�肪�Ȃ����dbname�Ɠ����ɂȂ�)
-user_name.......�f�[�^�x�[�X���[�U���i�w�肪�Ȃ����Unix���[�U���ɂȂ�j
-password........�p�X���[�h<BR>
+dbname..........データベース名
+server..........サーバ名 (例えば、db.xxx.co.jp)
+port............PostgreSQLのポート番号(指定がなければ 5432)
+connect_name....コネクション名(指定がなければdbnameと同じになる)
+user_name.......データベースユーザ名（指定がなければUnixユーザ名になる）
+password........パスワード<BR>
 
-�g�p��) 
+使用例) 
 connect to postgres@db1.jp as db1 user postgres xxxxxxxx;
 connect to postgres@db2.jp as db2 user postgres IDENITIFIED BY xxxxxxxx;
 connect to postgres@db3.jp as db3 user postgres USING xxxxxxxx;
 connect to postgres@db4.jp as db4 user postgres/xxxxxxxx;
 </PRE>
 
-�Epassword ���w�肵�Ȃ��ꍇ�́A<B>password: �v�����v�g</B>���\������p�X���[�h���͑҂���ԂɂȂ�܂��B<br>
+・password を指定しない場合は、<B>password: プロンプト</B>が表示されパスワード入力待ち状態になります。<br>
 <br>
-�E�p�X���[�h��ݒ肵�Ă��Ȃ����[�U�́A"CONNECT TO �f�[�^�x�[�X�� USER ���[�U�� NULL"�̂悤�Ƀp�X���[�h��"<B>NULL</B>"���w�肷�邱�Ƃ��ł��܂��B<br>
+・パスワードを設定していないユーザは、"CONNECT TO データベース名 USER ユーザ名 NULL"のようにパスワードに"<B>NULL</B>"を指定することができます。<br>
 <br>
-(�p�X���[�h���ݒ肳��Ă��Ȃ��ꍇ�̗�)
+(パスワードが設定されていない場合の例)
 <TABLE BORDER=1><TR><TD>
 connect to postgres_db user xxx;<BR>
-password: ................. ���^�[����������͂���<BR>
+password: ................. リターンだけを入力する<BR>
 <BR>
 connect to postgres_db user xxx NULL; <BR>
-... ���̏ꍇ�Apassword: �v�����v�g�͕\������Ȃ��B<BR>
+... この場合、password: プロンプトは表示されない。<BR>
 </TD></TR></TABLE>
 <br>
-�EUnix�̃��O�C�����[�U���Ɠ������O�̃��[�U���̏ꍇ�́A"user"�ȍ~���ȗ����邱�Ƃ��ł��܂��B<BR>
+・Unixのログインユーザ名と同じ名前のユーザ名の場合は、"user"以降を省略することができます。<BR>
 <br>
-�E�R�l�N�V���������w�肵�Ȃ��ꍇ�̓f�[�^�x�[�X���R�l�N�V�������Ƃ��Ďg�p����܂��B<br>
-��) <br>
+・コネクション名を指定しない場合はデータベースがコネクション名として使用されます。<br>
+例) <br>
 <TABLE BORDER=1><TR><TD>
-connect to postgres3 user admin; ..............�R�l�N�V�������� postgres3 �ɂȂ�<br>
+connect to postgres3 user admin; ..............コネクション名は postgres3 になる<br>
 </TD></TR></TABLE>
 <BR>
-�E�����f�[�^�x�[�X�ɑ΂��ĈႤ�ڑ����Őڑ����邱�Ƃ��ł��܂�<br>
-��)<BR>
+・同じデータベースに対して違う接続名で接続することができます<br>
+例)<BR>
 <TABLE BORDER=1><TR><TD>
 connect to postgres_db as db1; <BR>
 connect to postgres_db as db2; <BR>
@@ -88,67 +88,67 @@ connect to postgres_db as db2; <BR>
 <BR>
 <BR>
 <A name="DISCONNECT">
-<fonr size=4><B> <LI> �f�[�^�x�[�X�̐ؒf</B></font><BR>
+<fonr size=4><B> <LI> データベースの切断</B></font><BR>
 </A>
 <BR>
-disconnect �ɂ���āA�R�l�N�V������ؒf���邱�Ƃ��ł��܂��Bdisconnect <B>all</B>; �őS�ẴR�l�N�V������ؒf���邱�Ƃ��ł��܂��B<BR>
+disconnect によって、コネクションを切断することができます。disconnect <B>all</B>; で全てのコネクションを切断することができます。<BR>
 <BR>
 <B>
 DISCONNECT connect_name|CURRENT|DEFAULT|ALL;<BR>
 </B>
 <PRE>
-connect_name.....�R�l�N�V������
-CURRENT..........�J�����g�̃R�l�N�V����
-DEFAULT..........CONNECT TO DEFAULT �Őڑ������R�l�N�V����
-ALL..............�S�ẴR�l�N�V����
+connect_name.....コネクション名
+CURRENT..........カレントのコネクション
+DEFAULT..........CONNECT TO DEFAULT で接続したコネクション
+ALL..............全てのコネクション
 
-��)
-disconnect db4; ...............................�R�l�N�V����db4��ؒf����
-disconenct all; ...............................�S�ẴR�l�N�V������ؒf����
+例)
+disconnect db4; ...............................コネクションdb4を切断する
+disconenct all; ...............................全てのコネクションを切断する
 </PRE>
-�Θb�^���ł� Pgbash���I���������_�ŁA�V�F���X�N���v�g�ł̓V�F���X�N���v�g���I���������_�ŁA�����I�ɑS�ẴR�l�N�V�����͐ؒf����܂��B�]���܂��āAdisconnect �͎��s���Ȃ��Ă����܂��܂���B<BR>
+対話型環境では Pgbashを終了した時点で、シェルスクリプトではシェルスクリプトが終了した時点で、自動的に全てのコネクションは切断されます。従いまして、disconnect は実行しなくてもかまいません。<BR>
 <BR>
 <BR>
 <A name="SETCONNECT">
-<font size=4><B><LI>����(�J�����g)�̐ڑ�(�R�l�N�V����)�̐؂�ւ�</B></font><BR>
+<font size=4><B><LI>現在(カレント)の接続(コネクション)の切り替え</B></font><BR>
 </A>
 <BR>
-�����̃f�[�^�x�[�X�ɐڑ������ꍇ�Aset connection �����g�p���āu����(�J�����g)�̐ڑ����v��؂�ւ��邱�Ƃ��ł��܂��B�Ȍ�A���̃f�[�^�x�[�X�ڑ��ɑ΂���SQL�����s����邱�ƂɂȂ�܂��B<BR>
+複数のデータベースに接続した場合、set connection 文を使用して「現在(カレント)の接続名」を切り替えることができます。以後、そのデータベース接続に対してSQLが実行されることになります。<BR>
 <BR>
 <B>
 SET CONNECTION connect_name|DEFAULT;<BR>
 </B>
 <PRE>
-connect_name.....�R�l�N�V������
-DEFAULT..........CONNECT TO DEFAULT �Őڑ������R�l�N�V����
+connect_name.....コネクション名
+DEFAULT..........CONNECT TO DEFAULT で接続したコネクション
 
-��)
+例)
 connect to postgres1 as db1;
 connect to postgres2 as db2;
-connect to postgres1 as db3;..............db3 ���J�����g�̐ڑ����ɂȂ�
-set connection db1;...................... db1���J�����g�̐ڑ����ɕύX
-exec_sql -d db2 "select * from test2".... �ꎞ�I��db2�֐ڑ�
-exec_sql        "select * from test1".... �J�����g��db1�̐ڑ����g�p
-exec_sql -d db3 "select * from test2".... �ꎞ�I��db3�֐ڑ�
-select * from test; ..................... �J�����g��db1�̐ڑ����g�p
+connect to postgres1 as db3;..............db3 がカレントの接続名になる
+set connection db1;...................... db1をカレントの接続名に変更
+exec_sql -d db2 "select * from test2".... 一時的にdb2へ接続
+exec_sql        "select * from test1".... カレントのdb1の接続を使用
+exec_sql -d db3 "select * from test2".... 一時的にdb3へ接続
+select * from test; ..................... カレントのdb1の接続を使用
 disconnect all;
 </PRE>
-�܂��Aexec_sql �� -d �I�v�V�����ɂ���āA�ꎞ�I�Ƀf�[�^�x�[�X�ڑ���؂�ւ��邱�Ƃ��ł��܂��B<BR>
+また、exec_sql の -d オプションによって、一時的にデータベース接続を切り替えることができます。<BR>
 <BR>
 <BR>
 <A name="STATUS">
-<font size=4><B><LI>�f�[�^�x�[�X�̐ڑ���Ԃ̕\��</B></font><BR>
+<font size=4><B><LI>データベースの接続状態の表示</B></font><BR>
 </A>
 <BR>
-�Θb�^���ł́A?dbc �A�V�F���X�N���v�g�ł� "exec_sql -m" ���w�肵�܂��B<br>
+対話型環境では、?dbc 、シェルスクリプトでは "exec_sql -m" を指定します。<br>
 <br>
-�Ⴆ�Ύ��̂悤�ɂR�̐ڑ�������ꍇ�͎��̂悤�ɕ\������܂��B
+例えば次のように３つの接続がある場合は次のように表示されます。
 <PRE>
 connect to default;
 connect to postgres@www2.psn.ne.jp:5432  as db1;
 connect to admin@xxx.psn.ne.jp as db2 user admin;
 
-<B>?dbc</B>�i�������� <B>exec_sql -mL</B>)
+<B>?dbc</B>（もしくは <B>exec_sql -mL</B>)
 
 # List of database connection (C: current database is '*')
 +---+--------------+-----------+------------------------------+

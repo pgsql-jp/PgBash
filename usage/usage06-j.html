@@ -1,9 +1,9 @@
 <HTML>
 
 <HEAD>
-  <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=Shift_JIS">
-  <META NAME="Description" CONTENT="pgbash�́Abash �V�F����PostgreSQL�p�̒���SQL/����SQL�C���^�[�t�F�C�X�̋@�\��g�݂��񂾃V�F���ł��B">
-  <META NAME="KeyWords" CONTENT="PostgreSQL,pgbash,bash,SQL�C���^�[�t�F�C�X">   
+  <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+  <META NAME="Description" CONTENT="pgbashは、bash シェルにPostgreSQL用の直接SQL/埋込SQLインターフェイスの機能を組みこんだシェルです。">
+  <META NAME="KeyWords" CONTENT="PostgreSQL,pgbash,bash,SQLインターフェイス">   
 
   <TITLE>PostgreSQL pgbash usage</TITLE>
 </HEAD>
@@ -23,25 +23,25 @@
 </TR></TABLE>
 
 <hr>
-<FONT SIZE=5 COLOR="#0000ff"><B>CGI�iWeb�A�v���P�[�V�����j�̎g�p���@</B></FONT><BR>
+<FONT SIZE=5 COLOR="#0000ff"><B>CGI（Webアプリケーション）の使用方法</B></FONT><BR>
 <hr>
 <BR>
 
 <TABLE BORDER=0><TR><TD>
 <UL>
 <A name="CONF">
-<font size=4><B><LI> �E�F�u�T�[�o�\�t�g�̐ݒ�</B></font><BR>
+<font size=4><B><LI> ウェブサーバソフトの設定</B></font><BR>
 </A>
 <BR>
-Pgbash�� CGI�Ƃ��Ď��s����ꍇ�ALD_LIBRARY_PATH���ϐ��� PostrgeSQL�̃��C�u�����p�X�����w�肷��K�v������܂��Bapache�E�F�u�T�[�o�\�t�g�̏ꍇ�́A"httpd.conf"�̐擪�t�߂Ɏ��̂悤�Ɏw�肵�܂��B<BR>
+Pgbashを CGIとして実行する場合、LD_LIBRARY_PATH環境変数に PostrgeSQLのライブラリパス名を指定する必要があります。apacheウェブサーバソフトの場合は、"httpd.conf"の先頭付近に次のように指定します。<BR>
 <BR>
 <B>SetEnv LD_LIBRARY_PATH /usr/local/pgsql/lib</B><BR>
 <BR>
 <A name="SHELL">
-<font size=4><B><LI> �V�F���X�N���v�g�̋L�q���@</B></font><BR>
+<font size=4><B><LI> シェルスクリプトの記述方法</B></font><BR>
 </A>
 <BR>
-���̃R�}���h���V�F���X�N���v�g�̐擪�Ɏw�肵�܂��B<BR>
+次のコマンドをシェルスクリプトの先頭に指定します。<BR>
 <BR>
 <TABLE BORDER=1><TR><TD>
 #!/usr/local/bin/pgbash<BR>
@@ -52,27 +52,27 @@ echo "" <BR>
 </TD></TR></TABLE>
 <BR>
  <B>(1)</B> exec 2&gt;&1 <BR>
- exec 2&gt;1 �́A�W���G���[�o�͂�W���o�͂ɏo�͂��邽�߂̎w��ł��B�K�{�ł͂���܂��񂪁Abash���o�͂���G���[���b�Z�[�W���z�[���y�[�W�ɕ\�����邱�Ƃ��ł��܂��B<BR>
+ exec 2&gt;1 は、標準エラー出力を標準出力に出力するための指定です。必須ではありませんが、bashが出力するエラーメッセージをホームページに表示することができます。<BR>
  <BR>
  <B>(2)</B> Content-type<BR>
- CGI�Ƃ��Ďg�p���邽�߂ɁAecho "Content-type: text/html"�� echo ""�͕K�{�ł��B<BR>
+ CGIとして使用するために、echo "Content-type: text/html"と echo ""は必須です。<BR>
  <BR>
  <B>(3)</B> set EXEC_SQL_OPTION CGI;<BR>
-set EXEC_SQL_OPTION CGI; �́A�z�[���y�[�W�œ��͂��ꂽ�f�[�^���V�F���ϐ��ɓo�^���A�o�̓��[�h��HTML�ɂ��܂��B<BR>
+set EXEC_SQL_OPTION CGI; は、ホームページで入力されたデータをシェル変数に登録し、出力モードをHTMLにします。<BR>
 <BR>
-HTML��FORM���ł́AGET/POST���\�b�h���g�p�ł��܂��B�܂��A�N�b�L�[���Z�b�g����Ă���ꍇ�A�N�b�L�[�̒l�́A���̃V�F���ϐ��ɓo�^����܂��B<BR>
+HTMLのFORM文では、GET/POSTメソッドを使用できます。また、クッキーがセットされている場合、クッキーの値は、次のシェル変数に登録されます。<BR>
 <PRE>
-  <B>$HTTP_NCOOKIE       </B> : �N�b�L�[�̌�
-  <B>${HTTP_COOKIEKEY[i]}</B> : �N�b�L�[�̃L�[��
-  <B>${HTTP_COOKIEVAL[i]}</B> : �N�b�L�[�̒l   
- (�A���Ai �� 0 ���� HTTP_NCOOKIE-1 �܂łł��B)
+  <B>$HTTP_NCOOKIE       </B> : クッキーの個数
+  <B>${HTTP_COOKIEKEY[i]}</B> : クッキーのキー名
+  <B>${HTTP_COOKIEVAL[i]}</B> : クッキーの値   
+ (但し、i は 0 から HTTP_NCOOKIE-1 までです。)
  </pre>
 <BR>
 <A name="CGI">
-<font size=4><B><LI> �V�F���X�N���v�g�̈�ʓI�ȍ쐬���@</B></font><BR>
+<font size=4><B><LI> シェルスクリプトの一般的な作成方法</B></font><BR>
 </A>
 <BR>
-Web�T�[�o��ɁA�Ⴆ�Ύ��̂悤��HTML�t�@�C��(�z�[���y�[�W)��������̂Ƃ��܂��B�����ł́Apasswd, MYNAME, ADDRESS �̂R�̃f�[�^����͂�����̂Ƃ��܂��B<BR>
+Webサーバ上に、例えば次のようなHTMLファイル(ホームページ)があるものとします。ここでは、passwd, MYNAME, ADDRESS の３つのデータを入力するものとします。<BR>
 <BR>
 <TABLE BORDER=1><TR><TD>
 &lt;HTML&gt;<BR>
@@ -84,7 +84,7 @@ Web�T�[�o��ɁA�Ⴆ�Ύ��̂悤��HTML�t�@�C��(�z�[���y�[�W)��������̂Ƃ��܂��B���
 &lt;/HTML&gt;<BR>
 </TD></TR></TABLE>
 <BR>
-���̏ꍇ�A�z�[���y�[�W������͂��ꂽ�R�̃f�[�^�́ACGI�V�F���X�N���v�g�� set EXEC_SQL_OPTION CGI; �ɂ���āA���ꂼ�� $passwd, $MYNAME, $ADDRESS �V�F���ϐ��Ɋi�[����܂��B���̃V�F���ϐ��𗘗p����CGI�X�N���v�g�̗�͎��̂悤�ɂȂ�܂��B<BR>
+この場合、ホームページから入力された３つのデータは、CGIシェルスクリプトの set EXEC_SQL_OPTION CGI; によって、それぞれ $passwd, $MYNAME, $ADDRESS シェル変数に格納されます。そのシェル変数を利用したCGIスクリプトの例は次のようになります。<BR>
 <BR>
 <TABLE BORDER=1><TR><TD>
 #!/usr/local/bin/pgbash<BR>
@@ -98,7 +98,7 @@ insert into test values( '<B>$MYNAME</B>','<B>$ADDRESS</B>'); <BR>
 select * from test order by uname limit 100; <BR>
 </TD></TR></TABLE>
 <BR>
-<font color=ff0000>pgbash�́A�}���`�o�C�g�����̃V�F���ϐ����i�Ⴆ�΁A$�����j���g�p���邱�Ƃ͂ł��܂���</font>�B�]���܂��āAHTML��INPUT�^�O��NAME�ɂ����āA�S�p�������w�肷�邱�Ƃ͂ł��Ȃ����ƂɂȂ�܂��B<BR>
+<font color=ff0000>pgbashは、マルチバイト文字のシェル変数名（例えば、$氏名）を使用することはできません</font>。従いまして、HTMLのINPUTタグのNAMEにおいて、全角文字を指定することはできないことになります。<BR>
 <BR>
 
 <HR>
