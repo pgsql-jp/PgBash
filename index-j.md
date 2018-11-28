@@ -1,4 +1,4 @@
-\[[Home](index-j.html)\] \[[ダウンロード](download-j.html)\] \[[インストール](install-j.html)\] \[[使用方法](usage-j.html)\] \[[使用例](example-j.html)\] \[[FAQ](faq-j.html)\]
+\[[Home](index-j.md)\] \[[ダウンロード](download-j.md)\] \[[インストール](install-j.md)\] \[[使用方法](usage-j.md)\] \[[使用例](example-j.md)\] \[[FAQ](faq-j.md)\]
 
   
 
@@ -6,7 +6,7 @@
 
   
 
-pgbashは、bashシェルの中に PostgreSQL用のデータベースアクセス機能を組み込んだ**シェル**です。 [シェルスクリプト](examples/example01.html)を作成してバッチ処理で SQLを実行したり、 端末から[対話的に SQLを直接実行](examples/example02.html)することができます。 また、簡易的な[Webアプリケーション](examples/example03.html)を作成することができます。  
+pgbashは、bashシェルの中に PostgreSQL用のデータベースアクセス機能を組み込んだ**シェル**です。 [シェルスクリプト](./examples/example01.md)を作成してバッチ処理で SQLを実行したり、 端末から[対話的に SQLを直接実行](./examples/example02.md)することができます。 また、簡易的な[Webアプリケーション](./examples/example03.md)を作成することができます。  
 
   
   
@@ -18,12 +18,7 @@ pgbash-8r3.2 (bash-3.2.48 を使用)
 pgbash-8r4.1 (bash-4.1.10 を使用)  
   
 (環境設定ファイル)  
-[pgbashrc-7.4](ftp://db.psn.ne.jp/pub/pgbash/pgbashrc-7.4) ... PostgreSQL-7.4用  
-[pgbashrc-8.1](ftp://db.psn.ne.jp/pub/pgbash/pgbashrc-8.1) ... PostgreSQL-8.1用  
-[pgbashrc-8.2](ftp://db.psn.ne.jp/pub/pgbash/pgbashrc-8.2) ... PostgreSQL-8.2用  
-[pgbashrc-8.3](ftp://db.psn.ne.jp/pub/pgbash/pgbashrc-8.3) ... PostgreSQL-8.3用  
-[pgbashrc-8.4](ftp://db.psn.ne.jp/pub/pgbash/pgbashrc-8.4) ... PostgreSQL-8.4用  
-[pgbashrc-9.0](ftp://db.psn.ne.jp/pub/pgbash/pgbashrc-9.0) ... PostgreSQL-9.0用  
+[pgbashrc-9.0](./download/pgbashrc-9.0) ... PostgreSQL-9.0用  
 
 * * *
 

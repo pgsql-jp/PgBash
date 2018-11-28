@@ -1,4 +1,4 @@
-\[[Home](index-j.html)\] \[[ダウンロード](download-j.html)\] \[[インストール](install-j.html)\] \[[使用方法](usage-j.html)\] \[[使用例](example-j.html)\] \[[FAQ](faq-j.html)\]
+\[[Home](index-j.md)\] \[[ダウンロード](download-j.md)\] \[[インストール](install-j.md)\] \[[使用方法](usage-j.md)\] \[[使用例](example-j.md)\] \[[FAQ](faq-j.md)\]
 
   
 
@@ -6,7 +6,7 @@
 
   
 
-pgbashは、bashシェルの中に PostgreSQL用のデータベースアクセス機能を組み込んだ**シェル**です。 [シェルスクリプト](examples/example01.html)を作成してバッチ処理で SQLを実行したり、 端末から[対話的に SQLを直接実行](examples/example02.html)することができます。 また、簡易的な[Webアプリケーション](examples/example03.html)を作成することができます。  
+pgbashは、bashシェルの中に PostgreSQL用のデータベースアクセス機能を組み込んだ**シェル**です。 [シェルスクリプト](./examples/example01.md)を作成してバッチ処理で SQLを実行したり、 端末から[対話的に SQLを直接実行](./examples/example02.md)することができます。 また、簡易的な[Webアプリケーション](./examples/example03.md)を作成することができます。  
 
   
   
@@ -14,8 +14,8 @@ pgbashは、bashシェルの中に PostgreSQL用のデータベースアクセ�
 * * *
 
 (pgbash最新バージョン)  
-[pgbash-8r3.2](./pgbash-8r3.2.tar.gz) ... bash-3.2.48ベース  
-[pgbash-8r4.1](./pgbash-8r4.1.tar.gz) ... bash-4.1.10ベース  
+[pgbash-8r3.2](./download/pgbash-8r3.2.tar.gz) ... bash-3.2.48ベース  
+[pgbash-8r4.1](./download/pgbash-8r4.1.tar.gz) ... bash-4.1.10ベース  
 
 * * *
 
@@ -127,7 +127,7 @@ pgbashは、bashシェルの中に PostgreSQL用のデータベースアクセ�
     [http://www2b.biglobe.ne.jp/~caco/pgpage/](http://www2b.biglobe.ne.jp/~caco/pgpage/)  
     
 *   ふかふかさんの「ふかふかの部屋」に、PostgreSQLをSSL付きにした場合の Pgbashの修正方法が書かれています。  
-    [http://www1.plala.or.jp/fukafuka/install/pgbash.html](http://www1.plala.or.jp/fukafuka/install/pgbash.html)  
+    [http://www1.plala.or.jp/fukafuka/install/pgbash.md](http://www1.plala.or.jp/fukafuka/install/pgbash.html)  
     
 *   技術評論社殿のご厚意により、[Software Design 2000年6月号のpgbashの記事](pgbash_sd.pdf)をPDFファイルで公開できることになりました。但し、印刷配布およびCD-ROMなどのメディアへの転載は禁止です。  
     *   あるセミナーでpgbashを紹介したときの[プレゼンテーション資料](pgbash_peak.pdf)です。  

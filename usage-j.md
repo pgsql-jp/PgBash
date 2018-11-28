@@ -1,4 +1,4 @@
-\[[Home](index-j.html)\] \[[ダウンロード](download-j.html)\] \[[インストール](install-j.html)\] \[[使用方法](usage-j.html)\] \[[使用例](example-j.html)\] \[[FAQ](faq-j.html)\]
+\[[Home](index-j.md)\] \[[ダウンロード](download-j.md)\] \[[インストール](install-j.md)\] \[[使用方法](usage-j.md)\] \[[使用例](example-j.md)\] \[[FAQ](faq-j.md)\]
 
   
 **pgbash の使用方法**  
@@ -8,106 +8,106 @@
 
   
 
-> 1.  [pgbashの起動と終了](usage/usage01-j.html)  
+> 1.  [pgbashの起動と終了](./usage/usage01-j.md)  
 >       
 >     
->     *   [対話型環境](usage/usage01-j.html#TTY)
->     *   [シェルスクリプト](usage/usage01-j.html#SHELL)
->     *   [CGI（Webアプリケーション）](usage/usage01-j.html#CGI)
->     
->       
->     
-> 2.  [SQLの指定方法](usage/usage02-j.html)  
->       
->     
->     *   [SQLの記述方法](usage/usage02-j.html#SQL)
->     *   [SQLの実行方法](usage/usage02-j.html#EXEC_SQL)
->     *   [SQLの指定方法の制限](usage/usage02-j.html#LIMIT)
->     *   [SQL文中のシングル/ダブルクォート](usage/usage02-j.html#QUOTATION)
->     *   [SQL文中のコメント](usage/usage02-j.html#COMMENT)
+>     *   [対話型環境](./usage/usage01-j.md#TTY)
+>     *   [シェルスクリプト](./usage/usage01-j.md#SHELL)
+>     *   [CGI（Webアプリケーション）](./usage/usage01-j.md#CGI)
 >     
 >       
 >     
-> 3.  [データベースの接続と切断](usage/usage03-j.html)  
+> 2.  [SQLの指定方法](./usage/usage02-j.md)  
 >       
 >     
->     *   [データベースの接続](usage/usage03-j.html#CONNECT)
->     *   [データベースの切断](usage/usage03-j.html#DISCONNECT)
->     *   [現在の接続の切替](usage/usage03-j.html#SETCONNECT)
->     *   [データベースの接続状態の表示](usage/usage03-j.html#STATUS)
->     
->       
->     
-> 4.  [検索結果の出力](usage/usage04-j.html)  
->       
->     
->     *   [検索結果を即座に表示](usage/usage04-j.html#DIRECT)
->     *   [検索結果の値をシェル変数に代入](usage/usage04-j.html#SHELL)
->     *   [検索結果を１ページごと表示](usage/usage04-j.html#PIPE)
->     *   [検索結果をファイルに書き出す](usage/usage04-j.html#REDIRECT)
+>     *   [SQLの記述方法](./usage/usage02-j.md#SQL)
+>     *   [SQLの実行方法](./usage/usage02-j.md#EXEC_SQL)
+>     *   [SQLの指定方法の制限](./usage/usage02-j.md#LIMIT)
+>     *   [SQL文中のシングル/ダブルクォート](./usage/usage02-j.md#QUOTATION)
+>     *   [SQL文中のコメント](./usage/usage02-j.md#COMMENT)
 >     
 >       
 >     
-> 5.  [SQLの実行オプション](usage/usage05-j.html)  
+> 3.  [データベースの接続と切断](./usage/usage03-j.md)  
 >       
 >     
->     *   [オプションの指定方法](usage/usage05-j.html#OPTION)
->     *   [set文による定常的なオプション](usage/usage05-j.html#SETOPTION)
->     *   [exec\_sqlコマンドによる一時的なオプション](usage/usage05-j.html#TEMPOPTION)
->     
->       
->     
-> 6.  [CGI（Webアプリケーション）の使用方法](usage/usage06-j.html)  
->       
->     
->     *   [ウェブサーバソフトの設定](usage/usage06-j.html#CONFL)
->     *   [シェルスクリプトの記述方法](usage/usage06-j.html#SHELL)
->     *   [シェルスクリプトの一般的な作成方法](usage/usage06-j.html#CGI)
+>     *   [データベースの接続](./usage/usage03-j.md#CONNECT)
+>     *   [データベースの切断](./usage/usage03-j.md#DISCONNECT)
+>     *   [現在の接続の切替](./usage/usage03-j.md#SETCONNECT)
+>     *   [データベースの接続状態の表示](./usage/usage03-j.md#STATUS)
 >     
 >       
 >     
-> 7.  [pgbashが使用するシェル変数](usage/usage07-j.html)  
+> 4.  [検索結果の出力](./usage/usage04-j.md)  
 >       
 >     
->     *   [SQLの実行状態を表すシェル変数](usage/usage07-j.html#STATUS)
->     *   [オプション変数](usage/usage07-j.html#VAR)
->     *   [エラーコード](usage/usage07-j.html#ERRCODE)
->     *   [その他のシェル変数](usage/usage07-j.html#ETC)
->     
->       
->     
-> 8.  [ヘルプおよびデータベース情報の表示について](usage/usage08-j.html)  
->       
->     
->     *   [ヘルプメニューの表示方法](usage/usage08-j.html#HELPMENU)
->     *   [SQL予約語一覧のヘルプ](usage/usage08-j.html#RESERVED)
->     *   [SQL文法のヘルプ](usage/usage08-j.html#SQLSYNTAX)
->     *   [対話型環境におけるデータベース情報の表示方法](usage/usage08-j.html#I_DBINFO)
->     *   [シェルスクリプトにおけるデータベース情報の表示方法](usage/usage08-j.html#C_DBINFO)
+>     *   [検索結果を即座に表示](./usage/usage04-j.md#DIRECT)
+>     *   [検索結果の値をシェル変数に代入](./usage/usage04-j.md#SHELL)
+>     *   [検索結果を１ページごと表示](./usage/usage04-j.md#PIPE)
+>     *   [検索結果をファイルに書き出す](./usage/usage04-j.md#REDIRECT)
 >     
 >       
 >     
-> 9.  [ラージオブジェクトの取扱](usage/usage10-j.html)  
+> 5.  [SQLの実行オプション](./usage/usage05-j.md)  
 >       
 >     
->     *   [\_lo\_import](usage/usage10-j.html#LO_IMPORT)
->     *   [\_lo\_export](usage/usage10-j.html#LO_EXPORT)
->     *   [\_lo\_unlink](usage/usage10-j.html#LO_UNLINK)
->     *   [\_lo\_list](usage/usage10-j.html#LO_LIST)
->     *   [pgbash\_descriptionテーブル](usage/usage10-j.html#DESCRIPTION)
+>     *   [オプションの指定方法](./usage/usage05-j.md#OPTION)
+>     *   [set文による定常的なオプション](./usage/usage05-j.md#SETOPTION)
+>     *   [exec\_sqlコマンドによる一時的なオプション](./usage/usage05-j.md#TEMPOPTION)
 >     
 >       
 >     
-> 10.  [使用制限](usage/usage11-j.html)  
+> 6.  [CGI（Webアプリケーション）の使用方法](./usage/usage06-j.md)  
 >       
 >     
->     *   [bashコマンド](usage/usage11-j.html#BASH)
->     *   [シェル変数の制限](usage/usage11-j.html#SHELLVAR)
->     *   [PostgreSQLのバージョンと互換性](usage/usage11-j.html#VERSION)
+>     *   [ウェブサーバソフトの設定](./usage/usage06-j.md#CONFL)
+>     *   [シェルスクリプトの記述方法](./usage/usage06-j.md#SHELL)
+>     *   [シェルスクリプトの一般的な作成方法](./usage/usage06-j.md#CGI)
+>     
+>       
+>     
+> 7.  [pgbashが使用するシェル変数](./usage/usage07-j.md)  
+>       
+>     
+>     *   [SQLの実行状態を表すシェル変数](./usage/usage07-j.md#STATUS)
+>     *   [オプション変数](./usage/usage07-j.md#VAR)
+>     *   [エラーコード](./usage/usage07-j.md#ERRCODE)
+>     *   [その他のシェル変数](./usage/usage07-j.md#ETC)
+>     
+>       
+>     
+> 8.  [ヘルプおよびデータベース情報の表示について](./usage/usage08-j.md)  
+>       
+>     
+>     *   [ヘルプメニューの表示方法](./usage/usage08-j.md#HELPMENU)
+>     *   [SQL予約語一覧のヘルプ](./usage/usage08-j.md#RESERVED)
+>     *   [SQL文法のヘルプ](./usage/usage08-j.md#SQLSYNTAX)
+>     *   [対話型環境におけるデータベース情報の表示方法](./usage/usage08-j.md#I_DBINFO)
+>     *   [シェルスクリプトにおけるデータベース情報の表示方法](./usage/usage08-j.md#C_DBINFO)
+>     
+>       
+>     
+> 9.  [ラージオブジェクトの取扱](./usage/usage10-j.md)  
+>       
+>     
+>     *   [\_lo\_import](./usage/usage10-j.md#LO_IMPORT)
+>     *   [\_lo\_export](./usage/usage10-j.md#LO_EXPORT)
+>     *   [\_lo\_unlink](./usage/usage10-j.md#LO_UNLINK)
+>     *   [\_lo\_list](./usage/usage10-j.md#LO_LIST)
+>     *   [pgbash\_descriptionテーブル](./usage/usage10-j.md#DESCRIPTION)
+>     
+>       
+>     
+> 10.  [使用制限](./usage/usage11-j.md)  
+>       
+>     
+>     *   [bashコマンド](./usage/usage11-j.md#BASH)
+>     *   [シェル変数の制限](./usage/usage11-j.md#SHELLVAR)
+>     *   [PostgreSQLのバージョンと互換性](./usage/usage11-j.md#VERSION)
 >     
 >       
 >     
 
 * * *
 
-\[[Home](index-j.html)\] \[[ダウンロード](download-j.html)\] \[[インストール](install-j.html)\] \[[使用方法](usage-j.html)\] \[[使用例](example-j.html)\] \[[FAQ](faq-j.html)\]
+\[[Home](index-j.md)\] \[[ダウンロード](download-j.md)\] \[[インストール](install-j.md)\] \[[使用方法](./usage-j.md)\] \[[使用例](example-j.md)\] \[[FAQ](faq-j.md)\]
