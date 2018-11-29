@@ -1,0 +1,91 @@
+                ** Installation of Pgbash **
+
+
+Installation of Pgbash 
+----------------------
+
+1. Unpack pgbash-8r4.1.tar.gz
+
+  tar xvfz  pgbash-8r4.1.tar.gz
+
+  The following directory will be made.
+
+   pgbash-8r4.1 -+- /rc     
+                 +- /src   
+
+2. Configure
+
+   cd  pgbash-8r4.1/src
+
+   CFLAGS='-O2' ./configure  <---- without debug option
+   or
+   ./configure               <---- with debug option (CFLAGS='-g -O2')
+
+
+   (Default prefix value)
+   --pginc-prefix=/usr/include <-- PostrgeSQL include files
+   --pglib-prefix=/usr/lib     <-- PostgreSQL library files
+
+   If PostgreSQL is not installed into the default directory, 
+   you must add '--pginc-prefix' and '--pglib-prefix' options.
+
+   ex)
+   ./configure --pginc-prefix=/usr/local/include   \
+               --pglib-prefix=/usr/local/lib
+
+
+3. Make and make install (You must use GNU make)
+
+   cd  pgbash-8r4.1/rc
+   make
+   su 
+   make install
+
+   cd  pgbash-8r4.1/rc
+   make install
+
+
+   If you are not a Unix super user, then type 'su'. And type 
+   'make install'.  The 'pgbash' is copied as follows.
+
+   pgbash-8r4.1/src/pgbash              ==> /usr/local/bin/pgbash
+
+   pgbash-8r4.1/rc/pgbashrc             ==> /etc/pgbashrc
+   pgbash-8r4.1/rc/pgbashrc-7.4         ==> /etc/pgbashrc-7.4
+   pgbash-8r4.1/rc/pgbashrc-8.0         ==> /etc/pgbashrc-8.0
+   pgbash-8r4.1/rc/pgbashrc-8.1         ==> /etc/pgbashrc-8.1
+   pgbash-8r4.1/rc/pgbashrc-8.2         ==> /etc/pgbashrc-8.2
+   pgbash-8r4.1/rc/pgbashrc-8.3         ==> /etc/pgbashrc-8.3
+   pgbash-8r4.1/rc/pgbashrc-8.4         ==> /etc/pgbashrc-8.4
+   pgbash-8r4.1/rc/pgbashrc-9.0         ==> /etc/pgbashrc-9.0
+
+   If you use PostrgeSQL 8.4, then copy '/etc/pgbashrc-8.4' to '/etc/pgbashrc'.
+
+   If you can not work as a Unix super user, you must copy 'pgbash' and 
+   pgbashrc to your home directory.
+
+   ex)
+   cp pgbash-8r4.1/src/pgbash           ~/pgbash
+   cp pgbash-8r4.1/rc/pgbashrc-x.x      ~/.pgbashrc
+
+
+Environment
+-----------
+
+   Pgbash reads '~/.pgbashrc'. If it does not exist, Pgbash reads 
+   '/etc/pgbashrc'.
+
+
+Execute
+-------
+
+   Type '/usr/local/bin/pgbash', then it will be displayed as follows.
+
+   prompt> /usr/local/bin/pgbash
+   Welcome to Pgbash ( bash-4.1.10-release ) Patch Ver.8 r4.1
+
+   Type '?'  for help with pgbash commands.
+   Type 'exit' or 'Ctrl+D' to terminate Pgbash.
+
+   pgbash> exit
+

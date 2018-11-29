@@ -1,0 +1,574 @@
+/*----------------------------------------------------------------
+ *
+ * exec_sql.def
+ *    'exec_sql' definition for bash built-in .
+ *
+ * Update
+ * 2000.04.21: Add get_Content_type(), get_CGI_BR(), get_Ferr()
+ * 2001.04.15: Delete '-h EXample' option.
+ * 2001.04.15: Change SQLCGI shell variable to CGI_MODE static variable.
+ * 2001.04.15: Delete -l,-p,-r options.
+ * 2001.06.11: Fix CGI mode
+ * 2001.06.11: Modify not to disply some exec_sql options.
+ * 2001.06.11: Add OPTION_HEADERTR/HEADERTH/BODYTAG/INPUTTAG.
+ * 2002.07.18: Add the functionality of processing the shell variable
+ *             surrounded by \', for fixing a bug of using shell 
+ *             variables which is substituted by the single quotation.
+ *             ex) DATA="123'456"; insert into test values(\'$DATA\');
+ *
+ *-----------------------------------------------------------------
+ */
+
+$PRODUCES	exec_sql.c
+$BUILTIN	exec_sql
+$FUNCTION	exec_sql_builtin
+$SHORT_DOC	exec_sql [option] [\"SQL\"]
+
+--------------------- show infomations ---------------------
+-h item   show exec_sql OPTION or sql_ERRCODE(item: OP or ER)
+-v        show PostgreSQL and PGBASH VERSION
+-m        show CONNECTION NAMEs 
+-s        show STATUS after executing SQL
+
+--------------------- temporary options --------------------
+-d conn   set  CONNECTION NAME
+-e        turn on  ECHO  query sent to the backend
+-q        turn on  QUIET system/sql error messages
+-H        turn on  HTML  format(-H is default in CGI    mode)
+-X        turn on  EXPANDED  format  
+-L        turn on  OUTER_FRAME  of PLAIN text 
+-A        turn off ALIGNMENT    of PLAIN text
+-T        turn off TOP_header   print
+-B        turn off BOTTOM_count print
+-C cap    set CAPTION of HTML/PLAIN table(e.g. -C 'TITLE')
+-S sep    set SEPARATOR of PLAIN text field (default is '|')
+-N null   set NULL_STRING(e.g. -N '*N*') 
+-Z zero   set ZERO_STRINg(e.g. -Z '*0*')
+
+--------------------- execute function  --------------------
+-x func   execute func(e.g. lo_import, lo_export, lo_unlink)
+
+$END
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
+#include "exec_sql.h"
+#include "sql_connect.h"
+#include "sql_set.h"
+#include "utils.h"
+
+/*------------------------------------------------------------------
+ *  bash builtin  
+ *----------------------------------------------------------------*/
+#include "command.h"
+extern char	*list_optarg;
+extern int	list_optopt;
+extern WORD_LIST *loptend;
+#define EXECUTION_FAILURE 1
+#define EXECUTION_SUCCESS 0
+#define EX_USAGE        258
+
+/*------------------------------------------------------------------
+ *  Functions list
+ *----------------------------------------------------------------*/
+void   copy_exec_sql_options(EXEC_SQL_OPTION *saved_option, Option *option);
+static int modify_singleQuery(char **singleQuery);
+
+/*------------------------------------------------------------------
+ *  Definition of CGI mode.
+ *----------------------------------------------------------------*/
+static  int   CGI_MODE = -1; /* commnad line '-i' option. CGI then 1 */
+
+int	Content_type;	/* =-1 : default mode     */
+			/* = 0 : (CGI) text/plain */
+			/* = 1 : (CGI) text/html  */
+char	CGI_BR[5];	/* =-1 : '\0'  */
+			/* = 0 : '\0'  */
+			/* = 1 : "<BR>" */
+FILE	*Ferr;		/* =-1 : stderr */
+			/* = 0 : stdout */
+			/* = 1 : stdout */
+int     get_Content_type() { return(Content_type); }
+char    *get_CGI_BR()      { return(CGI_BR); }
+FILE    *get_Ferr()        { return(Ferr); }
+
+/*
+ * ################################################################# 
+ * The built-in routine for bash shell.
+ * #################################################################
+ */
+#define  HELPWORD_LEN    64   
+#define  PARAMETER_LEN  256   
+
+
+int
+exec_sql_builtin(WORD_LIST *list)
+/*******************************************************************
+ *   The exec_sql buil-in command.
+ *******************************************************************/
+{
+static	char		help_word[HELPWORD_LEN];
+static	char		connect_name[CONNECT_NAME_MAXLEN];
+static	char		separator[SEPARATOR_LEN];
+static	char		null_string[NULLSTRING_LEN];
+static	char		zero_string[ZEROSTRING_LEN];
+static	char		caption[CAPTION_LEN];
+static	char		table_tag[TABLETAG_LEN];
+static	char		header_tr[HEADERTR_LEN];
+static	char		header_th[HEADERTH_LEN];
+static	char		body_tag[BODYTAG_LEN];
+static	char		parameter[PARAMETER_LEN];
+
+	char           *optarg;
+	int             optind;
+
+	Option          option;	/* exec_sql options */
+	EXEC_SQL_OPTION *saved_option;
+
+	char            *singleQuery = NULL;	/* query string */
+
+	int             r;	/* return code */
+	int             c;
+
+	/*========================================================
+	 *        Settings of exec_sql options.
+	 *========================================================
+	 */
+	/*----------- clear option flag ---------------*/
+	memset(&option, 0, sizeof(option));
+
+	/*----- get saved EXEC_SQL_OPTION & copy ------*/
+	saved_option = get_exec_sql_options(); 
+	copy_exec_sql_options(saved_option, &option);
+
+	/*------ initial setting of CGI Mode ----------*/
+	if (CGI_MODE == -1 ||
+		(CGI_MODE == 1 && saved_option->cgi_mode == 0))
+	{
+		Content_type = -1;
+		CGI_BR[0] = '\0';
+		Ferr = stderr;
+		CGI_MODE = 0;
+	}
+	if( CGI_MODE == 0 && saved_option->cgi_mode == 1 )
+	{
+		Content_type = 1;
+		strcpy(CGI_BR, "<BR>");
+		Ferr = stdout;
+		CGI_MODE = 1;
+	}
+
+	/*--------------------- get option ---------------------------------*/
+	reset_internal_getopt();
+	while ((c = internal_getopt(list, "ih:vd:eqHXC:O:LTBAS:N:Z:msx:")) != -1)
+	{
+		optarg = list_optarg;
+		optind = list_optopt;
+
+		switch (c)
+		{
+		case 'i':
+			/*-------------- CGI mode -------------------*/
+			if( CGI_MODE == 0 )
+			{
+				option.iflg = true;
+				saved_option->cgi_mode = 1;
+
+				Content_type = 1;
+				strcpy(CGI_BR, "<BR>");
+				Ferr = stdout;
+				CGI_MODE = 1;
+
+				uncgi(); /* set DATA received from WWW */
+			}
+			break;
+
+			/*-------------- ECHO Query -----------------*/
+		case 'e':
+			option.eflg = true;
+			break;
+			/*-------------- Quiet mode -----------------*/
+		case 'q':
+			option.qflg = true;
+			break;
+			/*-------------- HTML mode ------------------*/
+		case 'H':
+			option.Hflg = true;
+			break;
+			/*-------------- EXPANDED mode --------------*/
+		case 'X':
+			option.Xflg = true;
+			break;
+			/*-------------- Caption --------------------*/
+		case 'C':
+			option.Cflg.flg = true;
+			if (strlen(optarg) > CAPTION_LEN-1)
+			{
+				fprintf(Ferr, "> Error: Caption too long.%s\n", CGI_BR);
+				return (EXECUTION_FAILURE);
+			}
+			strcpy(caption, optarg);
+			option.Cflg.opt = caption;
+			break;
+			/*-------------- Table Option ---------------*/
+		case 'O':
+			option.Oflg.flg = true;
+			if (strlen(optarg) > TABLETAG_LEN-1)
+			{
+				fprintf(Ferr, "> Error: HTML table tag too long.%s\n", CGI_BR);
+				return (EXECUTION_FAILURE);
+			}
+			strcpy(table_tag, optarg);
+			option.Oflg.opt = table_tag;
+			break;
+
+			/*-------------- Outer Frame ----------------*/
+		case 'L':
+			option.Lflg = true;
+			break;
+			/*-------------- void title -----------------*/
+		case 'T':
+			option.Tflg = true;
+			break;
+			/*-------------- void RowCount --------------*/
+		case 'B':
+			option.Bflg = true;
+			break;
+			/*-------------- Alignment ------------------*/
+		case 'A':
+			option.Aflg = true;
+			break;
+			/*-------------- Separator string------------*/
+		case 'S':
+			option.Sflg.flg = true;
+			if (strlen(optarg) > 2 ||
+			 (strcmp(optarg, "\\t") != 0 && strlen(optarg) > 1))
+			{
+				fprintf(Ferr, "> Error: Field Separator too long.%s\n", CGI_BR);
+				return (EXECUTION_FAILURE);
+			}
+			strcpy(separator, optarg);
+			option.Sflg.opt = separator;
+			break;
+			/*-------------- NULL string ----------------*/
+		case 'N':
+			option.Nflg.flg = true;
+			if (strlen(optarg) > NULLSTRING_LEN-1)
+			{
+				fprintf(Ferr, "> Error: NULL string too long.%s\n", CGI_BR);
+				return (EXECUTION_FAILURE);
+			}
+			strcpy(null_string, optarg);
+			option.Nflg.opt = null_string;
+			break;
+			/*-------------- ZERO string ----------------*/
+		case 'Z':
+			option.Zflg.flg = true;
+			if (strlen(optarg) > ZEROSTRING_LEN-1)
+			{
+				fprintf(Ferr, "> Error: ZERO string too long.%s\n", CGI_BR);
+				return (EXECUTION_FAILURE);
+			}
+			strcpy(zero_string, optarg);
+			option.Zflg.opt = zero_string;
+			break;
+
+			/*------------- HELP ------------------------*/
+		case 'h':
+			option.hflg.flg = true;
+			if (strlen(optarg) > HELPWORD_LEN-1)
+			{
+				fprintf(Ferr, "> Error: Help_word too long.%s\n", CGI_BR);
+				return (EXECUTION_FAILURE);
+			}
+			strcpy(help_word, optarg);
+			option.hflg.opt = help_word;
+			break;
+			/*------------- VERSION ---------------------*/
+		case 'v':
+			option.vflg = true;
+			break;
+
+			/*-------------- set CONNECTION -------------*/
+		case 'd':
+			option.dflg.flg = true;
+			if (strlen(optarg) > CONNECT_NAME_MAXLEN-1)
+			{
+				fprintf(Ferr, "> Error: Connect_name too long.%s\n", CGI_BR);
+				return (EXECUTION_FAILURE);
+			}
+			strcpy(connect_name, optarg);
+			option.dflg.opt = connect_name;
+			break;
+			/*-------------- display connection ---------*/
+		case 'm':
+			option.mflg = true;
+			break;
+			/*-------------- display SQL status ---------*/
+		case 's':
+			option.sflg = true;
+			break;
+
+			/*-------------- display SQL status ---------*/
+		case 'x':
+			option.xflg.flg = true;
+			if (strlen(optarg) > PARAMETER_LEN-1)
+			{
+				fprintf(Ferr, "> Error: Parameter too long.%s\n", CGI_BR);
+				return (EXECUTION_FAILURE);
+			}
+			strcpy(parameter, optarg);
+			option.xflg.opt = parameter;
+			break;
+
+		default:
+			fprintf(Ferr, "%s%s\n", EXEC_SQL_USAGE, CGI_BR);
+			return (EX_USAGE);
+		}
+	}
+
+	/*========================================================
+	 *               Setting of query string
+	 *========================================================
+	 */
+	if (singleQuery == NULL)
+	{
+		if (loptend != NULL && loptend->word != NULL &&
+		    loptend->word->word != NULL)
+		{
+			singleQuery = wrapStrdup(loptend->word->word);
+
+		} else if (!option.hflg.flg && !option.vflg &&
+			   !option.mflg && !option.sflg &&
+			   !option.iflg)
+		{
+			fprintf(Ferr, "> Error: Query not found.%s\n", CGI_BR);
+			fprintf(Ferr, "%s%s\n", EXEC_SQL_USAGE, CGI_BR);
+			return (EX_USAGE);
+		}
+	}
+
+
+	/*========================================================
+	 *     		 Modify singleQuery 
+	 *========================================================
+	 */
+	if (singleQuery)
+		modify_singleQuery( &singleQuery );
+
+	/*========================================================
+	 *                 execute exec_sql
+	 *========================================================
+	 */
+	r = exec_sql_main(&option, singleQuery);
+
+	/*========================================================
+	 *                free exec_sql options 
+	 *========================================================
+	 */
+	if (singleQuery != NULL)
+		free(singleQuery);
+
+	/*------------ return -------------------------*/
+	if (r == 0)
+		return (EXECUTION_SUCCESS);
+	else
+		return (EXECUTION_FAILURE);
+
+}
+
+
+void
+copy_exec_sql_options(EXEC_SQL_OPTION *saved_option, Option *option)
+/*********************************************************************
+ * Settings of exec_sql options from saved values.
+ ********************************************************************/
+{
+	/*-------------- CGI mode -------------------*/
+	if( saved_option->cgi_mode == 0 )
+	{
+		option->iflg = false;  /* CGI  */
+		option->Hflg = false;  /* HTML */
+	}
+	else if( saved_option->cgi_mode == 1 )
+	{
+		option->iflg = true;   /* CGI  */
+		option->Hflg = true;   /* HTML */
+	}
+
+	/*-------------- ECHO Query -----------------*/
+	if( saved_option->echo_mode == 1 )
+		option->eflg = true;
+
+	/*-------------- Quiet mode -----------------*/
+	if( saved_option->quiet_mode == 1 )
+		option->qflg = true;
+
+	/*-------------- void top(header) -----------*/
+	if( saved_option->header == 0 )
+		option->Tflg = true;
+
+	/*-------------- void RowCount --------------*/
+	if( saved_option->bottom == 0 )
+		option->Bflg = true;
+
+	/*-------------- void Alignment -------------*/
+	if( saved_option->alignment == 0 )
+		option->Aflg = true;
+
+	/*-------------- Outer Frame ----------------*/
+	if( saved_option->outer_frame == 1 )
+		option->Lflg = true;
+
+	/*-------------- HTML  text -----------------*/
+	if( saved_option->html == 1 )
+		option->Hflg = true;   
+	else
+		option->Hflg = false;   
+
+	/*-------------- Expanded -------------------*/
+	if( saved_option->expanded == 1 )
+		option->Xflg = true;   
+
+	/*-------------- Separator string------------*/
+	if( saved_option->separator[0] != '\0' )
+	{
+		option->Sflg.flg = true;
+		option->Sflg.opt = saved_option->separator;
+	}
+	
+	/*-------------- NULL string ----------------*/
+	if( saved_option->null_string[0] != '\0' )
+	{
+		option->Nflg.flg = true;
+		option->Nflg.opt = saved_option->null_string;
+	}
+	
+	/*-------------- ZERO string ----------------*/
+	if( saved_option->zero_string[0] != '\0' )
+	{
+		option->Zflg.flg = true;
+		option->Zflg.opt = saved_option->zero_string;
+	}
+
+	/*-------------- Caption --------------------*/
+	if( saved_option->caption[0] != '\0' )
+	{
+		option->Cflg.flg = true;
+		option->Cflg.opt = saved_option->caption;
+	}
+
+	/*-------------- Table TAG ---------------*/
+	if( saved_option->table_tag[0] != '\0' )
+	{
+		option->Oflg.flg = true;
+		option->Oflg.opt = saved_option->table_tag;
+	}
+	if( saved_option->header_tr[0] != '\0' )
+	{
+		option->Qflg.flg = true;
+		option->Qflg.opt = saved_option->header_tr;
+	}
+	if( saved_option->header_th[0] != '\0' )
+	{
+		option->Rflg.flg = true;
+		option->Rflg.opt = saved_option->header_th;
+	}
+	if( saved_option->body_tag[0] != '\0' )
+	{
+		option->Dflg.flg = true;
+		option->Dflg.opt = saved_option->body_tag;
+	}
+	if( saved_option->input_tag == 1 )
+		option->Iflg = true;   
+}
+
+
+static int
+modify_singleQuery(char **singleQuery)
+/***********************************************************
+ *              \'xxx'xxx\' ==> 'xxx''xxx'
+ ***********************************************************
+ */
+{
+	char	*singleQuery2;
+	char	*pq, *pq2;
+
+	int	sqt = 0;
+	int	slen, len;
+
+	/*----------------- seach \' -------------------*/
+	pq = *singleQuery;
+
+	while(1)
+	{
+		if( (pq = strchr(pq,'\\')) != NULL )
+		{
+			if(*(pq+1) == '\'')
+				break;
+			pq += 2;
+			continue;
+		}
+		else
+		{
+			return(-1);
+		}
+	}
+
+	/*------------- copy singleQuery until \' --------*/
+	slen = (pq - (*singleQuery)); 
+	len = strlen(*singleQuery) - slen; 
+	singleQuery2 = wrapMalloc( slen + 2*len );
+	strncpy( singleQuery2, *singleQuery, slen);
+	pq2 = singleQuery2 + slen;
+	*pq2 = '\0';
+
+	/*------------- start of changing  ---------------*/
+	sqt = 0;
+
+	while( *pq != '\0' )
+	{
+		if( sqt == 0 && *pq == '\\' && *(pq+1) == '\'' )
+		{
+			*pq2++ = '\''; 
+			pq += 2; 
+			sqt = 1;
+			continue;
+		}
+
+		if( sqt == 1 && *pq == '\\' && *(pq+1) == '\'' )
+		{
+			*pq2++ = '\'';
+			pq += 2; 
+			sqt = 0;
+			continue;
+		}
+
+		if( sqt == 1 && *pq == '\'' && *(pq+1) == '\'' )
+		{
+			*pq2++ = '\''; *pq2++ = '\'';
+			pq += 2; 
+			continue;
+		}
+
+		if( sqt == 1 && *pq == '\'' && *(pq+1) != '\'' )
+		{
+			*pq2++ = '\''; *pq2++ = '\'';
+			pq++;
+			continue;
+		}
+
+		*pq2++ = *pq++;
+	}
+	*pq2 = '\0';
+
+	free(*singleQuery);
+	*singleQuery = singleQuery2;
+
+	return(0);
+}
+

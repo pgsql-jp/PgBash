@@ -1,0 +1,136 @@
+Chage Logs
+==========
+
+
+2011.08.25 : pgbash-8r4.1
+2011.08.20 : pgbash-8r3.2
+2011.08.15 : pgbash-8r2.05
+
+  1.Apply to PostgreSQL 8.1, 8.2, 8.3, 8.4, 9.0 same as psql command.
+  2.Change 'pgbashrc' file name to pgbashrc-8.1, 8.2, 8.3, 8.4, 9.0
+  3.Apply with bash-2.05(a), bash-3.2.48, bash-4.1.10
+  4.Update help menu.
+  5.Add CONNECTION command at Pgbashrc.
+  6.Delete '\n' after printing the caption(C+ "string").
+  7.Change PGBASH version and add PGBASHRC version.
+  8.Delete PGBASH COPY function.
+  9.Delete PGBASH EXEC_SQL_PREPARE function.
+ 10.Add SQLCODE number.
+  
+2003.10.14 : pgbash-7.3a
+
+  1. Support html select muntiple command.
+  2. Support sql DEALLOCATE, EXECUTE, PREPARE, START command.
+                              by. nomura@tmo.co.jp
+
+2003.02.08 : pgbash-7.3
+  
+  1. Fix a bug of CVS form in the (pgbash original)copy command.
+  2. Update 'pgbashrc' for PostgreSQL-7.3.
+  3. Pgbash version number was changed, same as PostgreSQL version.
+
+2002.07.17 : pgbash-2.4a.2
+
+  1. Add "REINDEX" as a SQL reserved word.     
+  2. Fix a bug of the single/double quotaion surrounded by 
+     the double/single quotation.                       
+     ex.) insert into "test" values(123,'name"name');
+          select code as "He's code" from test where  name='sanme"name';
+  3. Add the functionality of processing the single quotation data
+     surrounded by \'.   
+     ex.) DATA="I can't"
+          select * from test where mesg=\'$DATA\';
+
+  # A bug of "REINDEX" was reported by ISHIDA akio.
+  # A bug of single/double quotation was reported  by Tomoo Nomura.
+
+2002.05.10 : pgbash-2.4a.1
+
+  1. Allow the database user name as number(e.g. '00091').
+  2. Fix   static variables bug in read_EXEC_SQL_token().
+  3. Add the functionality of describing the '#' comment in SQL.
+
+2002.02.12 : pgbash-2.4a  (Apply to bash-2.05a.)
+2002.02.10 : pgbash-2.4 
+
+  1. Apply to PostgreSQL-7.0/7.1/7.2.
+  2. Fix a bug of Ctrl+C to cancell query.
+  3. Fix a bug of Pgbash original copy command when using delimiter.
+  3. Fix a bug of parsing ';' between left and right parenthesis in SQL.
+    (Ploblem reported by Dias Badekas)
+  4. Change TRUE/FALSE to ON/OFF value at the 'set OPTION' statement.
+  5. Add 'set OPTION_HEADERTR/HEADERTH/BODYTAG/INPUTTAG/INPUTSIZE' commands.
+  6. Add the functionality of 'EXEC_SQL_PREPARE' shell variable.
+  7. Add the functionality of 'SELECT INTO :host_var' clause.
+  8. Add the functionality of reading the /etc/pgbashrc file if ~/.pgbashrc 
+     file does not exist.
+  9. Add the functionality which displays line_feed/tab/carriage_return as 
+     '\n'/'\t'/'\r'.
+ 10. Add 'pgbash_description' table for large_object functions.
+ 11. Modify output format for plain text table (like psql).
+ 12. Add "IDENTIFIED BY | USING | /" at the password syntax of the CONNECT statement.
+ 13. Add the client_encoding in the connection table list('?m' command).
+
+ (pgbash-2.3 is not released)
+
+2001.05.01 : pgbash-2.2
+
+  1. Add the patches for bash-2.03, bash-2.04 and bash-2.05.
+  2. Add the functionality of printing Database information in 'pgbashrc'.
+  3. Delete the exec_sql option '-l,-p,-r'.
+  4. Modify the interactive help menu in pgbashrc.
+  5. Add 'set <option_name>[=value];' statement.
+  6. Add  option_name shell variables named 'OPTION_xxxx'.
+  7. Add the functionality of lo_import,lo_export and lo_unlink.
+  8. Add POSTGRESQL_VERSION shell variable.
+  9. Change the SQL help version 7.0.x to version 7.1. 
+ 10. Fix a delimiter string bug of 'copy table()' statement. 
+
+2000.05.10 : pgbash-2.1
+
+  1.Apply to both of PostgreSQL 6.5 and 7.0. 
+  2.Fix the signal processing. 
+  3.Improve that a COPY statement is executed as a new COPY statement of pgbash. 
+  4.Fix for getting a error code in COPY statement. 
+  5.Improve that it holds a client_encoding for every connection of the DB. 
+  6.Change a handling of client_encoding in PSprint() in the same way as 7.0. 
+  7.Improve that IP address can be used as host name. 
+  8.Change a Database lists like version7.0 psql. 
+  9.Add "u"(User name list) option in the Help menu. 
+ 10.Change "v" option to PostgreSQL and PGBASH version in the Help menu. 
+
+2000.01.11 : pgbash-2.0.1 
+
+  1.Change MULTIBYTE functions to static link. 
+  2.Stop the system messages in a SHELL SCRIPT. 
+
+1999.12.25 : pgbash-2.0 
+
+  1.Change the lexical analysis division of the bash-2.03,
+    SQL statement would be able to be directly executed. 
+  2.'declare','set','selecta' command of bash will have been changed 
+    as follows.
+    declare ==> declares
+    set     ==> sets
+    select  ==> selects
+  3.Pgbash-1.2.x executes a SQL by linking "libpgbash.so" library 
+    dynamically. But, Pgbash-2.0 executes a SQL by linking statically.
+    Therefore, it did not need to use the "enable -f" command. 
+  4.The content of pgbashrc was changed. 
+  5."list table objects(exec_sql -p '*') was changed to display the
+    table name. 
+
+1999.11.30 : pgbash-1.2.3
+
+  1.Add displaying of recent inserted OID (type "exec_sql -s")
+
+1999.10.31 : pgbash-1.2.2 (pgbash-1.2.1 bug fix)
+
+  1.Add __P definition.(UnixWare7, Solaris2.6x86 trouble)
+  2.Change "pgbash"file.(tcsh or csh login shell troubl
+
+1999.10.30 : pgbash-1.2.1
+
+  1.Add the interactive operational environment. 
+  2.Add the pgbash original COPY (with -y option) function. 
+

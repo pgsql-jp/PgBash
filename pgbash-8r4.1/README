@@ -1,0 +1,194 @@
+                       **  P g b a s h  **
+
+Outline 
+-------
+
+1.Database Interface 
+
+  Pgbash-8 has "Direct/Embedded SQL" interface for PostgreSQL 8.0 or later.
+  Here, "direct SQL" means the functionality which execute immediately and 
+  outputs the results to standard output. 
+  And, "Embedded SQL" means the functionality which sets the retrieval 
+  result into the shell variables by using bash shell script.  
+  Pgbash can use SELECT INTO or FETCH INTO statement as "Embedded SQL" 
+  interfaces. 
+
+2.Pipeline, redirection and background_job
+
+  Pgbash deals with a SQL statement as a shell command.  Therefore, 
+  Pgbash can execute a SQL with pipeline, redirection and background_job 
+  options. 
+
+3.Login shell or Sub shell
+
+  It is possible to start Pgbash as a LOGIN_shell or a SUB_shell. Here, 
+  a SUB shell is a child shell started from a parent shell. If you want 
+  to start Pgbash as a SUB shell, you type only e.g. '/usr/local/bin/pgbash' 
+  after log-in. 
+
+  You can use Pgbash as a LOGIN_shell, but if there are some database 
+  troubles, Pgbash may be down. Considering such fact, it would generally 
+  be better that Pgbash is used as a SUB shell. 
+
+4.Shell script and Web application
+
+  You can make a shell script with SQL by using Pgbash. And, Pgbash has the 
+  functionality to recieve the client data by the GET/POST method. So, You 
+  can make a simple web application.
+
+5.Operation environment
+  Pgbash needs the libpq library of PostgreSQL. So, you must describe the
+  path of libpq library in the parent shell. And, Pgbash needs Pgbashrc when 
+  Pgbash starts in the interactive environment. 
+
+  (What is Pgbashrc)
+
+  Pgbashrc is the pgbash shell startup file which sets the various commands
+  for displaying the database information. Pgbash can either use a original 
+  Pgbashrc file or modified Pgbashrc file. 
+
+  When Pgbash starts in the interactive environment, Pgbash reads ~/.pgbashrc
+  file. And, If ~/.pgbashrc file does not exist, then Pgbash reads /etc/pgbashrc
+  file. If Pgbash starts as a shell script, Pgbash does not read Pgbashrc file.
+  Therefore, If you want to read Pgbashrc file, You must use 'source' command 
+  to read Pgbashrc file. 
+
+
+(Example in the interactive environment)
+---------------------------------------------------------------------------
+ prompt> /usr/local/bin/pgbash                 --- Start Pgbash as sub-shell
+ Welcome to Pgbash ( bash-4.1.10-release ) Patch Ver.8 r4.1
+
+  Type '?'  for help with pgbash commands.
+  Type 'exit' or 'Ctrl+D' to terminate Pgbash.
+
+ pgbash> ?con to db2@xxx.com                   --- connect to db2
+ pgbash> addr='OSAKA'                               
+ pgbash> insert into test values(111,'name',   
+ > '$addr' );                                  --- use a shell valiable
+ pgbash> select * from test limit 100; | more  --- pipeline
+ pgbash> select * from test; > /tmp/sel.dat &  --- redirect + background_Job
+ pgbash> fc select                             --- edit and execute a Select
+ pgbash> !!                                    --- re-execute a Select
+ pgbash> ?dis all                              --- disconnect all database
+ pgbash> exit                                  --- end of Pgbash
+---------------------------------------------------------------------------
+
+
+(Example of a shell script)
+---------------------------------------------------------------------------
+ #!/usr/local/bin/pgbash
+ connect to dbname2 as db2 user postgres; 
+ begin;
+ declare cur cursor for select * from test; 
+ while [ 1 ]
+ do
+    fetch in cur into :AA :AA_IND, :BB;        --- sets shell variables
+    if [ $SQLCODE -eq $SQL_NOT_FOUND ]; then   --- end of a Fetch
+       break  
+    fi
+    if [ $SQLCODE -eq $SQL_OK ]; then          --- normal end
+       if [ $AA_IND -ne $SQL_NULL ]; then      --- AA is not NULL
+          echo "$AA, $BB"
+       fi
+    fi 
+ done
+ end;
+ disconnect db2; 
+
+ # Here, $SQL shell variables are reserved.
+ #  $SQLCODE       --- status parameter
+ #  $SQL_OK        --- NORMAL END code value
+ #  $SQL_NOT_FOUND --- NOT FOUND code value
+ #  $SQL_NULL      --- NULL code value
+---------------------------------------------------------------------------
+
+
+(Example of a web application)
+---------------------------------------------------------------------------
+#!/usr/local/bin/pgbash
+exec 2>&1
+echo "Content-type: text/html" 
+echo "" 
+set EXEC_SQL_OPTION CGI;
+#
+connect to dbname as db1 user nopbody $passwd; 
+insert into test values( '$MYNAME','$ADDRESS'); 
+select * from test order by uname limit 100; 
+disconnect all;
+---------------------------------------------------------------------------
+
+
+
+Features
+--------
+
+Interactive environment.
+  1.Pgbash has a database accessing function equivalent to psql. 
+  2.Pgbash can set up a user's original interactive environment using pgbashrc. 
+  3.Pgbash can offer flexible interactive environment, such as alias, function, 
+    and history. 
+  4.Pgbash can execute the SQL statement with pipeline, redirection and 
+    background_job options. 
+
+Extension of SQL. 
+  1.Pgbash can connect to some databases by using CONNECT, DISCONNECT and 
+    SET CONNECTION.
+  2.Pgbash has the functionality which sets the retrieval result into the 
+    shell variable by using SELECT_INTO/FETCH_INTO statements. 
+  3.After executing SQL, Pgbash keeps the the error code, the number of 
+    tuples and  the number of records as shell variables.
+
+Web application. 
+  1.Pgbash has the functionality of changing HTML output mode, reading data
+    from GET/POST method and reading values from HTTP_COOKIE. 
+  2.Pgbash can print the retrieval results as HTML table format. And, Pgbash
+    can change TABLE tag, HEADER tag, TR tag, TH tag, TD tag. 
+
+History
+-------
+
+  1999.07.01 : An interface is discussed at pgsql-jp ML.
+  1999.07.15 : KUBO Takehiro-san opened pqbash to the public.
+  1999.07.30 : The examination pf pgbash was started.
+  1999.08.31 : SAKAIDA Masaaki opened pgbash-1.0-beta to the public.
+  1999.09.04 : The examination of pgbash-1.1 was started.
+  1999.09.06 : pgbash-1.0b2 released.
+  1999.10.01 : pgbash-1.1.1 released.
+  1999.10.30 : pgbash-1.2.1 released.
+  1999.10.31 : pgbash-1.2.2 released.(pgbash-1.2.1 bug fix)
+  1999.11.22 : pgbash-1.2.3 released.
+  1999.12.25 : pgbash-2.0 released(bash-2.03 main body was patched) 
+  2000.01.11 : pgbash-2.0.1 released(MB functions, System messages) 
+  2000.05.10 : pgbash-2.1 released 
+  2001.05.01 : pgbash-2.2 released(for bash-2.03/2.04/2.05)
+  2001.12.31 : pgbash-2.4 released(for PostrgeSQL-7.2)
+  2002.02.10 : pgbash-2.4a released(for bash-2.05a)
+  2002.05.10 : pgbash-2.4a.1 released
+  2002.07.22 : pgbash-2.4a.2 released
+  2003.02.10 : pgbash-7.3 released (for PostgreSQl-7.3.x and bash-2.05a)
+  2003.10.14 : pgbash-7.3a released( for pgbash-7.3 bug fix) by Tomo Nomura.
+  2011.08.15 : pgbash-8r2.05 (based on bash-2.05) released for PostrgeSQL 8.0 or later.
+  2011.08.20 : pgbash-8r3.2 (based on bash-3.2.48) released for PostrgeSQL 8.0 or later.
+  2011.08.25 : pgbash-8r4.1 (based on bash-4.1.10) released for PostrgeSQL 8.0 or later.
+
+
+Download
+--------
+  http://db.psn.ne.jp/pgbash/pgbash-8r4.1.tar.gz
+  ftp://db.psn.co.jp/pub/pgbash/pgbash-8r4.1.tar.gz
+
+HomePage
+--------
+  http://db.psn.ne.jp/pgbash/index.html
+
+
+Questions or bug reports
+------------------------
+    If you have any questions or bug reports, please send them to
+  SAKAIDA Masaaki.
+
+--
+SAKAIDA Masaaki<sakaida@psn.co.jp>
+Osaka, Japan
+# Sorry, I am not good at English. ;-)

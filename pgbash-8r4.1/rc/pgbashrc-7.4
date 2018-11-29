@@ -1,0 +1,2292 @@
+#####################################################
+# pgbashrc-7.4
+#
+# This file must be copied to '/etc' directory.
+#
+# You may copy '/etc/pgbashrc' to '~/.pgbashrc', and
+# you can modify your ~/.pgbashrc file. Pgbash tends
+# to read ~/.pgbashrc first. If it does not exist, 
+# Pgbash tents to read /etc/pgbashrc.
+#####################################################
+
+PGBASHRC_VERSION=7.4
+
+#----------------------------------------------------
+# Prompt           
+#----------------------------------------------------
+# \u: login user name
+# \w: current directory
+# \h: host name
+#----------------------------------------------------
+#PS1="pgbash[\u@\h]\w> "
+#PS1="[pgbash]\w> "
+#PS1="pgbash[\u]\w> "
+PS1="pgbash> "
+
+#****************************************************
+#					Help Menu
+#****************************************************
+function _help_menu {
+	echo "Informational"
+	echo "  ?              : this help (add '+' for more detail)"
+	echo "  ?h [SQL]       : help on syntax of SQL commands"
+	echo "  ?l[+]          : list databases"
+	echo "  ?d [NAME]      : describe table,view,index, or sequence"
+	echo "  ?d{t|i|v|s}[+] : list {tables/indexes/views/sequences}"
+	echo "  ?dS[+]         : list system tables"
+	echo "  ?da            : list aggregate functions"
+	echo "  ?dc            : list conversions"
+	echo "  ?dC            : list casts"
+	echo "  ?dd            : show comment for object"
+	echo "  ?dD            : list domains"
+	echo "  ?df[+]         : list functions"
+	echo "  ?dn            : list schemas"
+	echo "  ?do            : list operators"
+	echo "  ?dp            : list table, view, and sequence access privileges"
+	echo "  ?dT[+]         : list data_types"
+	echo "  ?du            : list users"
+	echo ""
+	echo "Large Objects"
+	echo "  ?lo_import     : lo_import <INPUT_FILE_NAME> <'COMMENT'>"
+	echo "  ?lo_export     : lo_export <LOBOID> <OUTPUT_FILE_NAME>"
+	echo "  ?lo_unlink     : lo_unlink <LOBOID> "
+	echo "  ?lo_list       : list LARGE OBJECTs, same as ?dl"
+	echo ""
+	echo "Connection"
+	echo "  ?con[nect] DBNAME[@SERVER][:PORT] [CONNECT_NAME [USERID [PASSWORD]]]" 
+	echo "                 : connect to new database"
+	echo "  ?set[connection] CONNECT_NAME"
+	echo "                 : change database connection"
+	echo "  ?dis[connect]   {CONNECT_NAME | ALL}"
+	echo "                 : disconnect databases"
+	echo "  ?encoding [ENCODING]"
+	echo "                 : show or set client encoding"
+	echo "  ?password USERNAME"
+	echo "                 : securely change the password for a user"
+	echo "Status"
+	echo "  ?dbc[onnection]: show database connection"
+	echo "  ?opt[ion]      : show current values of exec_sql_OPTIONs"
+	echo "  ?sta[tus]      : show STATUS after executing SQL"
+	echo "  ?ver[sion]     : show PostgreSQL and pgbash VERSION"
+	echo ""
+	echo "Formatting"
+	echo "  E{+|-}         : turn on/off ECHO_QUERY sent to the backend"
+	echo "  L{+|-}         : turn on/off OUTER_FRAME_print"
+	echo "  T{+|-}         : turn on/off TOP_header_print"
+	echo "  B{+|-}         : turn on/off BOTTOM_count_print"
+	echo "  A{+|-}         : turn on/off ALIGNMENT of plain text"
+	echo "  X{+|-}         : turn on/off EXPANDED format"
+	echo "  H{+|-}         : turn on/off HTML table format"
+	echo "  C+  [chr]      : set CAPTION string          or DEFAULT('')"
+	echo "  S+  [chr]      : set SEPARATOR  (e.g. ','  ) or DEFAULT('|')"
+	echo "  N+  [str]      : set NULL_STRING(e.g. '*N*') or DEFAULT('')"
+	echo "  Z+  [str]      : set ZERO_STRING(e.g. '*0*') or DEFAULT('')"
+	echo ""
+	echo "Pgbash help"
+	echo "  ??             : help with pgbash usage"
+	echo "  ??connect      : help with CONNECTION usage"
+	echo "  ??sql          : help with SQL usage"
+	echo "  ??sqlcode      : help with SQLCODE"
+	echo "  ??exec_sql     : help with 'exec_sql' usage"
+}
+
+
+#****************************************************
+# 				alias / functions
+#****************************************************
+
+#--------------------------------------------------
+#				Informational
+#--------------------------------------------------
+alias ?='_help_menu            | more'
+alias ?h='_help_sql'
+
+alias ?u='_list_users          | more'
+alias ?du='_list_users         | more'
+
+alias ?l='_list_databases      | more'
+alias ?l+='_list_databases "+" | more'
+
+alias ?z='_list_privileges     | more'
+alias ?dp='_list_privileges    | more'
+
+function ?d {
+	case "$#" in
+	0 ) _list_relations  | more   ;;
+	* ) _list_relation   $1       ;;
+	esac
+}
+
+alias ?dt='_list_tables        | more'
+alias ?dt+='_list_tables "+"   | more'
+
+alias ?di='_list_indexes       | more'
+alias ?di+='_list_indexes "+"  | more'
+
+alias ?dv='_list_views         | more'
+alias ?dv+='_list_views "+"    | more'
+
+alias ?ds='_list_sequences     | more'
+alias ?ds+='_list_sequences "+"| more'
+
+alias ?dS='_list_systables     | more'
+alias ?dS+='_list_systables "+"| more'
+
+alias ?da='_list_aggregates    | more'
+
+alias ?dc='_list_conversions   | more'
+alias ?dC='_list_casts         | more'
+alias ?dd='_list_comment       | more'
+alias ?dD='_list_domains       | more'
+
+alias ?df='_list_functions     | more'
+alias ?df+='_list_functions "+"| more'
+
+alias ?dn='_list_schemas       | more'
+
+alias ?do='_list_operators     | more'
+
+alias ?dT='_list_types         | more'
+alias ?dT+='_list_types "+"    | more'
+
+#--------------------------------------------------
+#				Formatting
+#--------------------------------------------------
+alias E+='set OPTION_ECHO=TRUE;'
+alias E-='set OPTION_ECHO=FALSE;'
+alias L+='set OPTION_FRAME=TRUE;'
+alias L-='set OPTION_FRAME=FALSE;'
+alias X+='set OPTION_EXPANDED=TRUE;'
+alias X-='set OPTION_EXPANDED=FALSE;'
+alias H+='set OPTION_HTML=TRUE;'
+alias H-='set OPTION_HTML=FALSE;'
+alias A+='set OPTION_ALIGNMENT=TRUE;'
+alias A-='set OPTION_ALIGNMENT=FALSE;'
+alias T+='set OPTION_HEADER=TRUE;'
+alias T-='set OPTION_HEADER=FALSE;'
+alias B+='set OPTION_BOTTOM=TRUE;'
+alias B-='set OPTION_BOTTOM=FALSE;'
+
+function C+ {
+	case "$#" in
+ 	0 ) exec_sql "set OPTION_CAPTION;"        ;;
+	* ) exec_sql "set OPTION_CAPTION='$1';"   ;;
+	esac
+}
+
+function S+ {
+	case "$#" in
+ 	0 ) exec_sql "set OPTION_SEPARATOR;"        ;;
+	* ) exec_sql "set OPTION_SEPARATOR='$1';"   ;;
+	esac
+}
+
+function N+ {
+	case "$#" in
+	0 ) exec_sql "set OPTION_NULLSTRING;"       ;;
+	* ) exec_sql "set OPTION_NULLSTRING='$1';"  ;;
+	esac
+}
+
+function Z+ {
+	case "$#" in
+	0 ) exec_sql "set OPTION_ZEROSTRING;"       ;;
+	* ) exec_sql "set OPTION_ZEROSTRING='$1';"  ;;
+	esac
+}
+
+#--------------------------------------------------
+#				Large Objects
+#--------------------------------------------------
+alias ?lo_export='_lo_export'
+alias ?lo_import='_lo_import'
+alias ?lo_unlink='_lo_unlink'
+alias ?lo_list='_lo_list'
+alias ?dl='_lo_list      | more'
+
+function _lo_export { 
+	case "$#" in
+	0 ) echo "_lo_export <OID> <FILE_NAME>" ;;
+	* ) exec_sql -x lo_export "$1,'$2'"     ;;
+	esac
+}
+function _lo_import { 
+	case "$#" in
+	0 ) echo "_lo_import <FILE_NAME> <'COMMENT'>" ;;
+	* ) exec_sql -x lo_import "'$1','$2'"         ;;
+	esac
+}
+function _lo_unlink { 
+	case "$#" in
+	0 ) echo "_lo_unlink <OID>"   ;;
+	* ) exec_sql -x lo_unlink "$1" ;;
+	esac
+}
+
+#----------------------------------------------------
+# 				Connection
+#----------------------------------------------------
+alias ?con='_connect'
+alias ?connect='_connect'
+function _connect {
+	case "$#" in
+	1) exec_sql "connect to $1"
+	   _disp_connection		;;
+	2) exec_sql "connect to $1 as $2"
+	   _disp_connection		;;
+	3) exec_sql "connect to $1 as $2 user $3"
+	   _disp_connection		;;
+	4) exec_sql "connect to $1 as $2 user $3 $4"
+	   _disp_connection		;;
+	*) echo "?con[nect] DBNAME[@SERVER][:PORT] [CONNECT_NAME [USERID [PASSWD]]]"	;;
+	esac
+}
+
+alias ?set='_setconnection'
+alias ?setconnection='_setconnection'
+function _setconnection {
+	case "$#" in
+	1) exec_sql "set connection $1"
+	   _disp_connection		;;
+	*) _show_connection
+	   echo "?set[connection] CONNECT_NAME"		;;
+	esac
+}
+
+alias ?dis='_disconnect'
+alias ?disconnect='_disconnect'
+function _disconnect {
+	case "$#" in
+	1) exec_sql "disconnect $1"	
+	   _disp_connection		;;
+	*) _show_connection		
+	   echo "?dis[connect] {COONECT_NAME | ALL}"	;;
+	esac
+}
+
+alias ?encoding='_set_client_encoding'
+function _set_client_encoding {
+	case "$#" in
+	1) exec_sql "set client_encoding to '$1'"	
+	   _disp_connection		;;
+	*) _show_connection		;;
+	esac
+}
+
+function _disp_connection {
+	if [ $SQLCODE = 0 ]; then
+		_show_connection
+	fi
+}
+
+alias ?password='_change_password'
+function _change_password {
+
+	case "$#" in
+	1) read -sp "Enter new password:" passwd1
+	   echo ""
+	   read -sp "Enter it again:" passwd2
+	   echo ""
+	   if [ $passwd1 != $passwd2 ]; then
+		echo "Passwords didn't match."
+		return;
+	   fi
+	   exec_sql "ALTER USER $1 with password '$passwd1';"	;;
+
+	*) echo "?password USERNAME"	;;
+	esac
+}
+
+#----------------------------------------------------
+# 				Status
+#----------------------------------------------------
+alias ?dbc=_show_connection
+alias ?dbconnection=_show_connection
+alias ?opt='_show_exec_sql_option | more'
+alias ?option='_show_exec_sql_option | more'
+alias ?sta=_show_sqlcode
+alias ?status=_show_sqlcode
+alias ?ver=_show_version
+alias ?version=_show_version
+
+#----------------------------------------------------
+# 				Pgbash help
+#----------------------------------------------------
+alias ??='_help_usage             | more'
+alias ??sql='_help_sql_usage      | more'
+alias ??connect='_help_connection | more'
+alias ??sqlcode='_help_sqlcode    | more'
+alias ??exec_sql='help exec_sql   | more'
+
+
+
+#****************************************************
+#	        List of Database Informations
+#****************************************************
+
+# ?u, ?du
+
+function _list_users 
+{ 		
+	echo "[ List of users ]"
+
+	SELECT u.usename AS "User name", u.usesysid AS "User ID",
+		CASE WHEN u.usesuper AND u.usecreatedb THEN 
+			CAST('superuser, create database' AS pg_catalog.text)
+			WHEN u.usesuper THEN CAST('superuser' AS pg_catalog.text)
+			WHEN u.usecreatedb THEN CAST('create database' AS pg_catalog.text)
+				ELSE CAST('' AS pg_catalog.text)
+		END AS "Attributes"
+	FROM pg_catalog.pg_user u
+	ORDER BY 1;
+
+    if (($SQLCODE == 0 && $SQLNTUPLE == 0)); then
+		echo "# Did not find any users."
+    fi
+} 
+
+# ?l
+
+function _list_databases()
+{
+	echo "[ List of databases ]"
+
+	if [ $# -lt 1 ]; then
+
+	SELECT d.datname as "Name", u.usename as "Owner",
+		pg_catalog.pg_encoding_to_char(d.encoding) as "Encoding"
+	FROM pg_catalog.pg_database d
+		LEFT JOIN pg_catalog.pg_user u ON d.datdba = u.usesysid
+	ORDER BY 1;
+
+	else
+
+	SELECT d.datname as "Name", u.usename as "Owner",
+		pg_catalog.pg_encoding_to_char(d.encoding) as "Encoding",
+		pg_catalog.obj_description(d.oid, 'pg_database') as "Description"
+	FROM pg_catalog.pg_database d
+		LEFT JOIN pg_catalog.pg_user u ON d.datdba = u.usesysid
+	ORDER BY 1;
+
+	fi
+
+    if (($SQLCODE == 0 && $SQLNTUPLE == 0)); then
+		echo "# Did not find any databases."
+    fi
+}
+
+# ?z, ?dp
+
+function _list_privileges 
+{
+	echo "[ List of access privileges ]"
+
+	SELECT n.nspname as "Schema",
+		c.relname as "Table",
+		c.relacl as "Access privileges"
+	FROM pg_catalog.pg_class c
+		LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+	WHERE c.relkind IN ('r', 'v', 'S')
+		AND pg_catalog.pg_table_is_visible(c.oid) AND n.nspname !~ '^pg_'
+	ORDER BY 1, 2;
+
+    if (($SQLCODE == 0 && $SQLNTUPLE == 0)); then
+		echo "# Did not find any privileges."
+    fi
+}  
+function _list_permissions
+{
+	_list_privileges
+}
+
+# ?d
+
+function _list_relations 
+{ 
+	echo "[ List of relations ]"
+
+	if [ $# -lt 1 ]; then
+
+	SELECT n.nspname as "Schema", c.relname as "Name",
+		CASE c.relkind WHEN 'r' THEN 'table' 
+		WHEN 'v' THEN 'view' 
+		WHEN 'i' THEN 'index' 
+		WHEN 'S' THEN 'sequence' 
+		WHEN 's' THEN 'special' 
+	END as "Type",
+	u.usename as "Owner"
+	FROM pg_catalog.pg_class c
+		LEFT JOIN pg_catalog.pg_user u ON u.usesysid = c.relowner
+		LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+	WHERE c.relkind IN ('r','v','S','') AND n.nspname NOT IN ('pg_catalog', 'pg_toast')
+		AND pg_catalog.pg_table_is_visible(c.oid)
+	ORDER BY 1,2;
+
+	else
+
+	SELECT n.nspname as "Schema", c.relname as "Name",
+		CASE c.relkind WHEN 'r' THEN 'table' 
+		WHEN 'v' THEN 'view' 
+		WHEN 'i' THEN 'index' 
+		WHEN 'S' THEN 'sequence' 
+		WHEN 's' THEN 'special' 
+	END as "Type",
+	u.usename as "Owner",
+	pg_catalog.obj_description(c.oid, 'pg_class') as "Description"
+	FROM pg_catalog.pg_class c
+		LEFT JOIN pg_catalog.pg_user u ON u.usesysid = c.relowner
+		LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+	WHERE c.relkind IN ('r','v','S','') AND n.nspname NOT IN ('pg_catalog', 'pg_toast')
+		AND pg_catalog.pg_table_is_visible(c.oid)
+	ORDER BY 1,2;
+
+	fi
+
+	if (($SQLCODE == 0 && $SQLNTUPLE == 0)); then
+		echo "# Did not find any relations."
+	fi
+}
+
+# ?d NAME
+
+function _list_relation  # $1 : table/index/sequence name
+{  
+
+	# Table info.
+	SELECT c.oid, n.nspname, c.relname 
+	INTO  :oid,  :nspname,  :relname
+	FROM pg_catalog.pg_class c
+		LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+	WHERE c.relname ~ '^($1)$'
+		AND pg_catalog.pg_table_is_visible(c.oid)
+	ORDER BY 2, 3; 
+
+	if (($SQLCODE == 0 && $SQLNTUPLE == 0)); then
+		echo "# Did not find any relations."
+		return;
+	fi
+
+	# General table info.
+	SELECT relhasindex, relkind, relchecks, reltriggers, relhasrules, relhasoids
+	INTO  :relhasindex,:relkind,:relchecks,:reltriggers,:relhasrules,:relhasoids
+	FROM pg_catalog.pg_class 
+	WHERE oid = '$oid';
+
+	# Title
+	case $relkind in
+	'r') echo "[ Table \"$1\" ]";;
+	'v') echo "[ View \"$1\" ]";;
+	's') echo "[ Sequence \"$1\" ]";;
+	'i') echo "[ Index \"$1\" ]";;
+	'S') echo "[ Special relation \"$1\" ]";;
+	't') echo "[ TOAST table \"$1\" ]";;
+	'c') echo "[ Composite type \"$1\" ]";;
+	*)   echo "[ Relation \"$1\" ]";;
+	esac
+
+	# Column Info.
+	if [ $# -lt 2 ]; then
+
+	SELECT 	a.attname as "Column", 
+		pg_catalog.format_type(a.atttypid, a.atttypmod) as "Type",
+		CASE WHEN a.attnotnull = 't' THEN 'not null' ELSE '' END AS "NotNull",
+		(
+		SELECT substring(d.adsrc for 128)
+		FROM pg_catalog.pg_attrdef d
+		WHERE d.adrelid = a.attrelid AND d.adnum = a.attnum AND a.atthasdef
+		) as "Default"
+	FROM pg_catalog.pg_attribute a
+	WHERE a.attrelid = '$oid' AND a.attnum > 0 AND NOT a.attisdropped
+	ORDER BY a.attnum;
+
+	else
+
+	SELECT 	a.attname as "Column", 
+		pg_catalog.format_type(a.atttypid, a.atttypmod) as "Type",
+		CASE WHEN a.attnotnull = 't' THEN 'not null' ELSE '' END AS "NotNull",
+		(
+		SELECT substring(d.adsrc for 128)
+		FROM pg_catalog.pg_attrdef d
+		WHERE d.adrelid = a.attrelid AND d.adnum = a.attnum AND a.atthasdef
+		) as "Default",
+		pg_catalog.col_description(a.attrelid, a.attnum) as "Description"
+	FROM pg_catalog.pg_attribute a
+	WHERE a.attrelid = '$oid' AND a.attnum > 0 AND NOT a.attisdropped
+	ORDER BY a.attnum;
+
+	fi
+
+	if (($SQLCODE == 0 && $SQLNTUPLE > 0)); then
+		echo ""
+	fi
+
+	# Check if table is a view
+	if [ $relkind = "v" ]; then
+		SELECT pg_catalog.pg_get_viewdef('$oid'::pg_catalog.oid, true)
+		INTO  :viewdef;
+
+		echo "View definition:"
+		echo "$viewdef"
+		echo ""
+
+		### count rules other than the view rule:
+		SELECT r.rulename, trim(trailing ';' from pg_catalog.pg_get_ruledef(r.oid, true))
+		FROM pg_catalog.pg_rewrite r
+		WHERE r.ev_class = '$oid' AND r.rulename != '_RETURN' 
+		ORDER BY 1;
+	fi
+
+	# Formatting
+	T-
+	B-
+	S+ ":"
+
+	# Indexes
+	C+ "Indexes"
+
+	SELECT c2.relname as "Name", 
+		pg_catalog.pg_get_indexdef(i.indexrelid, 0, true) as "Index"
+	FROM pg_catalog.pg_class c, pg_catalog.pg_class c2, pg_catalog.pg_index i 
+	WHERE c.oid = '$oid' AND c.oid = i.indrelid AND i.indexrelid = c2.oid
+	ORDER BY i.indisprimary DESC, i.indisunique DESC, c2.relname;
+
+	if (($SQLCODE == 0 && $SQLNTUPLE > 0)); then
+		echo ""
+	fi
+
+	# Check constraints:
+	C+ "Check constraints"
+
+	SELECT 	r.conname as "Name", 
+			pg_catalog.pg_get_constraintdef(r.oid, true) as "Check"
+	FROM pg_catalog.pg_constraint r
+	WHERE r.conrelid = '$oid' AND r.contype = 'c' 
+	ORDER BY 1;
+
+	if (($SQLCODE == 0 && $SQLNTUPLE > 0)); then
+		echo ""
+	fi
+
+	# Rules:
+	C+ "Rules"
+
+	SELECT r.rulename, trim(trailing ';' from pg_catalog.pg_get_ruledef(r.oid))
+	FROM pg_catalog.pg_rewrite r
+	WHERE r.ev_class = '$oid';
+
+	if (($SQLCODE == 0 && $SQLNTUPLE > 0)); then
+		echo ""
+	fi
+
+	# Triggers:
+	C+ "Triggers"
+
+	SELECT 	t.tgname as "Name", 
+			pg_catalog.pg_get_triggerdef(t.oid) as "Trigger"
+	FROM pg_catalog.pg_trigger t
+	WHERE t.tgrelid = '$oid' AND (not tgisconstraint  OR 
+		NOT EXISTS  (SELECT 1 FROM pg_catalog.pg_depend d    
+		JOIN pg_catalog.pg_constraint c ON (d.refclassid = c.tableoid AND d.refobjid = c.oid)    
+		WHERE d.classid = t.tableoid AND d.objid = t.oid AND d.deptype = 'i' AND c.contype = 'f'))   
+	ORDER BY 1;
+
+	if (($SQLCODE == 0 && $SQLNTUPLE > 0)); then
+		echo ""
+	fi
+
+	# Foreign keys:
+	C+ "Foreign keys"
+
+	SELECT 	conname as "Name", 
+			pg_catalog.pg_get_constraintdef(oid, true) as "Foreign key"
+	FROM pg_catalog.pg_constraint r
+	WHERE r.conrelid = '$oid' AND r.contype = 'f' 
+	ORDER BY 1;
+
+	if (($SQLCODE == 0 && $SQLNTUPLE > 0)); then
+		echo ""
+	fi
+
+	# Inherits:
+	C+ "Inherits"
+
+	SELECT c.relname as "Inherits"
+	FROM pg_catalog.pg_class c, pg_catalog.pg_inherits i 
+	WHERE c.oid=i.inhparent AND i.inhrelid = '$oid' 
+	ORDER BY inhseqno ASC;
+
+	# Formatting
+	C+
+	T+
+	B+
+	S+ "|"
+
+}
+
+# ?dt
+
+function _list_tables()
+{
+	echo "[ List of tables ]"
+
+	if [ $# -lt 1 ]; then
+
+	SELECT n.nspname as "Schema", c.relname as "Name",
+		CASE c.relkind WHEN 'r' THEN 'table' 
+			WHEN 'v' THEN 'view' 
+			WHEN 'i' THEN 'index' 
+			WHEN 'S' THEN 'sequence' 
+			WHEN 's' THEN 'special' 
+		END as "Type",
+		u.usename as "Owner"
+	FROM pg_catalog.pg_class c
+		LEFT JOIN pg_catalog.pg_user u ON u.usesysid = c.relowner
+		LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+	WHERE c.relkind IN ('r','') AND n.nspname NOT IN ('pg_catalog', 'pg_toast')
+		AND pg_catalog.pg_table_is_visible(c.oid)
+	ORDER BY 1,2;
+
+	else
+
+	SELECT n.nspname as "Schema", c.relname as "Name",
+		CASE c.relkind WHEN 'r' THEN 'table' 
+			WHEN 'v' THEN 'view' 
+			WHEN 'i' THEN 'index' 
+			WHEN 'S' THEN 'sequence' 
+			WHEN 's' THEN 'special' 
+		END as "Type",
+		u.usename as "Owner",
+		pg_catalog.obj_description(c.oid, 'pg_class') as "Description"
+	FROM pg_catalog.pg_class c
+		LEFT JOIN pg_catalog.pg_user u ON u.usesysid = c.relowner
+		LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+	WHERE c.relkind IN ('r','') AND n.nspname NOT IN ('pg_catalog', 'pg_toast')
+		AND pg_catalog.pg_table_is_visible(c.oid)
+	ORDER BY 1,2;
+
+	fi
+
+    if (($SQLCODE == 0 && $SQLNTUPLE == 0)); then
+		echo "# Did not find any tables."
+    fi
+}  
+
+# ?di
+
+function _list_indexes()
+{
+	echo "[ List of indexes ]"
+
+	if [ $# -lt 1 ]; then
+
+	SELECT n.nspname as "Schema", c.relname as "Name",
+		CASE c.relkind WHEN 'r' THEN 'table' 
+			WHEN 'v' THEN 'view' 
+			WHEN 'i' THEN 'index' 
+			WHEN 'S' THEN 'sequence' 
+			WHEN 's' THEN 'special' 
+		END as "Type",
+		u.usename as "Owner",
+		c2.relname as "Table"
+	FROM pg_catalog.pg_class c
+		JOIN pg_catalog.pg_index i ON i.indexrelid = c.oid
+		JOIN pg_catalog.pg_class c2 ON i.indrelid = c2.oid
+		LEFT JOIN pg_catalog.pg_user u ON u.usesysid = c.relowner
+		LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+	WHERE c.relkind IN ('i','') AND n.nspname NOT IN ('pg_catalog', 'pg_toast')
+		AND pg_catalog.pg_table_is_visible(c.oid)
+	ORDER BY 1,2;
+
+	else
+
+	SELECT n.nspname as "Schema", c.relname as "Name",
+		CASE c.relkind WHEN 'r' THEN 'table' 
+			WHEN 'v' THEN 'view' 
+			WHEN 'i' THEN 'index' 
+			WHEN 'S' THEN 'sequence' 	
+			WHEN 's' THEN 'special' 
+		END as "Type",
+		u.usename as "Owner",
+		c2.relname as "Table",
+		pg_catalog.obj_description(c.oid, 'pg_class') as "Description"
+	FROM pg_catalog.pg_class c
+		JOIN pg_catalog.pg_index i ON i.indexrelid = c.oid
+		JOIN pg_catalog.pg_class c2 ON i.indrelid = c2.oid
+		LEFT JOIN pg_catalog.pg_user u ON u.usesysid = c.relowner
+		LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+	WHERE c.relkind IN ('i','') AND n.nspname NOT IN ('pg_catalog', 'pg_toast')
+		AND pg_catalog.pg_table_is_visible(c.oid)
+	ORDER BY 1,2;
+
+	fi
+
+    if (($SQLCODE == 0 && $SQLNTUPLE == 0)); then
+		echo "# Did not find any indexes."
+    fi
+}  
+
+# ?dv
+
+function _list_views()
+{
+	echo "[ List of views ]"
+
+	if [ $# -lt 1 ]; then
+
+	SELECT n.nspname as "Schema", c.relname as "Name",
+		CASE c.relkind WHEN 'r' THEN 'table' 
+			WHEN 'v' THEN 'view' 
+			WHEN 'i' THEN 'index' 
+			WHEN 'S' THEN 'sequence' 
+			WHEN 's' THEN 'special' 
+		END as "Type",
+		u.usename as "Owner"
+	FROM pg_catalog.pg_class c
+		LEFT JOIN pg_catalog.pg_user u ON u.usesysid = c.relowner
+		LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+	WHERE c.relkind IN ('v','') AND n.nspname NOT IN ('pg_catalog', 'pg_toast')
+		AND pg_catalog.pg_table_is_visible(c.oid)
+	ORDER BY 1,2;
+
+	else
+
+	SELECT n.nspname as "Schema", c.relname as "Name",
+		CASE c.relkind WHEN 'r' THEN 'table' 
+			WHEN 'v' THEN 'view' 
+			WHEN 'i' THEN 'index' 
+			WHEN 'S' THEN 'sequence' 
+			WHEN 's' THEN 'special' 
+		END as "Type",
+		u.usename as "Owner",
+		pg_catalog.obj_description(c.oid, 'pg_class') as "Description"
+	FROM pg_catalog.pg_class c
+		LEFT JOIN pg_catalog.pg_user u ON u.usesysid = c.relowner
+		LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+	WHERE c.relkind IN ('v','') AND n.nspname NOT IN ('pg_catalog', 'pg_toast')
+		AND pg_catalog.pg_table_is_visible(c.oid)
+	ORDER BY 1,2;
+
+	fi
+
+    if (($SQLCODE == 0 && $SQLNTUPLE == 0)); then
+		echo "# Did not find any views".
+    fi
+}
+
+# ?ds
+
+function _list_sequences()
+{
+	echo "[ List of sequences ]"
+
+	if [ $# -lt 1 ]; then
+
+	SELECT n.nspname as "Schema", c.relname as "Name",
+		CASE c.relkind WHEN 'r' THEN 'table' 
+			WHEN 'v' THEN 'view' 
+			WHEN 'i' THEN 'index' 
+			WHEN 'S' THEN 'sequence' 
+			WHEN 's' THEN 'special' 
+		END as "Type",
+		u.usename as "Owner"
+	FROM pg_catalog.pg_class c
+		LEFT JOIN pg_catalog.pg_user u ON u.usesysid = c.relowner
+		LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+	WHERE c.relkind IN ('S','') AND n.nspname NOT IN ('pg_catalog', 'pg_toast')
+		AND pg_catalog.pg_table_is_visible(c.oid)
+	ORDER BY 1,2;
+
+	else
+
+	SELECT n.nspname as "Schema", c.relname as "Name",
+		CASE c.relkind WHEN 'r' THEN 'table' 
+			WHEN 'v' THEN 'view' 
+			WHEN 'i' THEN 'index' 
+			WHEN 'S' THEN 'sequence' 
+			WHEN 's' THEN 'special' 
+		END as "Type",
+		u.usename as "Owner",
+		pg_catalog.obj_description(c.oid, 'pg_class') as "Description"
+	FROM pg_catalog.pg_class c
+		LEFT JOIN pg_catalog.pg_user u ON u.usesysid = c.relowner
+		LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+	WHERE c.relkind IN ('S','') AND n.nspname NOT IN ('pg_catalog', 'pg_toast')
+		AND pg_catalog.pg_table_is_visible(c.oid)
+	ORDER BY 1,2;
+
+	fi
+
+    if (($SQLCODE == 0 && $SQLNTUPLE == 0)); then
+		echo "# Did not find any sequences."
+    fi
+}  
+
+# ?dS
+
+function _list_systables()
+{
+	echo "[ List of system tables ]"
+
+	if [ $# -lt 1 ]; then
+
+	SELECT n.nspname as "Schema", c.relname as "Name",
+		CASE c.relkind WHEN 'r' THEN 'table' 
+			WHEN 'v' THEN 'view' 
+			WHEN 'i' THEN 'index' 
+			WHEN 'S' THEN 'sequence' 
+			WHEN 's' THEN 'special' 
+		END as "Type",
+		u.usename as "Owner"
+	FROM pg_catalog.pg_class c
+		LEFT JOIN pg_catalog.pg_user u ON u.usesysid = c.relowner
+		LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+	WHERE c.relkind IN ('r','v','S','s','') AND n.nspname = 'pg_catalog'
+		AND pg_catalog.pg_table_is_visible(c.oid)
+	ORDER BY 1,2;
+
+	else
+
+	SELECT n.nspname as "Schema", c.relname as "Name",
+		CASE c.relkind WHEN 'r' THEN 'table' 
+			WHEN 'v' THEN 'view' 
+			WHEN 'i' THEN 'index' 
+			WHEN 'S' THEN 'sequence' 
+			WHEN 's' THEN 'special' 
+		END as "Type",
+		u.usename as "Owner",
+		pg_catalog.obj_description(c.oid, 'pg_class') as "Description"
+	FROM pg_catalog.pg_class c
+		LEFT JOIN pg_catalog.pg_user u ON u.usesysid = c.relowner
+		LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+	WHERE c.relkind IN ('r','v','S','s','') AND n.nspname = 'pg_catalog'
+		AND pg_catalog.pg_table_is_visible(c.oid)
+	ORDER BY 1,2;
+
+	fi
+
+    if (($SQLCODE == 0 && $SQLNTUPLE == 0)); then
+		echo "# Did not find any sequences."
+    fi
+}  
+
+# ?da
+
+function _list_aggregates 
+{
+	echo "[ List of aggregate functions ]"
+
+	SELECT n.nspname as "Schema", p.proname AS "Name",
+		CASE p.proargtypes[0]
+			WHEN 'pg_catalog."any"'::pg_catalog.regtype
+			THEN CAST('(all types)' AS pg_catalog.text)
+			ELSE pg_catalog.format_type(p.proargtypes[0], NULL)
+		END AS "Data type", 
+		pg_catalog.obj_description(p.oid, 'pg_proc') as "Description"
+	FROM pg_catalog.pg_proc p
+		LEFT JOIN pg_catalog.pg_namespace n ON n.oid = p.pronamespace
+	WHERE p.proisagg
+		AND pg_catalog.pg_function_is_visible(p.oid)
+	ORDER BY 1, 2, 3; 
+
+	if (($SQLCODE == 0 && $SQLNTUPLE == 0)); then
+		echo "# Did not find any aggregate functions."
+	fi
+}
+
+# ?dc
+
+function _list_conversions 
+{
+	echo "[ List of conversions ]"
+
+	SELECT n.nspname AS "Schema",
+		c.conname AS "Name",
+		pg_catalog.pg_encoding_to_char(c.conforencoding) AS "Source",
+		pg_catalog.pg_encoding_to_char(c.contoencoding) AS "Destination",
+		CASE WHEN c.condefault THEN 'yes'
+		ELSE 'no' END AS "Default?"
+	FROM pg_catalog.pg_conversion c, pg_catalog.pg_namespace n
+	WHERE n.oid = c.connamespace
+		AND pg_catalog.pg_conversion_is_visible(c.oid)
+	ORDER BY 1, 2;
+
+	if (($SQLCODE == 0 && $SQLNTUPLE == 0)); then
+		echo "# Did not find any conversions."
+	fi
+}
+
+# ?dC
+
+function _list_casts 
+{
+	echo "[ List of casts ]"
+
+	SELECT pg_catalog.format_type(castsource, NULL) AS "Source type",
+		pg_catalog.format_type(casttarget, NULL) AS "Target type",
+		CASE WHEN castfunc = 0 THEN '(binary compatible)' ELSE p.proname
+		END as "Function",
+		CASE WHEN c.castcontext = 'e' THEN 'no'
+			WHEN c.castcontext = 'a' THEN 'in assignment' ELSE 'yes'
+		END as "Implicit?"
+	FROM pg_catalog.pg_cast c LEFT JOIN pg_catalog.pg_proc p
+		ON c.castfunc = p.oid
+	ORDER BY 1, 2;
+
+	if (($SQLCODE == 0 && $SQLNTUPLE == 0)); then
+		echo "# Did not find any casts."
+	fi
+}
+
+# ?dd
+
+function _list_comment 
+{
+	echo "[ List of comment ]"
+
+	SELECT DISTINCT tt.nspname AS "Schema", tt.name AS "Name", 
+		tt.object AS "Object", d.description AS "Description"
+	FROM (
+		SELECT p.oid as oid, p.tableoid as tableoid,
+			n.nspname as nspname,
+			CAST(p.proname AS pg_catalog.text) as name,  
+			CAST('aggregate' AS pg_catalog.text) as object
+		FROM pg_catalog.pg_proc p
+			LEFT JOIN pg_catalog.pg_namespace n ON n.oid = p.pronamespace
+		WHERE p.proisagg AND pg_catalog.pg_function_is_visible(p.oid)
+		UNION ALL
+		SELECT p.oid as oid, p.tableoid as tableoid, n.nspname as nspname,
+			CAST(p.proname AS pg_catalog.text) as name,  
+			CAST('function' AS pg_catalog.text) as object
+		FROM pg_catalog.pg_proc p
+			LEFT JOIN pg_catalog.pg_namespace n ON n.oid = p.pronamespace
+		WHERE p.prorettype <> 'pg_catalog.cstring'::pg_catalog.regtype
+			AND p.proargtypes[0] <> 'pg_catalog.cstring'::pg_catalog.regtype
+			AND NOT p.proisagg AND pg_catalog.pg_function_is_visible(p.oid)
+		UNION ALL
+		SELECT o.oid as oid, o.tableoid as tableoid, n.nspname as nspname,
+			CAST(o.oprname AS pg_catalog.text) as name,  
+			CAST('operator' AS pg_catalog.text) as object
+		FROM pg_catalog.pg_operator o
+			LEFT JOIN pg_catalog.pg_namespace n ON n.oid = o.oprnamespace
+		WHERE pg_catalog.pg_operator_is_visible(o.oid)
+		UNION ALL
+		SELECT t.oid as oid, t.tableoid as tableoid, n.nspname as nspname,
+			pg_catalog.format_type(t.oid, NULL) as name,  
+			CAST('data type' AS pg_catalog.text) as object
+		FROM pg_catalog.pg_type t
+			LEFT JOIN pg_catalog.pg_namespace n ON n.oid = t.typnamespace
+		WHERE pg_catalog.pg_type_is_visible(t.oid)
+		UNION ALL
+		SELECT c.oid as oid, c.tableoid as tableoid, n.nspname as nspname,
+			CAST(c.relname AS pg_catalog.text) as name,
+			CAST(
+				CASE c.relkind 	WHEN 'r' THEN 'table' 
+								WHEN 'v' THEN 'view' 
+								WHEN 'i' THEN 'index' 
+								WHEN 'S' THEN 'sequence' 
+				END  AS pg_catalog.text
+			) as object
+		FROM pg_catalog.pg_class c
+			LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+		WHERE c.relkind IN ('r', 'v', 'i', 'S') AND pg_catalog.pg_table_is_visible(c.oid)
+		UNION ALL
+		SELECT r.oid as oid, r.tableoid as tableoid, n.nspname as nspname,
+			CAST(r.rulename AS pg_catalog.text) as name,  
+			CAST('rule' AS pg_catalog.text) as object
+		FROM pg_catalog.pg_rewrite r
+			JOIN pg_catalog.pg_class c ON c.oid = r.ev_class
+			LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+		WHERE r.rulename != '_RETURN' AND pg_catalog.pg_table_is_visible(c.oid)
+		UNION ALL
+		SELECT t.oid as oid, t.tableoid as tableoid, n.nspname as nspname,
+			CAST(t.tgname AS pg_catalog.text) as name,  
+			CAST('trigger' AS pg_catalog.text) as object
+		FROM pg_catalog.pg_trigger t
+			JOIN pg_catalog.pg_class c ON c.oid = t.tgrelid
+			LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+		WHERE pg_catalog.pg_table_is_visible(c.oid)
+	) AS tt
+		JOIN pg_catalog.pg_description d 
+			ON (tt.oid = d.objoid AND tt.tableoid = d.classoid AND d.objsubid = 0)
+	ORDER BY 1, 2, 3;
+
+	if (($SQLCODE == 0 && $SQLNTUPLE == 0)); then
+		echo "# Did not find any comments."
+	fi
+}
+
+# ?dD
+
+function _list_domains 
+{
+	echo "[ List of domains ]"
+
+	SELECT n.nspname as "Schema",
+		t.typname as "Name",
+		pg_catalog.format_type(t.typbasetype, t.typtypmod) as "Type",
+		CASE WHEN t.typnotnull AND t.typdefault IS NOT NULL 
+				THEN 'not null default '||t.typdefault
+			WHEN t.typnotnull AND t.typdefault IS NULL 
+				THEN 'not null'
+			WHEN NOT t.typnotnull AND t.typdefault IS NOT NULL 
+				THEN 'default '||t.typdefault
+			ELSE ''
+		END as "Modifier"
+	FROM pg_catalog.pg_type t
+		LEFT JOIN pg_catalog.pg_namespace n ON n.oid = t.typnamespace
+	WHERE t.typtype = 'd' AND pg_catalog.pg_type_is_visible(t.oid)
+	ORDER BY 1, 2;
+
+    if (($SQLCODE == 0 && $SQLNTUPLE == 0)); then
+		echo "# Did not find any domains."
+    fi
+}
+
+# ?df
+
+function _list_functions()
+{
+	echo "[ List of functions ]"
+
+	if [ $# -lt 1 ]; then
+
+	SELECT CASE WHEN p.proretset THEN 'setof ' ELSE '' END ||
+		pg_catalog.format_type(p.prorettype, NULL) as "Result data type",
+		n.nspname as "Schema",
+		p.proname as "Name",
+		pg_catalog.oidvectortypes(p.proargtypes) as "Argument data types"
+	FROM pg_catalog.pg_proc p
+		LEFT JOIN pg_catalog.pg_namespace n ON n.oid = p.pronamespace
+	WHERE p.prorettype <> 'pg_catalog.cstring'::pg_catalog.regtype
+		AND p.proargtypes[0] <> 'pg_catalog.cstring'::pg_catalog.regtype
+		AND NOT p.proisagg
+		AND pg_catalog.pg_function_is_visible(p.oid)
+	ORDER BY 2, 3, 1, 4;
+
+	else
+
+	SELECT CASE WHEN p.proretset THEN 'setof ' ELSE '' END ||
+		pg_catalog.format_type(p.prorettype, NULL) as "Result data type",
+		n.nspname as "Schema",
+		p.proname as "Name",
+		pg_catalog.oidvectortypes(p.proargtypes) as "Argument data types",
+		u.usename as "Owner",
+		l.lanname as "Language",
+		p.prosrc as "Source code",
+		pg_catalog.obj_description(p.oid, 'pg_proc') as "Description"
+	FROM pg_catalog.pg_proc p
+		LEFT JOIN pg_catalog.pg_namespace n ON n.oid = p.pronamespace
+		LEFT JOIN pg_catalog.pg_language l ON l.oid = p.prolang
+		LEFT JOIN pg_catalog.pg_user u ON u.usesysid = p.proowner
+	WHERE p.prorettype <> 'pg_catalog.cstring'::pg_catalog.regtype
+		AND p.proargtypes[0] <> 'pg_catalog.cstring'::pg_catalog.regtype
+		AND NOT p.proisagg
+		AND pg_catalog.pg_function_is_visible(p.oid)
+	ORDER BY 2, 3, 1, 4;
+
+	fi
+
+	if (($SQLCODE == 0 && $SQLNTUPLE == 0)); then
+		echo "# Did not find any functions."
+	fi
+}  
+
+# ?dn
+
+function _list_schemas()
+{
+	echo "[ List of schemas ]"
+
+	SELECT n.nspname AS "Name", u.usename AS "Owner"
+	FROM pg_catalog.pg_namespace n LEFT JOIN pg_catalog.pg_user u
+		ON n.nspowner=u.usesysid
+	ORDER BY 1;
+
+    if (($SQLCODE == 0 && $SQLNTUPLE == 0)); then
+		echo "# Did not find any schames."
+    fi
+}
+
+# ?do
+
+function _list_operators 
+{
+	echo "[ List of operators ]"
+
+	SELECT n.nspname as "Schema",
+		o.oprname AS "Name",
+		CASE WHEN o.oprkind='l' THEN NULL ELSE pg_catalog.format_type(o.oprleft, NULL) 
+		END AS "Left arg type",
+		CASE WHEN o.oprkind='r' THEN NULL ELSE pg_catalog.format_type(o.oprright, NULL) 
+		END AS "Right arg type",
+		pg_catalog.format_type(o.oprresult, NULL) AS "Result type",
+		coalesce(pg_catalog.obj_description(o.oid, 'pg_operator'),
+		pg_catalog.obj_description(o.oprcode, 'pg_proc')) AS "Description"
+	FROM pg_catalog.pg_operator o
+		LEFT JOIN pg_catalog.pg_namespace n ON n.oid = o.oprnamespace
+	WHERE pg_catalog.pg_operator_is_visible(o.oid)
+	ORDER BY 1, 2, 3, 4;
+
+    if (($SQLCODE == 0 && $SQLNTUPLE == 0)); then
+		echo "# Did not find any operations."
+    fi
+}  
+
+# ?dl, ?lo_list
+
+function _lo_list 
+{
+	echo "[ List of large objects ]"
+
+	SELECT 	loid as "ID",
+			pg_catalog.obj_description(loid, 'pg_largeobject') as "Description"
+	FROM (SELECT DISTINCT loid FROM pg_catalog.pg_largeobject) x
+	ORDER BY 1;
+
+    if (($SQLCODE == 0 && $SQLNTUPLE == 0)); then
+		echo "# Did not find any large objects."
+    fi
+}
+
+# ?dT
+
+function _list_types()
+{
+	echo "[ List of data types ]"
+
+	if [ $# -lt 1 ]; then
+
+	SELECT n.nspname as "Schema",
+		pg_catalog.format_type(t.oid, NULL) AS "Name",
+		pg_catalog.obj_description(t.oid, 'pg_type') as "Description"
+	FROM pg_catalog.pg_type t
+		LEFT JOIN pg_catalog.pg_namespace n ON n.oid = t.typnamespace
+	WHERE (t.typrelid = 0 OR 
+		(SELECT c.relkind = 'c' FROM pg_catalog.pg_class c WHERE c.oid = t.typrelid)) 
+		AND t.typname !~ '^_' AND pg_catalog.pg_type_is_visible(t.oid)
+	ORDER BY 1, 2;
+
+	else
+
+	SELECT n.nspname as "Schema",
+		pg_catalog.format_type(t.oid, NULL) AS "Name",
+		t.typname AS "Internal name",
+		CASE WHEN t.typrelid != 0 THEN CAST('tuple' AS pg_catalog.text)
+			WHEN t.typlen < 0 THEN CAST('var' AS pg_catalog.text)
+			ELSE CAST(t.typlen AS pg_catalog.text)
+		END AS "Size",
+		pg_catalog.obj_description(t.oid, 'pg_type') as "Description"
+	FROM pg_catalog.pg_type t
+		LEFT JOIN pg_catalog.pg_namespace n ON n.oid = t.typnamespace
+	WHERE (t.typrelid = 0 OR 
+		(SELECT c.relkind = 'c' FROM pg_catalog.pg_class c WHERE c.oid = t.typrelid)) 
+		AND t.typname !~ '^_' AND pg_catalog.pg_type_is_visible(t.oid)
+	ORDER BY 1, 2;
+
+	fi
+
+	if (($SQLCODE == 0 && $SQLNTUPLE == 0)); then
+		echo "# Did not find any data types."
+	fi
+}  
+
+
+#****************************************************
+#	                  Status 
+#****************************************************
+
+# ?dbc, ?dbconnection
+
+function _show_connection 
+{
+	exec_sql -Lm 
+} 
+
+# ?opt, ?option
+
+function _show_exec_sql_option 
+{
+	echo "# EXEC_SQL_OPTION"
+	echo "  Usage:"
+	echo "  set EXEC_SQL_OPTION DEFAULT ;   --- reset DEFAULT"
+	echo "  set EXEC_SQL_OPTION CGI ;       --- set CGI mode"
+	echo "  set <option_name>[=value] ;"
+	echo " "
+	echo "  ex)"
+	echo "  SET OPTION_ECHO; or SET OPTION_ECHO=ON; or SET OPTION_ECHO=TRUE;"
+	echo "  SET OPTION_BOTTOM=OFF; or SET OPTION_BOTTOM=FALSE;"
+	echo "  set OPTION_SEPARATOR=',';"
+	echo "  set OPTION_NULLSTRING=\"\\N\";"
+	echo " "
+	echo "+-------------------+-------------------------+-------+---------------"
+	echo "|   <option_name>   |      Comment            |DEFAULT| Current Value "
+	echo "+-------------------+-------------------------+-------+---------------"
+	echo "| OPTION_ECHO       | turn on/off ECHO query  | OFF   | $OPTION_ECHO"
+	echo "| OPTION_QUIET      | turn on/off QUIET mode  | OFF   | $OPTION_QUIET"
+	echo "| OPTION_HEADER     | turn on/off TOP_header  | ON    | $OPTION_HEADER"
+	echo "| OPTION_BOTTOM     | turn on/off BOTTOM_print| ON    | $OPTION_BOTTOM"
+	echo "| OPTION_ALIGNMENT  | turn on/off ALIGNMENT   | ON    | $OPTION_ALIGNMENT"
+	echo "| OPTION_FRAME      | turn on/off OUTER_FRAME | OFF   | $OPTION_FRAME"
+	echo "| OPTION_EXPANDED   | turn on/off EXPANDED    | OFF   | $OPTION_EXPANDED"
+	echo "| OPTION_SEPARATOR  | set SEPARATOR character | ''    | '$OPTION_SEPARATOR'"
+	echo "| OPTION_NULLSTRING | set NULL string         | \"\"    | \"$OPTION_NULLSTRING\" "
+	echo "| OPTION_ZEROSTRING | set ZERO string         | \"\"    | \"$OPTION_ZEROSTRING\" "
+	echo "| OPTION_CAPTION    | set CAPTION             | \"\"    | \"$OPTION_CAPTION\" "
+	echo "+-------------------+-------------------------+-------+---------------"
+	echo ""
+	echo "[ CGI_mode / HTML_output_mode ]"
+	echo "+-------------------+-------------------------+-------+---------------"
+	echo "|   <option_name>   |      Comment            |DEFAULT| Current Value "
+	echo "+-------------------+-------------------------+-------+---------------"
+	echo "| OPTION_HTML       | turn on/off HTML mode   | OFF   | $OPTION_HTML"
+	echo "| OPTION_TABLETAG   | set HTML table tag      | \"\"    | \"$OPTION_TABLETAG\" "
+	echo "| OPTION_HEADERTR   | set HTML header <TR>    | \"\"    | \"$OPTION_HEADERTR\" "
+	echo "| OPTION_HEADERTH   | set HTML header <TH>    | \"\"    | \"$OPTION_HEADERTH\" "
+	echo "| OPTION_BODYTAG    | set HTML body <TD> tag  | \"\"    | \"$OPTION_BODYTAG\" "
+	echo "| OPTION_INPUTTAG   | turn on/off INPUT tag   | OFF   | $OPTION_INPUTTAG"
+	echo "| OPTION_INPUTSIZE  | set HTML input tag SIZE | \"\"    | \"$OPTION_INPUTSIZE\""
+	echo "+-------------------+-------------------------+-------+---------------"
+}
+
+# ?sta, ?status
+
+function _show_sqlcode  # status after SQL execution
+{
+	exec_sql -s
+}
+
+# ?ver, ?version
+
+function _show_version 
+{
+	OPTION_WORK=$OPTION_QUIET
+	set OPTION_QUIET;
+	select version() into :version;
+	set OPTION_QUIET=$OPTION_WORK;
+
+	echo "# $version"
+	exec_sql -v
+	echo "# Pgbashrc Version $PGBASHRC_VERSION"
+} 
+
+#****************************************************
+#	                    Help 
+#****************************************************
+
+# ??
+
+function _help_usage 
+{
+	echo "# Usage:"
+	echo "  Type '?'  for help with pgbash commands."
+	echo "  Type 'exit' or 'Ctrl+D' to terminate Pgbash."
+	echo ""
+}
+
+# ??sql
+
+function	_help_sql
+{
+	case "$*" in
+
+	"abort" | "ABORT" )
+	echo "Command:     ABORT"
+	echo "Description: abort the current transaction"
+	echo "Syntax:"
+	echo "ABORT [ WORK | TRANSACTION ]"
+	;;
+
+	"alter aggregate" | "ALTER AGGREGATE" )
+	echo "Command:     ALTER AGGREGATE"
+	echo "Description: change the definition of an aggregate function"
+	echo "Syntax:"
+	echo "ALTER AGGREGATE name ( type ) RENAME TO newname"
+	;;
+
+	"alter conversion" | "ALTER CONVERSION" )
+	echo "Command:     ALTER CONVERSION"
+	echo "Description: change the definition of a conversion"
+	echo "Syntax:"
+	echo "ALTER CONVERSION name RENAME TO newname"
+	;;
+
+	"alter database" | "ALTER DATABASE" )
+	echo "Command:     ALTER DATABASE"
+	echo "Description: change a database"
+	echo "Syntax:"
+	echo "ALTER DATABASE name SET parameter { TO | = } { value | DEFAULT }"
+	echo "ALTER DATABASE name RESET parameter"
+	echo ""
+	echo "ALTER DATABASE name RENAME TO newname"
+	;;
+
+	"alter domain" | "ALTER DOMAIN" )
+	echo "Command:     ALTER DOMAIN"
+	echo "Description: change the definition of a domain"
+	echo "Syntax:"
+	echo "ALTER DOMAIN name"
+	echo "    { SET DEFAULT expression | DROP DEFAULT }"
+	echo "ALTER DOMAIN name"
+	echo "    { SET | DROP } NOT NULL"
+	echo "ALTER DOMAIN name"
+	echo "    ADD domain_constraint"
+	echo "ALTER DOMAIN name"
+	echo "    DROP CONSTRAINT constraint_name [ RESTRICT | CASCADE ]"
+	echo "ALTER DOMAIN name"
+	echo "    OWNER TO new_owner"
+	;;
+
+	"alter function" | "ALTER FUNCTION" )
+	echo "Command:     ALTER FUNCTION"
+	echo "Description: change the definition of a function"
+	echo "Syntax:"
+	echo "ALTER FUNCTION name ( [ type [, ...] ] ) RENAME TO newname"
+	;;
+
+	"alter group" | "ALTER GROUP" )
+	echo "Command:     ALTER GROUP"
+	echo "Description: change a user group"
+	echo "Syntax:"
+	echo "ALTER GROUP groupname ADD USER username [, ... ]"
+	echo "ALTER GROUP groupname DROP USER username [, ... ]"
+	echo ""
+	echo "ALTER GROUP groupname RENAME TO newname"
+	;;
+
+	"alter language" | "ALTER LANGUAGE" )
+	echo "Command:     ALTER LANGUAGE"
+	echo "Description: change the definition of a procedural language"
+	echo "Syntax:"
+	echo "ALTER LANGUAGE name RENAME TO newname"
+	;;
+
+	"alter operator class" | "ALTER OPERATOR CLASS" )
+	echo "Command:     ALTER OPERATOR CLASS"
+	echo "Description: change the definition of an operator class"
+	echo "Syntax:"
+	echo "ALTER OPERATOR CLASS name USING index_method RENAME TO newname"
+	;;
+
+	"alter schema" | "ALTER SCHEMA" )
+	echo "Command:     ALTER SCHEMA"
+	echo "Description: change the definition of a schema"
+	echo "Syntax:"
+	echo "ALTER SCHEMA name RENAME TO newname"
+	;;
+
+	"alter sequence" | "ALTER SEQUENCE" )
+	echo "Command:     ALTER SEQUENCE"
+	echo "Description: alter the definition of a sequence generator"
+	echo "Syntax:"
+	echo "ALTER SEQUENCE name [ INCREMENT [ BY ] increment ]"
+	echo "    [ MINVALUE minvalue | NO MINVALUE ] [ MAXVALUE maxvalue | NO MAXVALUE ]"
+	echo "    [ RESTART [ WITH ] start ] [ CACHE cache ] [ [ NO ] CYCLE ]"
+	;;
+
+	"alter table" | "ALTER TABLE" )
+	echo "Command:     ALTER TABLE"
+	echo "Description: change the definition of a table"
+	echo "Syntax:"
+	echo "ALTER TABLE [ ONLY ] name [ * ]"
+	echo "    ADD [ COLUMN ] column type [ column_constraint [ ... ] ]"
+	echo "ALTER TABLE [ ONLY ] name [ * ]"
+	echo "    DROP [ COLUMN ] column [ RESTRICT | CASCADE ]"
+	echo "ALTER TABLE [ ONLY ] name [ * ]"
+	echo "    ALTER [ COLUMN ] column { SET DEFAULT expression | DROP DEFAULT }"
+	echo "ALTER TABLE [ ONLY ] name [ * ]"
+	echo "    ALTER [ COLUMN ] column { SET | DROP } NOT NULL"
+	echo "ALTER TABLE [ ONLY ] name [ * ]"
+	echo "    ALTER [ COLUMN ] column SET STATISTICS integer"
+	echo "ALTER TABLE [ ONLY ] name [ * ]"
+	echo "    ALTER [ COLUMN ] column SET STORAGE { PLAIN | EXTERNAL | EXTENDED | MAIN }"
+	echo "ALTER TABLE [ ONLY ] name [ * ]"
+	echo "    SET WITHOUT OIDS"
+	echo "ALTER TABLE [ ONLY ] name [ * ]"
+	echo "    RENAME [ COLUMN ] column TO new_column"
+	echo "ALTER TABLE name"
+	echo "    RENAME TO new_name"
+	echo "ALTER TABLE [ ONLY ] name [ * ]"
+	echo "    ADD table_constraint"
+	echo "ALTER TABLE [ ONLY ] name [ * ]"
+	echo "    DROP CONSTRAINT constraint_name [ RESTRICT | CASCADE ]"
+	echo "ALTER TABLE name"
+	echo "    OWNER TO new_owner"
+	echo "ALTER TABLE name"
+	echo "    CLUSTER ON index_name"
+	;;
+
+	"alter trigger" | "ALTER TRIGGER" )
+	echo "Command:     ALTER TRIGGER"
+	echo "Description: change the definition of a trigger"
+	echo "Syntax:"
+	echo "ALTER TRIGGER name ON table RENAME TO newname"
+	;;
+
+	"alter user" | "ALTER USER" )
+	echo "Command:     ALTER USER"
+	echo "Description: change a database user account"
+	echo "Syntax:"
+	echo "ALTER USER name [ [ WITH ] option [ ... ] ]"
+	echo ""
+	echo "where option can be:"
+	echo ""
+	echo "    [ ENCRYPTED | UNENCRYPTED ] PASSWORD 'password' "
+	echo "    | CREATEDB | NOCREATEDB"
+	echo "    | CREATEUSER | NOCREATEUSER "
+	echo "    | VALID UNTIL 'abstime'"
+	echo ""
+	echo "ALTER USER name RENAME TO newname"
+	echo ""
+	echo "ALTER USER name SET parameter { TO | = } { value | DEFAULT }"
+	echo "ALTER USER name RESET parameter"
+	;;
+
+	"analyze" | "ANALYZE" )
+	echo "Command:     ANALYZE"
+	echo "Description: collect statistics about a database"
+	echo "Syntax:"
+	echo "ANALYZE [ VERBOSE ] [ table [ (column [, ...] ) ] ]"
+	;;
+
+	"begin" | "BEGIN" )
+	echo "Command:     BEGIN"
+	echo "Description: start a transaction block"
+	echo "Syntax:"
+	echo "BEGIN [ WORK | TRANSACTION ]"
+	;;
+
+	"checkpoint" | "CHECKPOINT" )
+	echo "Command:     CHECKPOINT"
+	echo "Description: force a transaction log checkpoint"
+	echo "Syntax:"
+	echo "CHECKPOINT"
+	;;
+
+	"close" | "CLOSE" )
+	echo "Command:     CLOSE"
+	echo "Description: close a cursor"
+	echo "Syntax:"
+	echo "CLOSE name"
+	;;
+
+	"cluster" | "CLUSTER" )
+	echo "Command:     CLUSTER"
+	echo "Description: cluster a table according to an index"
+	echo "Syntax:"
+	echo "CLUSTER indexname ON tablename"
+	echo "CLUSTER tablename"
+	echo "CLUSTER"
+	;;
+
+	"comment" | "COMMENT" )
+	echo "Command:     COMMENT"
+	echo "Description: define or change the comment of an object"
+	echo "Syntax:"
+	echo "COMMENT ON"
+	echo "{"
+	echo "  TABLE object_name |"
+	echo "  COLUMN table_name.column_name |"
+	echo "  AGGREGATE agg_name (agg_type) |"
+	echo "  CONSTRAINT constraint_name ON table_name |"
+	echo "  DATABASE object_name |"
+	echo "  DOMAIN object_name |"
+	echo "  FUNCTION func_name (arg1_type, arg2_type, ...) |"
+	echo "  INDEX object_name |"
+	echo "  OPERATOR op (leftoperand_type, rightoperand_type) |"
+	echo "  RULE rule_name ON table_name |"
+	echo "  SCHEMA object_name |"
+	echo "  SEQUENCE object_name |"
+	echo "  TRIGGER trigger_name ON table_name |"
+	echo "  TYPE object_name |"
+	echo "  VIEW object_name"
+	echo "} IS 'text'"
+	;;
+
+	"commit" | "COMMIT" )
+	echo "Command:     COMMIT"
+	echo "Description: commit the current transaction"
+	echo "Syntax:"
+	echo "COMMIT [ WORK | TRANSACTION ]"
+	;;
+
+	"copy" | "COPY" )
+	echo "Command:     COPY"
+	echo "Description: copy data between a file and a table"
+	echo "Syntax:"
+	echo "COPY tablename [ ( column [, ...] ) ]"
+	echo "    FROM { 'filename' | STDIN }"
+	echo "    [ [ WITH ] "
+	echo "          [ BINARY ] "
+	echo "          [ OIDS ]"
+	echo "          [ DELIMITER [ AS ] 'delimiter' ]"
+	echo "          [ NULL [ AS ] 'null string' ] ]"
+	echo ""
+	echo "COPY tablename [ ( column [, ...] ) ]"
+	echo "    TO { 'filename' | STDOUT }"
+	echo "    [ [ WITH ] "
+	echo "          [ BINARY ]"
+	echo "          [ OIDS ]"
+	echo "          [ DELIMITER [ AS ] 'delimiter' ]"
+	echo "          [ NULL [ AS ] 'null string' ] ]"
+	;;
+
+	"create aggregate" | "CREATE AGGREGATE" )
+	echo "Command:     CREATE AGGREGATE"
+	echo "Description: define a new aggregate function"
+	echo "Syntax:"
+	echo "CREATE AGGREGATE name ("
+	echo "    BASETYPE = input_data_type,"
+	echo "    SFUNC = sfunc,"
+	echo "    STYPE = state_data_type"
+	echo "    [ , FINALFUNC = ffunc ]"
+	echo "    [ , INITCOND = initial_condition ]"
+	echo ")"
+	;;
+
+	"create cast" | "CREATE CAST" )
+	echo "Command:     CREATE CAST"
+	echo "Description: define a new cast"
+	echo "Syntax:"
+	echo "CREATE CAST (sourcetype AS targettype)"
+	echo "    WITH FUNCTION funcname (argtype)"
+	echo "    [ AS ASSIGNMENT | AS IMPLICIT ]"
+	echo ""
+	echo "CREATE CAST (sourcetype AS targettype)"
+	echo "    WITHOUT FUNCTION"
+	echo "    [ AS ASSIGNMENT | AS IMPLICIT ]"
+	;;
+
+	"create constraint trigger" | "CREATE CONSTRAINT TRIGGER" )
+	echo "Command:     CREATE CONSTRAINT TRIGGER"
+	echo "Description: define a new constraint trigger"
+	echo "Syntax:"
+	echo "CREATE CONSTRAINT TRIGGER name"
+	echo "    AFTER events ON"
+	echo "    tablename constraint attributes"
+	echo "    FOR EACH ROW EXECUTE PROCEDURE funcname ( args )"
+	;;
+
+	"create conversion" | "CREATE CONVERSION" )
+	echo "Command:     CREATE CONVERSION"
+	echo "Description: define a new encoding conversion"
+	echo "Syntax:"
+	echo "CREATE [DEFAULT] CONVERSION name"
+	echo "    FOR source_encoding TO dest_encoding FROM funcname"
+	;;
+
+	"create database" | "CREATE DATABASE" )
+	echo "Command:     CREATE DATABASE"
+	echo "Description: create a new database"
+	echo "Syntax:"
+	echo "CREATE DATABASE name"
+	echo "    [ [ WITH ] [ OWNER [=] dbowner ]"
+	echo "           [ LOCATION [=] 'dbpath' ]"
+	echo "           [ TEMPLATE [=] template ]"
+	echo "           [ ENCODING [=] encoding ] ]"
+	;;
+
+	"create domain" | "CREATE DOMAIN" )
+	echo "Command:     CREATE DOMAIN"
+	echo "Description: define a new domain"
+	echo "Syntax:"
+	echo "CREATE DOMAIN name [AS] data_type"
+	echo "    [ DEFAULT expression ]"
+	echo "    [ constraint [ ... ] ]"
+	echo ""
+	echo "where constraint is:"
+	echo ""
+	echo "[ CONSTRAINT constraint_name ]"
+	echo "{ NOT NULL | NULL | CHECK (expression) }"
+	;;
+
+	"create function" | "CREATE FUNCTION" )
+	echo "Command:     CREATE FUNCTION"
+	echo "Description: define a new function"
+	echo "Syntax:"
+	echo "CREATE [ OR REPLACE ] FUNCTION name ( [ argtype [, ...] ] )"
+	echo "    RETURNS rettype"
+	echo "  { LANGUAGE langname"
+	echo "    | IMMUTABLE | STABLE | VOLATILE"
+	echo "    | CALLED ON NULL INPUT | RETURNS NULL ON NULL INPUT | STRICT"
+	echo "    | [EXTERNAL] SECURITY INVOKER | [EXTERNAL] SECURITY DEFINER"
+	echo "    | AS 'definition'"
+	echo "    | AS 'obj_file', 'link_symbol'"
+	echo "  } ..."
+	echo "    [ WITH ( attribute [, ...] ) ]"
+	;;
+
+	"create group" | "CREATE GROUP" )
+	echo "Command:     CREATE GROUP"
+	echo "Description: define a new user group"
+	echo "Syntax:"
+	echo "CREATE GROUP name [ [ WITH ] option [ ... ] ]"
+	echo ""
+	echo "where option can be:"
+	echo ""
+	echo "     SYSID gid"
+	echo "   | USER  username [, ...]"
+	;;
+
+	"create index" | "CREATE INDEX" )
+	echo "Command:     CREATE INDEX"
+	echo "Description: define a new index"
+	echo "Syntax:"
+	echo "CREATE [ UNIQUE ] INDEX name ON table [ USING method ]"
+	echo "    ( { column | ( expression ) } [ opclass ] [, ...] )"
+	echo "    [ WHERE predicate ]"
+	;;
+
+	"create language" | "CREATE LANGUAGE" )
+	echo "Command:     CREATE LANGUAGE"
+	echo "Description: define a new procedural language"
+	echo "Syntax:"
+	echo "CREATE [ TRUSTED ] [ PROCEDURAL ] LANGUAGE name"
+	echo "    HANDLER call_handler [ VALIDATOR valfunction ]"
+	;;
+
+	"create operator class" | "CREATE OPERATOR CLASS" )
+	echo "Command:     CREATE OPERATOR CLASS"
+	echo "Description: define a new operator class"
+	echo "Syntax:"
+	echo "CREATE OPERATOR CLASS name [ DEFAULT ] FOR TYPE data_type USING index_method AS"
+	echo "  {  OPERATOR strategy_number operator_name [ ( op_type, op_type ) ] [ RECHECK ]"
+	echo "   | FUNCTION support_number funcname ( argument_type [, ...] )"
+	echo "   | STORAGE storage_type"
+	echo "  } [, ... ]"
+	;;
+
+	"create operator" | "CREATE OPERATOR" )
+	echo "Command:     CREATE OPERATOR"
+	echo "Description: define a new operator"
+	echo "Syntax:"
+	echo "CREATE OPERATOR name ("
+	echo "    PROCEDURE = funcname"
+	echo "    [, LEFTARG = lefttype ] [, RIGHTARG = righttype ]"
+	echo "    [, COMMUTATOR = com_op ] [, NEGATOR = neg_op ]"
+	echo "    [, RESTRICT = res_proc ] [, JOIN = join_proc ]"
+	echo "    [, HASHES ] [, MERGES ]"
+	echo "    [, SORT1 = left_sort_op ] [, SORT2 = right_sort_op ]"
+	echo "    [, LTCMP = less_than_op ] [, GTCMP = greater_than_op ]"
+	echo ")"
+	;;
+
+	"create rule" | "CREATE RULE" )
+	echo "Command:     CREATE RULE"
+	echo "Description: define a new rewrite rule"
+	echo "Syntax:"
+	echo "CREATE [ OR REPLACE ] RULE name AS ON event"
+	echo "    TO table [ WHERE condition ]"
+	echo "    DO [ INSTEAD ] { NOTHING | command | ( command ; command ... ) }"
+	;;
+
+	"create schema" | "CREATE SCHEMA" )
+	echo "Command:     CREATE SCHEMA"
+	echo "Description: define a new schema"
+	echo "Syntax:"
+	echo "CREATE SCHEMA schemaname [ AUTHORIZATION username ] [ schema_element [ ... ] ]"
+	echo "CREATE SCHEMA AUTHORIZATION username [ schema_element [ ... ] ]"
+	;;
+
+	"create sequence" | "CREATE SEQUENCE" )
+	echo "Command:     CREATE SEQUENCE"
+	echo "Description: define a new sequence generator"
+	echo "Syntax:"
+	echo "CREATE [ TEMPORARY | TEMP ] SEQUENCE name [ INCREMENT [ BY ] increment ]"
+	echo "    [ MINVALUE minvalue | NO MINVALUE ] [ MAXVALUE maxvalue | NO MAXVALUE ]"
+	echo "    [ START [ WITH ] start ] [ CACHE cache ] [ [ NO ] CYCLE ]"
+	;;
+
+	"create table" | "CREATE TABLE" )
+	echo "Command:     CREATE TABLE"
+	echo "Description: define a new table"
+	echo "Syntax:"
+	echo "CREATE [ [ GLOBAL | LOCAL ] { TEMPORARY | TEMP } ] TABLE table_name ("
+	echo "  { column_name data_type [ DEFAULT default_expr ] [ column_constraint [ ... ] ]"
+	echo "    | table_constraint"
+	echo "    | LIKE parent_table [ { INCLUDING | EXCLUDING } DEFAULTS ] }  [, ... ]"
+	echo ")"
+	echo "[ INHERITS ( parent_table [, ... ] ) ]"
+	echo "[ WITH OIDS | WITHOUT OIDS ]"
+	echo "[ ON COMMIT { PRESERVE ROWS | DELETE ROWS | DROP } ]"
+	echo ""
+	echo "where column_constraint is:"
+	echo ""
+	echo "[ CONSTRAINT constraint_name ]"
+	echo "{ NOT NULL | NULL | UNIQUE | PRIMARY KEY |"
+	echo "  CHECK (expression) |"
+	echo "  REFERENCES reftable [ ( refcolumn ) ] [ MATCH FULL | MATCH PARTIAL | MATCH SIMPLE ]"
+	echo "    [ ON DELETE action ] [ ON UPDATE action ] }"
+	echo "[ DEFERRABLE | NOT DEFERRABLE ] [ INITIALLY DEFERRED | INITIALLY IMMEDIATE ]"
+	echo ""
+	echo "and table_constraint is:"
+	echo ""
+	echo "[ CONSTRAINT constraint_name ]"
+	echo "{ UNIQUE ( column_name [, ... ] ) |"
+	echo "  PRIMARY KEY ( column_name [, ... ] ) |"
+	echo "  CHECK ( expression ) |"
+	echo "  FOREIGN KEY ( column_name [, ... ] ) REFERENCES reftable [ ( refcolumn [, ... ] ) ]"
+	echo "    [ MATCH FULL | MATCH PARTIAL | MATCH SIMPLE ] [ ON DELETE action ] [ ON UPDATE action ] }"
+	echo "[ DEFERRABLE | NOT DEFERRABLE ] [ INITIALLY DEFERRED | INITIALLY IMMEDIATE ]"
+	;;
+
+	"create table as" | "CREATE TABLE AS" )
+	echo "Command:     CREATE TABLE AS"
+	echo "Description: create a new table from the results of a query"
+	echo "Syntax:"
+	echo "CREATE [ [ GLOBAL | LOCAL ] { TEMPORARY | TEMP } ] TABLE table_name [ (column_name [, ...] ) ]"
+	echo "    AS query"
+	;;
+
+	"create trigger" | "CREATE TRIGGER" )
+	echo "Command:     CREATE TRIGGER"
+	echo "Description: define a new trigger"
+	echo "Syntax:"
+	echo "CREATE TRIGGER name { BEFORE | AFTER } { event [ OR ... ] }"
+	echo "    ON table [ FOR [ EACH ] { ROW | STATEMENT } ]"
+	echo "    EXECUTE PROCEDURE funcname ( arguments )"
+	;;
+
+	"create type" | "CREATE TYPE" )
+	echo "Command:     CREATE TYPE"
+	echo "Description: define a new data type"
+	echo "Syntax:"
+	echo "CREATE TYPE name AS"
+	echo "    ( attribute_name data_type [, ... ] )"
+	echo ""
+	echo "CREATE TYPE name ("
+	echo "    INPUT = input_function,"
+	echo "    OUTPUT = output_function"
+	echo "    [ , RECEIVE = receive_function ]"
+	echo "    [ , SEND = send_function ]"
+	echo "    [ , INTERNALLENGTH = { internallength | VARIABLE } ]"
+	echo "    [ , PASSEDBYVALUE ]"
+	echo "    [ , ALIGNMENT = alignment ]"
+	echo "    [ , STORAGE = storage ]"
+	echo "    [ , DEFAULT = default ]"
+	echo "    [ , ELEMENT = element ]"
+	echo "    [ , DELIMITER = delimiter ]"
+	echo ")"
+	;;
+
+	"create user" | "CREATE USER" )
+	echo "Command:     CREATE USER"
+	echo "Description: define a new database user account"
+	echo "Syntax:"
+	echo "CREATE USER name [ [ WITH ] option [ ... ] ]"
+	echo ""
+	echo "where option can be:"
+	echo "    "
+	echo "      SYSID uid "
+	echo "    | [ ENCRYPTED | UNENCRYPTED ] PASSWORD 'password'"
+	echo "    | CREATEDB | NOCREATEDB"
+	echo "    | CREATEUSER | NOCREATEUSER"
+	echo "    | IN GROUP groupname [, ...]"
+	echo "    | VALID UNTIL 'abstime'"
+	;;
+
+	"create view" | "CREATE VIEW" )
+	echo "Command:     CREATE VIEW"
+	echo "Description: define a new view"
+	echo "Syntax:"
+	echo "CREATE [ OR REPLACE ] VIEW name [ ( column_name [, ...] ) ] AS query"
+	;;
+
+	"deallocate" | "DEALLOCATE" )
+	echo "Command:     DEALLOCATE"
+	echo "Description: deallocate a prepared statement"
+	echo "Syntax:"
+	echo "DEALLOCATE [ PREPARE ] plan_name"
+	;;
+
+	"declare" | "DECLARE" )
+	echo "Command:     DECLARE"
+	echo "Description: define a cursor"
+	echo "Syntax:"
+	echo "DECLARE name [ BINARY ] [ INSENSITIVE ] [ [ NO ] SCROLL ]"
+	echo "    CURSOR [ { WITH | WITHOUT } HOLD ] FOR query"
+	echo "    [ FOR { READ ONLY | UPDATE [ OF column [, ...] ] } ]"
+	;;
+
+	"delete" | "DELETE" )
+	echo "Command:     DELETE"
+	echo "Description: delete rows of a table"
+	echo "Syntax:"
+	echo "DELETE FROM [ ONLY ] table [ WHERE condition ]"
+	;;
+
+	"drop aggregate" | "DROP AGGREGATE" )
+	echo "Command:     DROP AGGREGATE"
+	echo "Description: remove an aggregate function"
+	echo "Syntax:"
+	echo "DROP AGGREGATE name ( type ) [ CASCADE | RESTRICT ]"
+	;;
+
+	"drop cast" | "DROP CAST" )
+	echo "Command:     DROP CAST"
+	echo "Description: remove a cast"
+	echo "Syntax:"
+	echo "DROP CAST (sourcetype AS targettype) [ CASCADE | RESTRICT ]"
+	;;
+
+	"drop conversion" | "DROP CONVERSION" )
+	echo "Command:     DROP CONVERSION"
+	echo "Description: remove a conversion"
+	echo "Syntax:"
+	echo "DROP CONVERSION name [ CASCADE | RESTRICT ]"
+	;;
+
+	"drop database" | "DROP DATABASE" )
+	echo "Command:     DROP DATABASE"
+	echo "Description: remove a database"
+	echo "Syntax:"
+	echo "DROP DATABASE name"
+	;;
+
+	"drop domain" | "DROP DOMAIN" )
+	echo "Command:     DROP DOMAIN"
+	echo "Description: remove a domain"
+	echo "Syntax:"
+	echo "DROP DOMAIN name [, ...]  [ CASCADE | RESTRICT ]"
+	;;
+
+	"drop function" | "DROP FUNCTION" )
+	echo "Command:     DROP FUNCTION"
+	echo "Description: remove a function"
+	echo "Syntax:"
+	echo "DROP FUNCTION name ( [ type [, ...] ] ) [ CASCADE | RESTRICT ]"
+	;;
+
+	"drop group" | "DROP GROUP" )
+	echo "Command:     DROP GROUP"
+	echo "Description: remove a user group"
+	echo "Syntax:"
+	echo "DROP GROUP name"
+	;;
+
+	"drop index" | "DROP INDEX" )
+	echo "Command:     DROP INDEX"
+	echo "Description: remove an index"
+	echo "Syntax:"
+	echo "DROP INDEX name [, ...] [ CASCADE | RESTRICT ]"
+	;;
+
+	"drop language" | "DROP LANGUAGE" )
+	echo "Command:     DROP LANGUAGE"
+	echo "Description: remove a procedural language"
+	echo "Syntax:"
+	echo "DROP [ PROCEDURAL ] LANGUAGE name [ CASCADE | RESTRICT ]"
+	;;
+
+	"drop operator class" | "DROP OPERATOR CLASS" )
+	echo "Command:     DROP OPERATOR CLASS"
+	echo "Description: remove an operator class"
+	echo "Syntax:"
+	echo "DROP OPERATOR CLASS name USING index_method [ CASCADE | RESTRICT ]"
+	;;
+
+	"drop operator" | "DROP OPERATOR" )
+	echo "Command:     DROP OPERATOR"
+	echo "Description: remove an operator"
+	echo "Syntax:"
+	echo "DROP OPERATOR name ( lefttype | NONE , righttype | NONE ) [ CASCADE | RESTRICT ]"
+	;;
+
+	"drop rule" | "DROP RULE" )
+	echo "Command:     DROP RULE"
+	echo "Description: remove a rewrite rule"
+	echo "Syntax:"
+	echo "DROP RULE name ON relation [ CASCADE | RESTRICT ]"
+	;;
+
+	"drop schema" | "DROP SCHEMA" )
+	echo "Command:     DROP SCHEMA"
+	echo "Description: remove a schema"
+	echo "Syntax:"
+	echo "DROP SCHEMA name [, ...] [ CASCADE | RESTRICT ]"
+	;;
+
+	"drop sequence" | "DROP SEQUENCE" )
+	echo "Command:     DROP SEQUENCE"
+	echo "Description: remove a sequence"
+	echo "Syntax:"
+	echo "DROP SEQUENCE name [, ...] [ CASCADE | RESTRICT ]"
+	;;
+
+	"drop table" | "DROP TABLE" )
+	echo "Command:     DROP TABLE"
+	echo "Description: remove a table"
+	echo "Syntax:"
+	echo "DROP TABLE name [, ...] [ CASCADE | RESTRICT ]"
+	;;
+
+	"drop trigger" | "DROP TRIGGER" )
+	echo "Command:     DROP TRIGGER"
+	echo "Description: remove a trigger"
+	echo "Syntax:"
+	echo "DROP TRIGGER name ON table [ CASCADE | RESTRICT ]"
+	;;
+
+	"drop type" | "DROP TYPE" )
+	echo "Command:     DROP TYPE"
+	echo "Description: remove a data type"
+	echo "Syntax:"
+	echo "DROP TYPE name [, ...] [ CASCADE | RESTRICT ]"
+	;;
+
+	"drop user" | "DROP USER" )
+	echo "Command:     DROP USER"
+	echo "Description: remove a database user account"
+	echo "Syntax:"
+	echo "DROP USER name"
+	;;
+
+	"drop view" | "DROP VIEW" )
+	echo "Command:     DROP VIEW"
+	echo "Description: remove a view"
+	echo "Syntax:"
+	echo "DROP VIEW name [, ...] [ CASCADE | RESTRICT ]"
+	;;
+
+	"end" | "END" )
+	echo "Command:     END"
+	echo "Description: commit the current transaction"
+	echo "Syntax:"
+	echo "END [ WORK | TRANSACTION ]"
+	;;
+
+	"execute" | "EXECUTE" )
+	echo "Command:     EXECUTE"
+	echo "Description: execute a prepared statement"
+	echo "Syntax:"
+	echo "EXECUTE plan_name [ (parameter [, ...] ) ]"
+	;;
+
+	"explain" | "EXPLAIN" )
+	echo "Command:     EXPLAIN"
+	echo "Description: show the execution plan of a statement"
+	echo "Syntax:"
+	echo "EXPLAIN [ ANALYZE ] [ VERBOSE ] statement"
+	;;
+
+	"fetch" | "FETCH" )
+	echo "Command:     FETCH"
+	echo "Description: retrieve rows from a query using a cursor"
+	echo "Syntax:"
+	echo "FETCH [ direction { FROM | IN } ] cursorname"
+	echo ""
+	echo "where direction can be empty or one of:"
+	echo ""
+	echo "    NEXT"
+	echo "    PRIOR"
+	echo "    FIRST"
+	echo "    LAST"
+	echo "    ABSOLUTE count"
+	echo "    RELATIVE count"
+	echo "    count"
+	echo "    ALL"
+	echo "    FORWARD"
+	echo "    FORWARD count"
+	echo "    FORWARD ALL"
+	echo "    BACKWARD"
+	echo "    BACKWARD count"
+	echo "    BACKWARD ALL"
+	;;
+
+	"grant" | "GRANT" )
+	echo "Command:     GRANT"
+	echo "Description: define access privileges"
+	echo "Syntax:"
+	echo "GRANT { { SELECT | INSERT | UPDATE | DELETE | RULE | REFERENCES | TRIGGER }"
+	echo "    [,...] | ALL [ PRIVILEGES ] }"
+	echo "    ON [ TABLE ] tablename [, ...]"
+	echo "    TO { username | GROUP groupname | PUBLIC } [, ...] [ WITH GRANT OPTION ]"
+	echo ""
+	echo "GRANT { { CREATE | TEMPORARY | TEMP } [,...] | ALL [ PRIVILEGES ] }"
+	echo "    ON DATABASE dbname [, ...]"
+	echo "    TO { username | GROUP groupname | PUBLIC } [, ...] [ WITH GRANT OPTION ]"
+	echo ""
+	echo "GRANT { EXECUTE | ALL [ PRIVILEGES ] }"
+	echo "    ON FUNCTION funcname ([type, ...]) [, ...]"
+	echo "    TO { username | GROUP groupname | PUBLIC } [, ...] [ WITH GRANT OPTION ]"
+	echo ""
+	echo "GRANT { USAGE | ALL [ PRIVILEGES ] }"
+	echo "    ON LANGUAGE langname [, ...]"
+	echo "    TO { username | GROUP groupname | PUBLIC } [, ...] [ WITH GRANT OPTION ]"
+	echo ""
+	echo "GRANT { { CREATE | USAGE } [,...] | ALL [ PRIVILEGES ] }"
+	echo "    ON SCHEMA schemaname [, ...]"
+	echo "    TO { username | GROUP groupname | PUBLIC } [, ...] [ WITH GRANT OPTION ]"
+	;;
+
+	"insert" | "INSERT" )
+	echo "Command:     INSERT"
+	echo "Description: create new rows in a table"
+	echo "Syntax:"
+	echo "INSERT INTO table [ ( column [, ...] ) ]"
+	echo "    { DEFAULT VALUES | VALUES ( { expression | DEFAULT } [, ...] ) | query }"
+	;;
+
+	"listen" | "LISTEN" )
+	echo "Command:     LISTEN"
+	echo "Description: listen for a notification"
+	echo "Syntax:"
+	echo "LISTEN name"
+	;;
+
+	"load" | "LOAD" )
+	echo "Command:     LOAD"
+	echo "Description: load or reload a shared library file"
+	echo "Syntax:"
+	echo "LOAD 'filename'"
+	;;
+
+	"lock" | "LOCK" )
+	echo "Command:     LOCK"
+	echo "Description: lock a table"
+	echo "Syntax:"
+	echo "LOCK [ TABLE ] name [, ...] [ IN lockmode MODE ]"
+	echo ""
+	echo "where lockmode is one of:"
+	echo ""
+	echo "    ACCESS SHARE | ROW SHARE | ROW EXCLUSIVE | SHARE UPDATE EXCLUSIVE"
+	echo "    | SHARE | SHARE ROW EXCLUSIVE | EXCLUSIVE | ACCESS EXCLUSIVE"
+	;;
+
+	"move" | "MOVE" )
+	echo "Command:     MOVE"
+	echo "Description: position a cursor"
+	echo "Syntax:"
+	echo "MOVE [ direction { FROM | IN } ] cursorname"
+	;;
+
+	"notify" | "NOTIFY" )
+	echo "Command:     NOTIFY"
+	echo "Description: generate a notification"
+	echo "Syntax:"
+	echo "NOTIFY name"
+	;;
+
+	"prepare" | "PREPARE" )
+	echo "Command:     PREPARE"
+	echo "Description: prepare a statement for execution"
+	echo "Syntax:"
+	echo "PREPARE plan_name [ (datatype [, ...] ) ] AS statement"
+	;;
+
+	"reindex" | "REINDEX" )
+	echo "Command:     REINDEX"
+	echo "Description: rebuild indexes"
+	echo "Syntax:"
+	echo "REINDEX { DATABASE | TABLE | INDEX } name [ FORCE ]"
+	;;
+
+	"reset" | "RESET" )
+	echo "Command:     RESET"
+	echo "Description: restore the value of a run-time parameter to the default value"
+	echo "Syntax:"
+	echo "RESET name"
+	echo "RESET ALL"
+	;;
+
+	"revoke" | "REVOKE" )
+	echo "Command:     REVOKE"
+	echo "Description: remove access privileges"
+	echo "Syntax:"
+	echo "REVOKE [ GRANT OPTION FOR ]"
+	echo "    { { SELECT | INSERT | UPDATE | DELETE | RULE | REFERENCES | TRIGGER }"
+	echo "    [,...] | ALL [ PRIVILEGES ] }"
+	echo "    ON [ TABLE ] tablename [, ...]"
+	echo "    FROM { username | GROUP groupname | PUBLIC } [, ...]"
+	echo "    [ CASCADE | RESTRICT ]"
+	echo ""
+	echo "REVOKE [ GRANT OPTION FOR ]"
+	echo "    { { CREATE | TEMPORARY | TEMP } [,...] | ALL [ PRIVILEGES ] }"
+	echo "    ON DATABASE dbname [, ...]"
+	echo "    FROM { username | GROUP groupname | PUBLIC } [, ...]"
+	echo "    [ CASCADE | RESTRICT ]"
+	echo ""
+	echo "REVOKE [ GRANT OPTION FOR ]"
+	echo "    { EXECUTE | ALL [ PRIVILEGES ] }"
+	echo "    ON FUNCTION funcname ([type, ...]) [, ...]"
+	echo "    FROM { username | GROUP groupname | PUBLIC } [, ...]"
+	echo "    [ CASCADE | RESTRICT ]"
+	echo ""
+	echo "REVOKE [ GRANT OPTION FOR ]"
+	echo "    { USAGE | ALL [ PRIVILEGES ] }"
+	echo "    ON LANGUAGE langname [, ...]"
+	echo "    FROM { username | GROUP groupname | PUBLIC } [, ...]"
+	echo "    [ CASCADE | RESTRICT ]"
+	echo ""
+	echo "REVOKE [ GRANT OPTION FOR ]"
+	echo "    { { CREATE | USAGE } [,...] | ALL [ PRIVILEGES ] }"
+	echo "    ON SCHEMA schemaname [, ...]"
+	echo "    FROM { username | GROUP groupname | PUBLIC } [, ...]"
+	echo "    [ CASCADE | RESTRICT ]"
+	;;
+
+	"rollback" | "ROLLBACK" )
+	echo "Command:     ROLLBACK"
+	echo "Description: abort the current transaction"
+	echo "Syntax:"
+	echo "ROLLBACK [ WORK | TRANSACTION ]"
+	;;
+
+	"select" | "SELECT" )
+	echo "Command:     SELECT"
+	echo "Description: retrieve rows from a table or view"
+	echo "Syntax:"
+	echo "SELECT [ ALL | DISTINCT [ ON ( expression [, ...] ) ] ]"
+	echo "    * | expression [ AS output_name ] [, ...]"
+	echo "    [ FROM from_item [, ...] ]"
+	echo "    [ WHERE condition ]"
+	echo "    [ GROUP BY expression [, ...] ]"
+	echo "    [ HAVING condition [, ...] ]"
+	echo "    [ { UNION | INTERSECT | EXCEPT } [ ALL ] select ]"
+	echo "    [ ORDER BY expression [ ASC | DESC | USING operator ] [, ...] ]"
+	echo "    [ LIMIT { count | ALL } ]"
+	echo "    [ OFFSET start ]"
+	echo "    [ FOR UPDATE [ OF table_name [, ...] ] ]"
+	echo ""
+	echo "where from_item can be one of:"
+	echo ""
+	echo "    [ ONLY ] table_name [ * ] [ [ AS ] alias [ ( column_alias [, ...] ) ] ]"
+	echo "    ( select ) [ AS ] alias [ ( column_alias [, ...] ) ]"
+	echo "    function_name ( [ argument [, ...] ] ) [ AS ] alias [ ( column_alias [, ...] | column_definition [, ...] ) ]"
+	echo "    function_name ( [ argument [, ...] ] ) AS ( column_definition [, ...] )"
+	echo "    from_item [ NATURAL ] join_type from_item [ ON join_condition | USING ( join_column [, ...] ) ]"
+	;;
+
+	"select into" | "SELECT INTO" )
+	echo "Command:     SELECT INTO"
+	echo "Description: create a new table from the results of a query"
+	echo "Syntax:"
+	echo "SELECT [ ALL | DISTINCT [ ON ( expression [, ...] ) ] ]"
+	echo "    * | expression [ AS output_name ] [, ...]"
+	echo "    INTO [ TEMPORARY | TEMP ] [ TABLE ] new_table"
+	echo "    [ FROM from_item [, ...] ]"
+	echo "    [ WHERE condition ]"
+	echo "    [ GROUP BY expression [, ...] ]"
+	echo "    [ HAVING condition [, ...] ]"
+	echo "    [ { UNION | INTERSECT | EXCEPT } [ ALL ] select ]"
+	echo "    [ ORDER BY expression [ ASC | DESC | USING operator ] [, ...] ]"
+	echo "    [ LIMIT { count | ALL } ]"
+	echo "    [ OFFSET start ]"
+	echo "    [ FOR UPDATE [ OF tablename [, ...] ] ]"
+	;;
+
+	"set" | "SET" )
+	echo "Command:     SET"
+	echo "Description: change a run-time parameter"
+	echo "Syntax:"
+	echo "SET [ SESSION | LOCAL ] name { TO | = } { value | 'value' | DEFAULT }"
+	echo "SET [ SESSION | LOCAL ] TIME ZONE { timezone | LOCAL | DEFAULT }"
+	;;
+
+	"set constraints" | "SET CONSTRAINTS" )
+	echo "Command:     SET CONSTRAINTS"
+	echo "Description: set the constraint mode of the current transaction"
+	echo "Syntax:"
+	echo "SET CONSTRAINTS { ALL | name [, ...] } { DEFERRED | IMMEDIATE }"
+	;;
+
+	"set session authorization" | "SET SESSION AUTHORIZATION" )
+	echo "Command:     SET SESSION AUTHORIZATION"
+	echo "Description: set the session user identifier and the current user identifier of the current session"
+	echo "Syntax:"
+	echo "SET [ SESSION | LOCAL ] SESSION AUTHORIZATION username"
+	echo "SET [ SESSION | LOCAL ] SESSION AUTHORIZATION DEFAULT"
+	echo "RESET SESSION AUTHORIZATION"
+	;;
+
+	"set transaction" | "SET TRANSACTION" )
+	echo "Command:     SET TRANSACTION"
+	echo "Description: set the characteristics of the current transaction"
+	echo "Syntax:"
+	echo "SET TRANSACTION"
+	echo "    [ ISOLATION LEVEL { READ COMMITTED | SERIALIZABLE } ] [ READ WRITE | READ ONLY ]"
+	echo "SET SESSION CHARACTERISTICS AS TRANSACTION"
+	echo "    [ ISOLATION LEVEL { READ COMMITTED | SERIALIZABLE } ] [ READ WRITE | READ ONLY ]"
+	;;
+
+	"show" | "SHOW" )
+	echo "Command:     SHOW"
+	echo "Description: show the value of a run-time parameter"
+	echo "Syntax:"
+	echo "SHOW name"
+	echo "SHOW ALL"
+	;;
+
+	"start transaction" | "START TRANSACTION" )
+	echo "Command:     START TRANSACTION"
+	echo "Description: start a transaction block"
+	echo "Syntax:"
+	echo "START TRANSACTION [ ISOLATION LEVEL { READ COMMITTED | SERIALIZABLE } ] [ READ WRITE | READ ONLY ]"
+	;;
+
+	"truncate" | "TRUNCATE" )
+	echo "Command:     TRUNCATE"
+	echo "Description: empty a table"
+	echo "Syntax:"
+	echo "TRUNCATE [ TABLE ] name"
+	;;
+
+	"unlisten" | "UNLISTEN" )
+	echo "Command:     UNLISTEN"
+	echo "Description: stop listening for a notification"
+	echo "Syntax:"
+	echo "UNLISTEN { name | * }"
+	;;
+
+	"update" | "UPDATE" )
+	echo "Command:     UPDATE"
+	echo "Description: update rows of a table"
+	echo "Syntax:"
+	echo "UPDATE [ ONLY ] table SET column = { expression | DEFAULT } [, ...]"
+	echo "    [ FROM fromlist ]"
+	echo "    [ WHERE condition ]"
+	;;
+
+	"vacuum" | "VACUUM" )
+	echo "Command:     VACUUM"
+	echo "Description: garbage-collect and optionally analyze a database"
+	echo "Syntax:"
+	echo "VACUUM [ FULL ] [ FREEZE ] [ VERBOSE ] [ table ]"
+	echo "VACUUM [ FULL ] [ FREEZE ] [ VERBOSE ] ANALYZE [ table [ (column [, ...] ) ] ]"
+	;;
+
+	* )
+	echo "ABORT                     CREATE LANGUAGE           DROP TYPE"
+	echo "ALTER AGGREGATE           CREATE OPERATOR CLASS     DROP USER"
+	echo "ALTER CONVERSION          CREATE OPERATOR           DROP VIEW"
+	echo "ALTER DATABASE            CREATE RULE               END"
+	echo "ALTER DOMAIN              CREATE SCHEMA             EXECUTE"
+	echo "ALTER FUNCTION            CREATE SEQUENCE           EXPLAIN"
+	echo "ALTER GROUP               CREATE TABLE              FETCH"
+	echo "ALTER LANGUAGE            CREATE TABLE AS           GRANT"
+	echo "ALTER OPERATOR CLASS      CREATE TRIGGER            INSERT"
+	echo "ALTER SCHEMA              CREATE TYPE               LISTEN"
+	echo "ALTER SEQUENCE            CREATE USER               LOAD"
+	echo "ALTER TABLE               CREATE VIEW               LOCK"
+	echo "ALTER TRIGGER             DEALLOCATE                MOVE"
+	echo "ALTER USER                DECLARE                   NOTIFY"
+	echo "ANALYZE                   DELETE                    PREPARE"
+	echo "BEGIN                     DROP AGGREGATE            REINDEX"
+	echo "CHECKPOINT                DROP CAST                 RESET"
+	echo "CLOSE                     DROP CONVERSION           REVOKE"
+	echo "CLUSTER                   DROP DATABASE             ROLLBACK"
+	echo "COMMENT                   DROP DOMAIN               SELECT"
+	echo "COMMIT                    DROP FUNCTION             SELECT INTO"
+	echo "COPY                      DROP GROUP                SET"
+	echo "CREATE AGGREGATE          DROP INDEX                SET CONSTRAINTS"
+	echo "CREATE CAST               DROP LANGUAGE             SET SESSION AUTHORIZATION"
+	echo "CREATE CONSTRAINT TRIGGER DROP OPERATOR CLASS       SET TRANSACTION"
+	echo "CREATE CONVERSION         DROP OPERATOR             SHOW"
+	echo "CREATE DATABASE           DROP RULE                 START TRANSACTION"
+	echo "CREATE DOMAIN             DROP SCHEMA               TRUNCATE"
+	echo "CREATE FUNCTION           DROP SEQUENCE             UNLISTEN"
+	echo "CREATE GROUP              DROP TABLE                UPDATE"
+	echo "CREATE INDEX              DROP TRIGGER              VACUUM"
+	;;
+
+	esac
+}
