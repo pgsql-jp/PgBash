@@ -29,7 +29,7 @@
 #===================================================================
 #
 EXEC_SQL_DIR   = exec_sql
-POSTGRESQL_LIBS= /usr/lib/libpq.so
+POSTGRESQL_LIBS= /usr/lib64/libpq.so
 PGBASHRC_DIR   = ../rc
 PGBASHRC       = pgbashrc
 EXEC_SQL_OFILES= $(EXEC_SQL_DIR)/exec_sql_init.o $(EXEC_SQL_DIR)/exec_sql_main.o \
@@ -141,10 +141,10 @@ Version = 4.1
 PatchLevel = `$(BUILD_DIR)/$(VERSPROG) -p`
 RELSTATUS = release
 
-Machine = i686
+Machine = x86_64
 OS = linux-gnu
-VENDOR = pc
-MACHTYPE = i686-pc-linux-gnu
+VENDOR = unknown
+MACHTYPE = x86_64-unknown-linux-gnu
 
 # comment out for release
 DEBUG = 

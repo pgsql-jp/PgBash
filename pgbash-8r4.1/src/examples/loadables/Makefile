@@ -40,8 +40,8 @@ RM = rm -f
 SHELL = /bin/sh
 
 host_os = linux-gnu
-host_cpu = i686
-host_vendor = pc
+host_cpu = x86_64
+host_vendor = unknown
 
 CFLAGS = -O2
 LOCAL_CFLAGS = 

@@ -237,7 +237,7 @@ libintl.h: libgnuintl.h
 	cmp libgnuintl.h libintl.h || cp libgnuintl.h libintl.h
 
 charset.alias: $(srcdir)/config.charset
-	$(SHELL) $(srcdir)/config.charset 'i686-pc-linux-gnu' > t-$@
+	$(SHELL) $(srcdir)/config.charset 'x86_64-unknown-linux-gnu' > t-$@
 	mv t-$@ $@
 
 check: all

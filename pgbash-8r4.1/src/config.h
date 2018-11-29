@@ -208,10 +208,10 @@
 #define SIZEOF_INT 4
 
 /* The number of bytes in a long.  */
-#define SIZEOF_LONG 4
+#define SIZEOF_LONG 8
 
 /* The number of bytes in a pointer to char.  */
-#define SIZEOF_CHAR_P 4
+#define SIZEOF_CHAR_P 8
 
 /* The number of bytes in a double (hopefully 8). */
 #define SIZEOF_DOUBLE 8
@@ -287,7 +287,7 @@
 #define u_bits32_t unsigned int
 
 /* Define to `double' if <sys/types.h> doesn't define. */
-#define bits64_t double
+#define bits64_t char *
 
 /* Define to `unsigned int' if <sys/types.h> doesn't define. */
 /* #undef u_int */
@@ -1036,7 +1036,7 @@
 /* #undef RLIMIT_NEEDS_KERNEL */
 
 /* Number of bits in a file offset, on hosts where this is settable. */
-#define _FILE_OFFSET_BITS 64
+/* #undef _FILE_OFFSET_BITS */
 
 /* Define for large files on AIX-style hosts. */
 /* #undef _LARGE_FILES */

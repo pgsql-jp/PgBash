@@ -14,6 +14,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 
+#include "pg_config_manual.h"
 #include "libpq-fe.h"
 
 /*-----------------------------------------------------------------
