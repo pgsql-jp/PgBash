@@ -1,14 +1,8 @@
-# PgBash
-
-境田様からPgbash( http://db.psn.ne.jp/pgbash/ )を引き継ぎ、githubにリポジトリを作成しました。 (2017-12-21 kuwamura)
-
----
-
-\[[元の索引](index-j.md)\] \[[ダウンロード](download-j.md)\] \[[インストール](install-j.md)\] \[[使用方法](usage-j.md)\] \[[使用例](example-j.md)\] \[[FAQ](faq-j.md)\]
+\[[Home](index-j.md)\] \[[ダウンロード](download-j.md)\] \[[インストール](install-j.md)\] \[[使用方法](usage-j.md)\] \[[使用例](example-j.md)\] \[[FAQ](faq-j.md)\]
 
   
 
-**P g B a s h**
+**p g b a s h**
 
   
 
