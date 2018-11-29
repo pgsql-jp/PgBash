@@ -16,3 +16,7 @@ HTMLをMarkdownに変換修正。
 ---
 2018-11-28 fujimoto
 
+オリジナルファイルをOriginalディレクトリへ移動。
+---
+2018-11-29 kuwamura
+
