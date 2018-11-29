@@ -42,7 +42,7 @@ subdir = intl
 
 
 
-INSTALL = /usr/bin/install -c
+INSTALL = /bin/install -c
 INSTALL_DATA = ${INSTALL} -m 644
 MKINSTALLDIRS = $(top_builddir)/./support/mkinstalldirs
 mkinstalldirs = $(SHELL) $(MKINSTALLDIRS)

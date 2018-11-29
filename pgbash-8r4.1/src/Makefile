@@ -107,7 +107,7 @@ ARFLAGS = cr
 RANLIB = ranlib
 SIZE = size
 
-INSTALL = /usr/bin/install -c
+INSTALL = /bin/install -c
 INSTALL_PROGRAM = ${INSTALL}
 INSTALL_SCRIPT = ${INSTALL}
 INSTALL_DATA = ${INSTALL} -m 644

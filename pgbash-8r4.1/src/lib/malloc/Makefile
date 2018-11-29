@@ -20,7 +20,7 @@ VPATH = .
 topdir = ../..
 BUILD_DIR = /usr/local/src/pgbash-8r4.1/src
 
-INSTALL = /usr/bin/install -c
+INSTALL = /bin/install -c
 INSTALL_PROGRAM = ${INSTALL}
 INSTALL_DATA = ${INSTALL} -m 644
 
