@@ -1,8 +1,4 @@
-\[[Prev](../usage-j.md)\]
-
-\[[Menu](../usage-j.md)\]
-
-\[[Next](./usage02-j.md)\]
+\[[Prev](../usage-j.md)\] \[[Menu](../usage-j.md)\] \[[Next](./usage02-j.md)\]
 
 * * *
 
@@ -89,8 +85,4 @@
 
 * * *
 
-\[[Prev](../usage-j.md)\]
-
-\[[Menu](../usage-j.md)\]
-
-\[[Next](./usage02-j.md)\]
+\[[Prev](../usage-j.md)\] \[[Menu](../usage-j.md)\] \[[Next](./usage02-j.md)\]
