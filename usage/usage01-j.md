@@ -24,7 +24,7 @@
       
     　最後に **exit** (もしくは Ctrl+D)を入力すると、pgbashは終了し元のログインシェルに戻ります。  
       
-    対話型環境では、pgbashは**起動時に bashrcを読みその後 ~/.pgbashrcを読みます**。~/.pgbashrcが存在しない場合は、**/etc/pgbashrc** を読み込みます。 尚、任意の場所の pgbashrc を使用する場合や、使用中に pgbashrc を変更した場合は、次のように source コマンドを使用して環境を更新します。  
+    対話型環境では、pgbashは**起動時に ~/.bashrcを読みその後 ~/.pgbashrcを読みます**。~/.pgbashrcが存在しない場合は、**/etc/pgbashrc** を読み込みます。 尚、任意の場所の pgbashrc を使用する場合や、使用中に pgbashrc を変更した場合は、次のように source コマンドを使用して環境を更新します。  
       
     pgbash> **source ファイル名** (例: source /etc/pgbashrc)  
       
@@ -39,7 +39,7 @@
       
     シェルスクリプトの終了で pgbashが終了することになります。  
       
-    シェルスクリプトは、スクリプトの先頭に #!/usr/local/bin/pgbash を記述します。尚、シェルスクリプトとして pgbashを起動した場合、**bashrc や pgbashrc を読み込みません**。pgbashrc の環境を読み込みたい場合は、source コマンドを指定します。  
+    シェルスクリプトは、スクリプトの先頭に #!/usr/local/bin/pgbash を記述します。尚、シェルスクリプトとして pgbashを起動した場合、** ~/.bashrc や  ~/.pgbashrc を読み込みません**。 ~/.pgbashrc の環境を読み込みたい場合は、source コマンドで指定します。  
       
     
     **#!/usr/local/bin/pgbash** 
@@ -69,16 +69,16 @@
     CGIの先頭には、次のような指定を行います。  
       
     
-    #!/usr/local/bin/pgbash 
-    exec 2>&1   .............................bashのエラーメッセージを表示
-    echo "Content-type: text/html" ..........必須
-    echo ""   ...............................必須
-    set EXEC\_SQL\_OPTION CGI; ................必須(CGIモードの切り替え) 
+        #!/usr/local/bin/pgbash 
+        exec 2>&1   .............................bashのエラーメッセージを表示
+        echo "Content-type: text/html" ..........必須
+        echo ""   ...............................必須
+        set EXEC\_SQL\_OPTION CGI; ................必須(CGIモードの切り替え) 
     
       
-    exec 2>1 は、bashのエラーメッセージをホームページに出力するための指示です。  
+    exec 2>&1 は、bashのエラーメッセージをホームページに出力するための指示です。  
       
-    "Content-type:text/html"と " "の改行は、CGIプログラムにするための必須の出力です。  
+    "Content-type:text/html" と "" の改行は、CGIプログラムにするための必須の出力です。  
       
     「set EXEC\_SQL\_OPTION CGI」は、ホームページから入力されたデータ(GET/POSTで送信されたデータ)を解釈して、HTMLの INPUT文の NAMEで指定された名前と同じ名前のシェル変数に格納します。また、pgbashをCGIプログラムとして動作させるための各種初期設定を行います。  
     
