@@ -1,8 +1,4 @@
-\[[Prev](./usage10-j.md)\]
-
-\[[Menu](../usage-j.md)\]
-
-\[End\]
+\[[Prev](./usage10-j.md)\] \[[Menu](../usage-j.md)\] \[End\]
 
 * * *
 
@@ -64,8 +60,4 @@ Pgbashの使用上の制限について説明します。（SQL の指定方法�
 
 * * *
 
-\[[Prev](./usage10-j.md)\]
-
-\[[Menu](../usage-j.md)\]
-
-\[End\]
+\[[Prev](./usage10-j.md)\] \[[Menu](../usage-j.md)\] \[End\]

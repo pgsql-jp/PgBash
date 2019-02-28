@@ -1,8 +1,4 @@
-\[[Prev](usage06-j.md)\]
-
-\[[Menu](../usage-j.md)\]
-
-\[[Next](usage08-j.md)\]
+\[[Prev](usage06-j.md)\] \[[Menu](../usage-j.md)\] \[[Next](usage08-j.md)\]
 
 * * *
 
@@ -149,8 +145,4 @@ Pgbashは、先頭の文字列が SQL, OPTION, POSTGRESQL のシェル変数を�
 
 * * *
 
-\[[Prev](./usage06-j.md)\]
-
-\[[Menu](../usage-j.md)\]
-
-\[[Next](./usage08-j.md)\]
+\[[Prev](./usage06-j.md)\] \[[Menu](../usage-j.md)\] \[[Next](./usage08-j.md)\]
