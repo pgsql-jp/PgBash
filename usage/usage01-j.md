@@ -11,17 +11,15 @@
 *   **対話型環境**  
       
     対話型環境において pgbashをサブシェル（親のシェルから起動された子のシェル）として起動するには、ログインした後に /usr/local/bin/pgbash とタイプします。pgbashが起動されると、次の Welcomeメッセージが表示されます。  
-      
     
-      prompt> **/usr/local/bin/pgbash**
-      Welcome to Pgbash ( bash-x.x.x-release ) Ver.8 rx.x
+        prompt> **/usr/local/bin/pgbash**
+        Welcome to Pgbash ( bash-x.x.x-release ) Ver.8 rx.x
+            
+        Type '?'  for help with pgbash commands.
+        Type 'exit' or 'Ctrl+D' to terminate Pgbash.
+            
+        pgbash> **exit**
     
-      Type '?'  for help with pgbash commands.
-      Type 'exit' or 'Ctrl+D' to terminate Pgbash.
-    
-      pgbash> **exit**
-    
-      
     　最後に **exit** (もしくは Ctrl+D)を入力すると、pgbashは終了し元のログインシェルに戻ります。  
       
     対話型環境では、pgbashは**起動時に ~/.bashrcを読みその後 ~/.pgbashrcを読みます**。~/.pgbashrcが存在しない場合は、**/etc/pgbashrc** を読み込みます。 尚、任意の場所の pgbashrc を使用する場合や、使用中に pgbashrc を変更した場合は、次のように source コマンドを使用して環境を更新します。  
@@ -40,13 +38,11 @@
     シェルスクリプトの終了で pgbashが終了することになります。  
       
     シェルスクリプトは、スクリプトの先頭に #!/usr/local/bin/pgbash を記述します。尚、シェルスクリプトとして pgbashを起動した場合、** ~/.bashrc や  ~/.pgbashrc を読み込みません**。 ~/.pgbashrc の環境を読み込みたい場合は、source コマンドで指定します。  
-      
     
-    **#!/usr/local/bin/pgbash** 
-    ...
-    #
+        **#!/usr/local/bin/pgbash** 
+        ...
+        #
     
-      
     (**注意**)  
     
     *   シェルスクリプトの**改行コードは LF コード**です。CR+LF では、シェルスクリプトは実行できません。例えば、Windows のパソコン上で作成したファイルをバイナリモードでアップロードした場合などは、改行コードが CR+LF になってしまいますので注意が必要です。  
