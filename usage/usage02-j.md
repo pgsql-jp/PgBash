@@ -201,8 +201,8 @@
           
       SQL入力を途中で中断したい場合は、次のようにしてください。  
           
-        a. 1行目の途中であれば、**Ctrl+C**  
-        b. 2行目以降の途中であれば、**Ctrl+D**  
+        a. 1行目の途中であれば、__Ctrl+C__
+        b. 2行目以降の途中であれば、__Ctrl+D__
           
       もしくは、セミコロンを入力してSQLを実行させシンタックスエラー終了させます。  
           
@@ -227,8 +227,8 @@
           
       例) DATA="aaa'aaa"  
 
-        insert into test values(111,'**aaa'aaa');  
-        insert into test values(111,'$DATA');  
+        insert into test values(111,__\'__aaa'aaa__\'__);  
+        insert into test values(111,__\'__$DATA__\'__);  
           
       SQL文中のダブルクォートは、pgbash-2.4a.1までは、\\" にしなければなりませんでしたが、pgbash-2.4a.2 より、\\ は不要になりました。  
       例）
