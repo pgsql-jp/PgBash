@@ -236,6 +236,7 @@
         select aa as "Name", bb as "Tom's Type" from test;  
       
     
+
 *   **SQL文中のコメント**  
     
       
