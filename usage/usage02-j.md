@@ -194,6 +194,7 @@ b. 2行目以降の途中であれば、__Ctrl+D__
     pgbash> ./ALTER ........... カレントの"ALTER"プログラム  
     pgbash> /home/admin/ALTER .. /home/adminの"ALTER"プログラム  
 
+<a name="QUOTATION"> </a>
 ### 5. SQL文中のシングルクォート／ダブルクォート
 
 SQL文では、1個のシングルクォート文字データはシングルクォートを２個並べる必要があります。  
@@ -202,12 +203,12 @@ SQL文では、1個のシングルクォート文字データはシングルク�
 
     insert into test values(111,'aaa''aaa');  
 
-シングルクォート１個をシングルクォート文字データとして取り扱うには、**'** で囲まなければなりません。  
+シングルクォート１個をシングルクォート文字データとして取り扱うには、**\\'** で囲まなければなりません。  
 
 例) DATA="aaa'aaa"  
 
-    insert into test values(111,__\'__aaa'aaa__\'__);  
-    insert into test values(111,__\'__$DATA__\'__);  
+    insert into test values(111,\'aaa'aaa\');  
+    insert into test values(111,\'$DATA\');  
 
 SQL文中のダブルクォートは、pgbash-2.4a.1までは、\\" にしなければなりませんでしたが、pgbash-2.4a.2 より、\\ は不要になりました。  
 
