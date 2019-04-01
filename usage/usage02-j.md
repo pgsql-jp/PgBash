@@ -4,7 +4,7 @@
 
 # SQLの指定方法  
 
-## SQLの記述方法
+## SQLの記述方法<a id="SQL" name="SQL">&nbsp;</a>
 
 ### 1. 記述方法
 **\[timespec\] SQL; \[pipeline\]\[redirection\]\[&\]**
@@ -60,7 +60,7 @@ SQL のなかで、シェル変数を利用することができます。シェ�
     select * from test where name='$DATA';
 
 
-## SQLの実行方法
+## SQLの実行方法<a id="EXEC_SQL" name="EXEC_SQL">&nbsp;</a>
 
 ### 1. 対話型環境における実行
 
@@ -110,7 +110,7 @@ SQL のなかで、シェル変数を利用することができます。シェ�
     pgbash> select * from test limit 500; | more ............. 最大500行表示  
     pgbash> select * from test limit 500 offset 100; | more .. 100行目から最大500行表示  
 
-## SQLの指定方法の制限
+## SQLの指定方法の制限<a id="LINIT" name="LIMIT">&nbsp;</a>
 
 ### 1. SQLの位置
 
@@ -194,8 +194,7 @@ b. 2行目以降の途中であれば、__Ctrl+D__
     pgbash> ./ALTER ........... カレントの"ALTER"プログラム  
     pgbash> /home/admin/ALTER .. /home/adminの"ALTER"プログラム  
 
-<a name="QUOTATION"> </a>
-### 5. SQL文中のシングルクォート／ダブルクォート
+### 5. SQL文中のシングルクォート／ダブルクォート<a id="QUOTATION" name="QUOTATION">&nbsp;</a>
 
 SQL文では、1個のシングルクォート文字データはシングルクォートを２個並べる必要があります。  
 
@@ -216,7 +215,7 @@ SQL文中のダブルクォートは、pgbash-2.4a.1までは、\\" にしなけ
 
     select aa as "Name", bb as "Tom's Type" from test;  
 
-## SQL文中のコメント
+## SQL文中のコメント<a id="COMMENT" name="COMMENT">&nbsp;</a>
 
 SQL文中に '#' が現れた場合、'#'から改行までをコメントとみなします。  
 
