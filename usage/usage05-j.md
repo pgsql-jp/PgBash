@@ -49,8 +49,8 @@ OPTION_CAPTION|表のタイトル文字列を指定|
 OPTION_HTML|HTML出力を行う  set EXEC_SQL_OPTION CGI; を実行すると自動的に HTML出力モード(set OPTION_HTML=ON;)になる|OFF
 OPTION_TABLETAG|HTMLのTABLEタグのオプションを指定|
 OPTION_HEADERTR|TABLEヘッダーのTRタグを指定（主にヘッダーの１行全列の背景色を変更する場合に使用)|
-OPTION_HEADERTH|TABLEヘッダーのTHタグを、各列の数だけカンマ区切りで指定（列ごとの長さ色を変える場合などに使用）  OPTION_HEADERTHで指定したタグ数が、検索結果の列数に満たないときは、残りの列は、<TH>で満たされる。|
-OPTION_BODYTAG|TABLEボディのTDタグを、各列の数だけカンマ区切りで指定(列ごとの長さ色を変える場合に使用） OPTION_BODYTAGで指定したタグ数が、検索結果の列数に満たないときは、残りの列は、<TD>で満たされる。|
+OPTION_HEADERTH|TABLEヘッダーのTHタグを、各列の数だけカンマ区切りで指定（列ごとの長さ色を変える場合などに使用）  OPTION_HEADERTHで指定したタグ数が、検索結果の列数に満たないときは、残りの列は、&lt;TH&gt;で満たされる。|
+OPTION_BODYTAG|TABLEボディのTDタグを、各列の数だけカンマ区切りで指定(列ごとの長さ色を変える場合に使用） OPTION_BODYTAGで指定したタグ数が、検索結果の列数に満たないときは、残りの列は、&lt;TD&gt;で満たされる。|
 OPTION_INPUTTAG|更新可能なフィールド形式に変更して検索結果を表示  (下記の例2を参照）|OFF
 OPTION_INPUTSIZE|OPTION_INPUTTAGがONの場合、各列の長さをカンマ区切りで指定  長さを0にすると自動決定し、長さを -1 にすると入力不可になる。  OPTION_INPUTSIZEで指定した長さの値の数が、検索結果の列数に満たないときは、残りは全て自動決定になる。|
 
@@ -61,8 +61,8 @@ OPTION_HEADER の例１)
 
     code|name   |addr
     ----+-------+-----
-        101|tanaka |tokyo
-        111|yoshida|fukui
+     101|tanaka |tokyo
+     111|yoshida|fukui
     (2 rows)
 
 OPTION_HEADER の例２)  
@@ -70,8 +70,8 @@ OPTION_HEADER の例２)
     set option_header=off;
     select * from test;
 
-        101|tanaka |tokyo
-        111|yoshida|fukui
+     101|tanaka |tokyo
+     111|yoshida|fukui
     (2 rows)
 
 OPTION_BOTTOM の例)  
@@ -81,8 +81,8 @@ OPTION_BOTTOM の例)
 
     code|name   |addr
     ----+-------+-----
-        101|tanaka |tokyo
-        111|yoshida|fukui
+     101|tanaka |tokyo
+     111|yoshida|fukui
 
 OPTION_FRAME の例)  
 
@@ -150,9 +150,9 @@ OPTION_NULLSTRING と OPTION_ZEROSTRING の例１)
 
     code|name   |addr
     ----+-------+-----
-        101|tanaka |tokyo
-        110|N     |0
-        210|sakaida|osaka
+     101|tanaka |tokyo
+     110|N     |0
+     210|sakaida|osaka
 
 OPTION_NULLSTRING と OPTION_ZEROSTRING の例２)
 
@@ -162,9 +162,9 @@ OPTION_NULLSTRING と OPTION_ZEROSTRING の例２)
 
     code|name   |addr
     ----+-------+-----
-        101|tanaka |tokyo
-        110|       |  
-        210|sakaida|osaka
+     101|tanaka |tokyo
+     110|       |  
+     210|sakaida|osaka
 
 
 OPTION_TABLETAG の例)
