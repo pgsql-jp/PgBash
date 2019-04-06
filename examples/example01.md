@@ -1,23 +1,25 @@
+# PgBash example-01
+
 * * *
 
-**Example of a shell script**  
+## Example of a shell script
 
 * * *
 
   
-1\. Edit the "member.ddl" file. (vi member.ddl)  
-2\. Change the permission. (chmod u+x member.ddl)  
-3\. Execute the shell script ( ./member.ddl)  
+1. Edit the "member.ddl" file. (vi member.ddl)  
+2. Change the permission. (chmod u+x member.ddl)  
+3. Execute the shell script ( ./member.ddl)  
   
 (Example of executing a shell script)  
-./member.ddl postgres@w1.ppp.com postgres NULL  
-./member.ddl admin@w2.ppp.com admin xxxxxx  
-./member.ddl xxx@yyy.zzz admin NULL  
+> ./member.ddl postgres@w1.ppp.com postgres NULL  
+> ./member.ddl admin@w2.ppp.com admin xxxxxx  
+> ./member.ddl xxx@yyy.zzz admin NULL  
   
   
 "member.ddl" file  
-
-**#!/usr/local/bin/pgbash**
+~~~
+#!/usr/local/bin/pgbash
 ######################################################################
 #  Create Schema member.
 #
@@ -32,12 +34,12 @@
 
 #---------- connect to DATABASE ----------
 connect to $PGDATABASE user $PGUSER $PGPASSWORD;
-set client\_encoding='SJIS';
+set client_encoding='SJIS';
 
 #---------------------------------------------------------------------
 #  MEMBER table
 #---------------------------------------------------------------------
-exec\_sql -q "drop table member;"
+exec_sql -q "drop table member;"
 
 create table member (
    userid       int4 primary key not null,
@@ -54,8 +56,8 @@ create table member (
    tel		varchar(16) not null,
    email        varchar(64),
    org		varchar(128),
-   new\_date	date        default 'now',
-   up\_date	timestamp   default 'now'
+   new_date	date        default 'now',
+   up_date	timestamp   default 'now'
 );
 
 grant all    on member to $PGUSER;
@@ -64,53 +66,53 @@ grant select on member to $PGUSER2;
 #---------------------------------------------------------------------
 #  MEMBER table indexes
 #---------------------------------------------------------------------
-create unique index member\_tel on member(tel) ;
-create        index member\_name on member(name) ;
-create        index member\_email on member(email) ;
+create unique index member_tel on member(tel) ;
+create        index member_name on member(name) ;
+create        index member_email on member(email) ;
 
 #---------------------------------------------------------------------
 #  MEMBER PASSWORD table
 #---------------------------------------------------------------------
-exec\_sql -q "drop table member\_passwd;"
+exec_sql -q "drop table member_passwd;"
 
-create table member\_passwd (
+create table member_passwd (
    userid       int4 primary key not null
                 references member(userid)
                 on delete cascade,
    passwd       varchar(17) not null
 );
 
-grant all    on member\_passwd to $PGUSER;
-grant select on member\_passwd to $PGUSER2;
+grant all    on member_passwd to $PGUSER;
+grant select on member_passwd to $PGUSER2;
 
 #---------------------------------------------------------------------
 #  MEMBER SEQUENCE table
 #---------------------------------------------------------------------
-exec\_sql -q "drop sequence member\_seq;"
+exec_sql -q "drop sequence member_seq;"
 
-create sequence member\_seq start 1301;
+create sequence member_seq start 1301;
 
 #---------------------------------------------------------------------
 #  MEMBER LOG table
 #---------------------------------------------------------------------
-exec\_sql -q "drop table member\_log;"
+exec_sql -q "drop table member_log;"
 
-create table member\_log (
+create table member_log (
    userid int4, name varchar(32), 
-   old\_zip char(8), old\_address1 varchar(64), old\_address2 varchar(64), 
-   old\_tel varchar(16), old\_email varchar(64), 
-   old\_org varchar(128), 
-   new\_zip char(8), new\_address1 varchar(64), new\_address2 varchar(64), 
-   new\_tel varchar(16), new\_email varchar(64), 
-   new\_org varchar(128), 
-   up\_date TIMESTAMP
+   old_zip char(8), old_address1 varchar(64), old_address2 varchar(64), 
+   old_tel varchar(16), old_email varchar(64), 
+   old_org varchar(128), 
+   new_zip char(8), new_address1 varchar(64), new_address2 varchar(64), 
+   new_tel varchar(16), new_email varchar(64), 
+   new_org varchar(128), 
+   up_date TIMESTAMP
 );
 
 #
-#  Create rule MEMBER\_RULE
+#  Create rule MEMBER_RULE
 #
-create rule member\_rule as on UPDATE to member DO 
-   insert into member\_log values(
+create rule member_rule as on UPDATE to member DO 
+   insert into member_log values(
    old.userid, old.name,
    old.zip, old.address1, old.address2, 
    old.tel,     old.email, 
@@ -118,37 +120,39 @@ create rule member\_rule as on UPDATE to member DO
    new.zip, new.address1, new.address2, 
    new.tel,     new.email, 
    new.org, 
-   CURRENT\_TIMESTAMP
+   CURRENT_TIMESTAMP
 );
 
 #
-#  Create view MEMBER\_LOG\_VIEW 
+#  Create view MEMBER_LOG_VIEW 
 #
-exec\_sql -q "drop view member\_log\_view;"
+exec_sql -q "drop view member_log_view;"
 
-create view member\_log\_view as 
+create view member_log_view as 
    select '' as "stat", a.userid, a.name, 
-          a.old\_zip as "zip", 
-          a.old\_address1 as "address1", 
-          a.old\_address2 as "address2",
-          a.old\_tel as "tel", 
-          a.old\_email as "email",
-          a.old\_org as "org", 
-          a.up\_date as "up\_date"
-    from member\_log a, member\_log b
+          a.old_zip as "zip", 
+          a.old_address1 as "address1", 
+          a.old_address2 as "address2",
+          a.old_tel as "tel", 
+          a.old_email as "email",
+          a.old_org as "org", 
+          a.up_date as "up_date"
+    from member_log a, member_log b
     union
     select 'update' as "stat", b.userid, b.name,
-          b.new\_zip as "zip", 
-          b.new\_address1 as "address1", 
-          b.new\_address2 as "address2",
-          b.new\_tel as "tel", 
-          b.new\_email as "email",
-          b.new\_org as "org", 
-          b.up\_date as "up\_date"
-    from member\_log a, member\_log b
-    order by "up\_date";
+          b.new_zip as "zip", 
+          b.new_address1 as "address1", 
+          b.new_address2 as "address2",
+          b.new_tel as "tel", 
+          b.new_email as "email",
+          b.new_org as "org", 
+          b.up_date as "up_date"
+    from member_log a, member_log b
+    order by "up_date";
 
-grant select on member\_log\_view to $PGUSER2;
+grant select on member_log_view to $PGUSER2;
 
 #---------- disconnect DATABASE ----------
 disconnect all;
+~~~
+
