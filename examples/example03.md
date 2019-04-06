@@ -7,29 +7,29 @@
 * * *
 
 **HTML**
-~~~
-&lt;HTML>
-&lt;HEAD>
-<META HTTP-EQUIV=Content-Language CONTENT=ja>
-<META HTTP-EQUIV=Content-Type CONTENT='text/html; charset=UTF-8'>
-&lt;/HEAD>
-&lt;BODY BGCOLOR=#DDDDDD>
 
-&lt;FORM METHOD="POST" ACTION="/cgi-bin/**webapi.cgi**">
+    <HTML>
+    <HEAD>
+    <META HTTP-EQUIV=Content-Language CONTENT=ja>
+    <META HTTP-EQUIV=Content-Type CONTENT='text/html; charset=UTF-8'>
+    </HEAD>
+    <BODY BGCOLOR=#DDDDDD>
+    
+    <FORM METHOD="POST" ACTION="/cgi-bin/**webapi.cgi**">
+    
+    Database 
+             <input type="text" name="**pgdatabase**" length=32>
+    Username 
+             <input type="text" name="**pguser2**" length=32>
+    Password 
+             <input type="text" name="**pgpassword2**" length=32>
+    
+    <INPUT TYPE=SUBMIT VALUE="submit">
+    </FORM>
+    
+    </BODY>
+    </HTML>
 
-Database 
-         <input type="text" name="**pgdatabase**" length=32>
-Username 
-         <input type="text" name="**pguser2**" length=32>
-Password 
-         <input type="text" name="**pgpassword2**" length=32>
-
-&lt;;INPUT TYPE=SUBMIT VALUE="submit">
-&lt;/FORM>
-
-&lt;/BODY>
-&lt;/HTML>
-~~~
 
   
 **Web application (CGI) -- "webapi.cgi"**
