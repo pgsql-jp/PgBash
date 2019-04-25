@@ -1,4 +1,4 @@
-\[[Prev](usage07-j.md)\] \[[Menu](../usage-j.md)\] \[[Next](usage10-j.md)\]
+[[Prev](./usage07-j.md)] [[Menu](./readme.md)] [[Next](./usage10-j.md)]
 
 * * *
 
@@ -236,4 +236,4 @@ SQL文法を知りたいたおきは、「？ｈ SQL文の先頭の予約語」 
 
 * * *
 
-\[[Prev](./usage01-j.md)\] \[[Menu](../usage-j.md)\] \[[Next](./usage10-j.md)\]
+[[Prev](./usage07-j.md)] [[Menu](./readme.md)] [[Next](./usage10-j.md)]

@@ -1,4 +1,4 @@
-\[[Prev](usage01-j.md)\] \[[Menu](../usage-j.md)\] \[[Next](usage03-j.md)\]
+[[Prev](./usage01-j.md)] [[Menu](./readme.md)] [[Next](./usage03-j.md)]
 
 * * *
 
@@ -15,7 +15,7 @@
 
 対話型環境およびシェルスクリプトのいずれも、SQL文をそのまま入力(記述)するだけでSQLを実行することができます。 SQL文は、timespec、パイプ、リダイレクション、バックグランドジョブの指定と伴に実行することができます。また、exec\_sqlは、一時的なオプションを付けて、SQLを実行することができます。
 
-SQL; は pgbash内部で exec\_sql "SQL"に変換されて実行されます。従いまして、 SQL; と exec\_sql "SQL" とは全く同じ意味になります。
+SQL; は PgBash内部で exec\_sql "SQL"に変換されて実行されます。従いまして、 SQL; と exec\_sql "SQL" とは全く同じ意味になります。
 
 ### 2. SQLの終端子
 
@@ -251,4 +251,4 @@ SQL文中に '#' が現れた場合、'#'から改行までをコメントとみ
 
 * * *
 
-\[[Prev](./usage01-j.md)\] \[[Menu](../usage-j.md)\] \[[Next](./usage03-j.md)\]
+[[Prev](./usage01-j.md)] [[Menu](./readme.md)] [[Next](./usage03-j.md)]

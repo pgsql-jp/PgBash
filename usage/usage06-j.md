@@ -1,4 +1,4 @@
-\[[Prev](usage05-j.md)\] \[[Menu](../usage-j.md)\] \[[Next](usage07-j.md)\]
+[[Prev](./usage05-j.md)] [[Menu](./readme.md)] [[Next](./usage07-j.md)]
 
 * * *
 
@@ -6,7 +6,7 @@
 
 ## ウェブサーバソフトの設定<a id="CONFL" name="CONFL">&nbsp;</a>
 
-Pgbashを CGIとして実行する場合、LD_LIBRARY_PATH環境変数に PostrgeSQLのライブラリパス名を指定する必要があります。apacheウェブサーバソフトの場合は、"httpd.conf"の先頭付近に次のように指定します。  
+PgBashを CGIとして実行する場合、LD_LIBRARY_PATH環境変数に PostrgeSQLのライブラリパス名を指定する必要があります。apacheウェブサーバソフトの場合は、"httpd.conf"の先頭付近に次のように指定します。  
 
 **SetEnv LD_LIBRARY_PATH /usr/local/pgsql/lib**  
 
@@ -63,9 +63,9 @@ Webサーバ上に、例えば次のようなHTMLファイル(ホームページ
     insert into test values( '$MYNAME','$ADDRESS');  
     select * from test order by uname limit 100;  
 
-pgbashは、マルチバイト文字のシェル変数名（例えば、$氏名）を使用することはできません。  
+PgBashは、マルチバイト文字のシェル変数名（例えば、$氏名）を使用することはできません。  
 従いまして、HTMLのINPUTタグのNAMEにおいて、全角文字を指定することはできないことになります。  
 
 * * *
 
-[[Prev](./usage05-j.md)] [[Menu](../usage-j.md)] [[Next](./usage07-j.md)]
+[[Prev](./usage05-j.md)] [[Menu](./readme.md)] [[Next](./usage07-j.md)]

@@ -1,14 +1,14 @@
-[[Prev](./usage10-j.md)] [[Menu](../usage-j.md)] [[End](../usage-j.md)]
+[[Prev](./usage10-j.md)] [[Menu](./readme.md)] [[End](./readme.md)]
 
 * * *
 
 # 使用制限
 
-Pgbashの使用上の制限について説明します。（SQL の指定方法の制限につきましては、[SQLの指定方法](usage02-j.html#LIMIT)を参照してください。）  
+PgBashの使用上の制限について説明します。（SQL の指定方法の制限につきましては、[SQLの指定方法](usage02-j.html#LIMIT)を参照してください。）  
 
 ## bashコマンド<a id="BASH" name="BASH">&nbsp;</a>
 
-bashの declare、set、selectコマンドは、SQL文の先頭語と同じになります。pgbashでは、SQL文を優先的に取り扱いますので、bashのコマンド名を次のように変更してます。  
+bashの declare、set、selectコマンドは、SQL文の先頭語と同じになります。PgBashでは、SQL文を優先的に取り扱いますので、bashのコマンド名を次のように変更してます。  
 
 <dl>
         <dt>bashのdeclareコマンド</dt>
@@ -45,12 +45,12 @@ SQLCODEシェル変数($SQLCODEなど)は、SQLの実行結果コードを保管
 
 ### (3) ユーザが使用するシェル変数
 
-[Pgbashは英大文字のシェル変数を使用](usage07-j.html)していますので、ユーザが使用するシェル変数は英小文字の方が無難です。  
+[PgBashは英大文字のシェル変数を使用](usage07-j.html)していますので、ユーザが使用するシェル変数は英小文字の方が無難です。  
 
 ## PostgreSQLサーババージョンと互換性<a id="VERSION" name="VERSION">&nbsp;</a>
 
-Pgbashは、PostgreSQL-7.4 以降に対応してます。基本的には、Pgbashはリンクした libpq のバージョンと、アクセスするデータベースのバージョンが異なっていても問題ありません。  
+PgBashは、PostgreSQL-7.4 以降に対応してます。基本的には、PgBashはリンクした libpq のバージョンと、アクセスするデータベースのバージョンが異なっていても問題ありません。  
 
 * * *
 
-[[Prev](./usage10-j.md)] [[Menu](../usage-j.md)] [[End](../usage-j.md)]
+[[Prev](./usage10-j.md)] [[Menu](./readme.md)] [[End](./readme.md)]

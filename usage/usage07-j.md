@@ -1,14 +1,14 @@
-\[[Prev](usage06-j.md)\] \[[Menu](../usage-j.md)\] \[[Next](usage08-j.md)\]
+[[Prev](./usage06-j.md)] [[Menu](./readme.md)] [[Next](./usage08-j.md)]
 
 * * *
 
 # Pgbash が使用するシェル変数
 
-Pgbashは、先頭の文字列が SQL, OPTION, POSTGRESQL のシェル変数を使用します。いずれも大文字です。ユーザが、独自のシェル変数を使用する場合、英小文字を使用してください。そうすれば、Pgbashが自動的に作成するシェル変数と重なることはありません。  
+PgBashは、先頭の文字列が SQL, OPTION, POSTGRESQL のシェル変数を使用します。いずれも大文字です。ユーザが、独自のシェル変数を使用する場合、英小文字を使用してください。そうすれば、PgBashが自動的に作成するシェル変数と重なることはありません。  
   
 ## SQLの実行状態を表すシェル変数<a id="STATUS" name="STATUS">&nbsp;</a>
 
-Pgbashは、SQL実行後の処理結果を次のシェル変数にセットします。  
+PgBashは、SQL実行後の処理結果を次のシェル変数にセットします。  
 
 <dl>
       <dt>$SQLOID:</dt>
@@ -66,7 +66,7 @@ Pgbashは、SQL実行後の処理結果を次のシェル変数にセットし�
 
 ## エラーコード用のシェル変数<a id="ERRCODE" name="ERRCODE">&nbsp;</a>
 
-Pgbashは、SQLエラーコードを次のシェル変数にセットしています。  
+PgBashは、SQLエラーコードを次のシェル変数にセットしています。  
 対話型環境では、'**??sqlcode**'とするとエラーコードを表示することができます。  
 
     pgbash> ??sqlcode
@@ -157,4 +157,4 @@ Webアプリケーションにおいて、次のクッキーの値を参照す�
 
 * * *
 
-\[[Prev](./usage06-j.md)\] \[[Menu](../usage-j.md)\] \[[Next](./usage08-j.md)\]
+[[Prev](./usage06-j.md)] [[Menu](./readme.md)] [[Next](./usage08-j.md)]

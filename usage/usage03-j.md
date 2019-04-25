@@ -1,4 +1,4 @@
-\[[Prev](usage02-j.md)\] \[[Menu](../usage-j.md)\] \[[Next](usage04-j.md)\]
+[[Prev](./usage02-j.md)] [[Menu](./readme.md)] [[Next](./usage04-j.md)]
 
 * * *
 
@@ -84,7 +84,7 @@ disconnect **all**; で全てのコネクションを切断することができ
         disconnect db4; ...............................コネクションdb4を切断する
         disconenct all; ...............................全てのコネクションを切断する
 
-対話型環境では Pgbashを終了した時点で、シェルスクリプトではシェルスクリプトが終了した時点で、自動的に全てのコネクションは切断されます。従いまして、disconnect は実行しなくてもかまいません。  
+対話型環境では PgBashを終了した時点で、シェルスクリプトではシェルスクリプトが終了した時点で、自動的に全てのコネクションは切断されます。従いまして、disconnect は実行しなくてもかまいません。  
 
 ## 現在(カレント)の接続(コネクション)の切り替え<a id="SETCONNECT" name="SETCONNECT">&nbsp;</a>
 
@@ -137,4 +137,4 @@ disconnect **all**; で全てのコネクションを切断することができ
 
 * * *
 
-\[[Prev](./usage02-j.md)\] \[[Menu](../usage-j.md)\] \[[Next](./usage04-j.md)\]
+[[Prev](./usage02-j.md)] [[Menu](./readme.md)] [[Next](./usage04-j.md)]

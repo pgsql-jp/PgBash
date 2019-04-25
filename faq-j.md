@@ -1,6 +1,5 @@
-\[[Home](index-j.md)\] \[[ダウンロード](download-j.md)\] \[[インストール](install-j.md)\] \[[使用方法](usage-j.md)\] \[[使用例](example-j.md)\] \[[FAQ](faq-j.md)\]
+[[Home](index-j.md)] [[ダウンロード](download-j.md)] [[インストール](install-j.md)] [[使用方法](./usage/readme.md)] [[使用例](example-j.md)] [[FAQ](faq-j.md)]
 
-  
 **Ｆ Ａ Ｑ**  
 
   
@@ -254,4 +253,4 @@ set OPTION\_ALIGNMENT=OFF;
 
 * * *
 
-\[[Home](index-j.md)\] \[[ダウンロード](download-j.md)\] \[[インストール](install-j.md)\] \[[使用方法](usage-j.md)\] \[[使用例](example-j.md)\] \[[FAQ](faq-j.md)\]
+[[Home](index-j.md)] [[ダウンロード](download-j.md)] [[インストール](install-j.md)] [[使用方法](./usage/readme.md)] [[使用例](example-j.md)] [[FAQ](faq-j.md)]

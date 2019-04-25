@@ -1,4 +1,4 @@
-\[[Prev](usage04-j.md)\] \[[Menu](../usage-j.md)\] \[[Next](usage06-j.md)\]
+[[Prev](./usage04-j.md)] [[Menu](./readme.md)] [[Next](./usage06-j.md)]
 
 * * *
 
@@ -207,21 +207,10 @@ OPTION_INPUTSIZE の例)
     set OPTION_BODYTAG='<TD bgcolor=#0088FF nowrap>,<TD nowrap>,<TD nowrap>';  
     select * from member where userid>0 order by userid;  
 
-**会員名簿**  
+**出力例**  
 
-|userid|氏名|email|電話|
-|----|----|----|----|
-|1220|青xx木正志|XXXYYY62@nify.ne.jp|0777-66-xxxx|
-|1249|安yy孝則|XXXYYYc@email.com|090-xxxx-yyyy|
-(2 rows)  
+![＜例１＞のHTML出力例画像](./cap007.png "＜例１＞のHTML出力例画像")  
 
-**<span style="color:#ff3399">元サイトのテーブルのHTMLタグを貼り込んで見た例↓</span>**
-
-<table border=4 bgcolor=#D1EEEE cellspacing=1 cellpadding=2><caption align=high><P align=left><FONT SIZE=5><B>会員名簿</B></FONT></P></caption>
-<tr bgcolor=#96CDCD><th bgcolor=#0088FF>userid</th><th>氏名</th><th>email</th><th>電話</th></tr>
-<tr><td bgcolor=#0088ff align=right>1220</td><td align=left>青xx木正志</td><td align=left>XXXYYY62@nify.ne.jp</td><td align=left>0777-66-xxxx</td></tr>
-<tr><td bgcolor=#0088ff align=right>1249</td><td align=left>安yy孝則</td><td align=left>XXXYYYc@email.com</td><td align=left>090-xxxx-yyyy</td></tr>
-</table>
 
 (例2)  
 
@@ -234,23 +223,9 @@ OPTION_INPUTSIZE の例)
     set OPTION_INPUTSIZE='-1, 32, 48, 0';  
     select * from member where userid=1258;  
 
-**会員名簿**
+**出力例**  
 
-|||
-|----------|----|
-|**userid**|1258|
-|**氏名**|<input type="text" name="hoge1" value="XXXX" />|
-|**email**|<input type="text" name="hoge2" value="xxxxx@xxx.example.jp" />|
-|**電話**|<input type="text" name="hoge3" value="078-xxx-yyyy" />|
-
-**<span style="color:#ff3399">元サイトのテーブルのHTMLタグを貼り込んで見た例↓</span>**
-
-<table border=1 bgcolor=#D1EEEE cellspacing=1 cellpadding=2><caption align=high><P align=left><FONT SIZE=5><B>会員名簿</B></FONT></P></caption>
-<tr><td><b>userid</b></td><td>1258</td></tr>
-<tr><td><b>氏名</b></td><td><INPUT TYPE=text NAME='氏名' VALUE='ＸＸＸＸ' SIZE=32></td></tr>
-<tr><td><b>email</b></td><td><INPUT TYPE=text NAME='email' VALUE='xxxxx@xxx.co.jp' SIZE=48></td></tr>
-<tr><td><b>電話</b></td><td><INPUT TYPE=text NAME='電話' VALUE='078-xxx-yyyy' SIZE=24></td></tr>
-</table>
+![＜例２＞のHTML出力例画像](./cap008.png "＜例２＞のHTML出力例画像")  
 
 ## exec_sqlコマンドによる一時的なオプション<a id="TEMPOPTION" name="TEMPOPTION">&nbsp;</a>
 
@@ -282,4 +257,4 @@ OPTION_INPUTSIZE の例)
 
 * * *
 
-\[[Prev](./usage04-j.md)\] \[[Menu](../usage-j.md)\] \[[Next](./usage06-j.md)\]
+[[Prev](./usage04-j.md)] [[Menu](./readme.md)] [[Next](./usage06-j.md)]

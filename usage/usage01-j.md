@@ -1,4 +1,4 @@
-\[[Prev](../usage-j.md)\] \[[Menu](../usage-j.md)\] \[[Next](./usage02-j.md)\]
+[[Prev](./readme.md)] [[Menu](./readme.md)] [[Next](./usage02-j.md)]
 
 * * *
 
@@ -6,7 +6,7 @@
 
 ## 対話型環境<a id="TTY" name="TTY">&nbsp;</a>
 
-対話型環境において pgbashをサブシェル（親のシェルから起動された子のシェル）として起動するには、ログインした後に /usr/local/bin/pgbash とタイプします。pgbashが起動されると、次の Welcomeメッセージが表示されます。  
+対話型環境において PgBashをサブシェル（親のシェルから起動された子のシェル）として起動するには、ログインした後に /usr/local/bin/pgbash とタイプします。PgBashが起動されると、次の Welcomeメッセージが表示されます。  
 
 例）
 
@@ -18,9 +18,9 @@
         
     pgbash> exit
 
-最後に **exit** (もしくは Ctrl+D)を入力すると、pgbashは終了し元のログインシェルに戻ります。  
+最後に **exit** (もしくは Ctrl+D)を入力すると、PgBashは終了し元のログインシェルに戻ります。  
 
-対話型環境では、pgbashは**起動時に ~/.bashrcを読みその後 ~/.pgbashrcを読みます**。  
+対話型環境では、PgBashは**起動時に ~/.bashrcを読みその後 ~/.pgbashrcを読みます**。  
 ~/.pgbashrcが存在しない場合は、**/etc/pgbashrc** を読み込みます。   
 尚、任意の場所の pgbashrc を使用する場合や、使用中に pgbashrc を変更した場合は、次のように source コマンドを使用して環境を更新します。  
 
@@ -30,16 +30,16 @@
 
 ## シェルスクリプト<a id="SHELL" name="SHELL">&nbsp;</a>
 
-シェルスクリプトとして Pgbashを起動するには次のようにします。  
+シェルスクリプトとしてPgBashを起動するには次のようにします。  
 
 1. エディタでシェルスクリプトを作成  
 2. 「chmod +x シェルスクリプトファイル名」として実行許可を与える  
 3. コマンドラインからシェルスクリプト名を指定して実行  
 
-シェルスクリプトの終了で pgbashが終了することになります。  
+シェルスクリプトの終了でPgBashが終了することになります。  
 
 シェルスクリプトは、スクリプトの先頭に #!/usr/local/bin/pgbash を記述します。  
-尚、シェルスクリプトとして pgbashを起動した場合、**~/.bashrc や  ~/.pgbashrc を読み込みません**。  
+尚、シェルスクリプトとしてPgBashを起動した場合、**~/.bashrc や  ~/.pgbashrc を読み込みません**。  
 ~/.pgbashrc の環境を読み込みたい場合は、source コマンドで指定します。  
 
 例）
@@ -58,7 +58,7 @@ pgbashrcに alias を使って記述されたデータベース情報表示機�
 
 ## CGI（Webアプリケーション）<a id="CGI" name="CGI">&nbsp;</a>
 
-CGI（Webアプリケーション)もシェルスクリプトです。ただ、Webから実行する点で、通常のシェルスクリプトとは異なります。Pgbashを起動するには次のようにします。  
+CGI（Webアプリケーション)もシェルスクリプトです。ただ、Webから実行する点で、通常のシェルスクリプトとは異なります。PgBashを起動するには次のようにします。  
 
 1. エディタでCGIを作成  
 2. cgi-bin ディレクトリ(CGIを実行できるディレクトリ)にコピーする  
@@ -80,8 +80,8 @@ exec 2>&1 は、bashのエラーメッセージをホームページに出力す
 "Content-type:text/html" と "" の改行は、CGIプログラムにするための必須の出力です。  
 
 「set EXEC_SQL_OPTION CGI」は、ホームページから入力されたデータ(GET/POSTで送信されたデータ)を解釈して、HTMLの INPUT文の NAMEで指定された名前と同じ名前のシェル変数に格納します。  
-また、pgbashをCGIプログラムとして動作させるための各種初期設定を行います。  
+また、PgBashをCGIプログラムとして動作させるための各種初期設定を行います。  
 
 * * *
 
-\[[Prev](../usage-j.md)\] \[[Menu](../usage-j.md)\] \[[Next](./usage02-j.md)\]
+[[Prev](./readme.md)] [[Menu](./readme.md)] [[Next](./usage02-j.md)]

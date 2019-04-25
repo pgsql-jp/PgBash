@@ -1,4 +1,4 @@
-\[[Prev](usage03-j.md)\] \[[Menu](../usage-j.md)\] \[[Next](usage05-j.md)\]
+[[Prev](./usage03-j.md)] [[Menu](./readme.md)] [[Next](./usage05-j.md)]
 
 * * *
 
@@ -84,13 +84,13 @@ INTO句を使用する場合は、検索結果が１行でなければなりま�
 
 ここで、SQLCODEは SQLエラーコードを、$SQLERRMCは SQLエラーメッセージを表すシェル変数です。また、SQL\_NULL, SQL\_NOT\_FOUNDは pgbashが初期設定している値です。(エラーコードを参照)  
 
-FETCH INTO に使用するホスト変数(シェル変数）は、**英小文字**を使用した方が無難です。なぜなら、pgbashは先頭が SQL, OPTION, POSTGRESQL などの大文字のシェル変数を使用しているからです。  
+FETCH INTO に使用するホスト変数(シェル変数）は、**英小文字**を使用した方が無難です。なぜなら、PgBashは先頭が SQL, OPTION, POSTGRESQL などの大文字のシェル変数を使用しているからです。  
 
 \# (( ))演算式のなかでは、整数型シェル変数の先頭'$'は省略することができます。  
 
 ## 検索結果を１ページごと表示<a id="PIPE" name="PIPE">&nbsp;</a>
 
-Pgbashは、SELECTの検索結果を連続的に表示します。psqlのように１ページごとに表示を停止する表示方法ではありません。そのため、１ページごと表示したい場合は、SQL; のうしろにパイプ('|')と more (もしくは less) が付ける必要があります。(詳細は、Unixのパイプを参照）  
+PgBashは、SELECTの検索結果を連続的に表示します。psqlのように１ページごとに表示を停止する表示方法ではありません。そのため、１ページごと表示したい場合は、SQL; のうしろにパイプ('|')と more (もしくは less) が付ける必要があります。(詳細は、Unixのパイプを参照）  
 
 例)  
 
@@ -98,7 +98,7 @@ Pgbashは、SELECTの検索結果を連続的に表示します。psqlのよう�
 
 ## 検索結果をファイルに書き出す<a id="REDIRECT" name="REDIRECT">&nbsp;</a>
 
-Pgbashで、検索結果をファイルに書き出すことは実に簡単です。SQL; のうしろに &> ファイル名　とします。  
+PgBashで、検索結果をファイルに書き出すことは実に簡単です。SQL; のうしろに &> ファイル名　とします。  
 
 例)  
 
@@ -108,4 +108,4 @@ Pgbashで、検索結果をファイルに書き出すことは実に簡単で�
 
 * * *
 
-\[[Prev](./usage03-j.md)\] \[[Menu](../usage-j.md)\] \[[Next](./usage05-j.md)\]
+[[Prev](./usage03-j.md)] [[Menu](./readme.md)] [[Next](./usage05-j.md)]

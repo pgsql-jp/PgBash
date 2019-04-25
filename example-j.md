@@ -1,6 +1,5 @@
-\[[Home](index-j.md)\] \[[ダウンロード](download-j.md)\] \[[インストール](install-j.md)\] \[[使用方法](usage-j.md)\] \[[使用例](example-j.md)\] \[[FAQ](faq-j.md)\]
+[[Home](index-j.md)] [[ダウンロード](download-j.md)] [[インストール](install-j.md)] [[使用方法](./usage/readme.md)] [[使用例](example-j.md)] [[FAQ](faq-j.md)]
 
-  
 **pgbash の使用例**  
   
 
@@ -20,5 +19,4 @@ Pgbashの各種の使用例について説明します。
 
 * * *
 
-\[[Home](index-j.md)\] \[[ダウンロード](download-j.md)\] \[[インストール](install-j.md)\] \[[使用方法](usage-j.md)\] \[[使用例](example-j.md)\] \[[FAQ](faq-j.md)\]
-
+[[Home](index-j.md)] [[ダウンロード](download-j.md)] [[インストール](install-j.md)] [[使用方法](./usage/readme.md)] [[使用例](example-j.md)] [[FAQ](faq-j.md)]

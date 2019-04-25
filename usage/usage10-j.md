@@ -1,4 +1,4 @@
-[[Prev](usage08-j.md)] [[Menu](../usage-j.md)] [[Next](usage11-j.md)]
+[[Prev](./usage08-j.md)] [[Menu](./readme.md)] [[Next](./usage11-j.md)]
 
 * * *
 
@@ -52,9 +52,9 @@ _lo_list は、登録されているラージオブジェクトの一覧を表�
 
 ## pgbash_description テーブル<a id="DESCRIPTION" name="DESCRIPTION">&nbsp;</a>
 
-Pgbashは、ラージオブジェクトのOIDと注釈を、"pgbash_description"テーブルに登録します。"pgbash_description"テーブルは、始めて _lo_import が実行されたときに自動的に作成されます。  
+PgBashは、ラージオブジェクトのOIDと注釈を、"pgbash_description"テーブルに登録します。"pgbash_description"テーブルは、始めて _lo_import が実行されたときに自動的に作成されます。  
 pgbash_descriptionテーブルは、ユーザの権限で作成されるため、Postgresスーパユーザでなくても、ラージオブジェクトの登録が可能です。  
 
 * * *
 
-[[Prev](./usage08-j.md)] [[Menu](../usage-j.md)] [[Next](./usage11-j.md)]
+[[Prev](./usage08-j.md)] [[Menu](./readme.md)] [[Next](./usage11-j.md)]
