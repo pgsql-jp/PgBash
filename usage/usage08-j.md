@@ -1,89 +1,83 @@
-\[[Prev](usage07-j.md)\] \[[Menu](../usage-j.md)\] \[[Next](usage10-j.md)\]
+[[Prev](./usage07-j.md)] [[Menu](./readme.md)] [[Next](./usage10-j.md)]
 
 * * *
 
-**ヘルプおよびデータベース情報の表示について**  
+# ヘルプおよびデータベース情報の表示について
 
-* * *
+## ヘルプメニューの表示方法<a id="HELPMENU" name="HELPMENU">&nbsp;</a>
 
-  
+対話型の操作環境において、？をタイプすると、次のヘルプメニューが表示されます。  
 
-*   **ヘルプメニューの表示方法**  
-      
-    対話型の操作環境において、？をタイプすると、次のヘルプメニューが表示されます。  
-      
-    pgbash> **?**
-    
+    pgbash> ?
+
     Informational
       ?              : this help (add '+' for more detail)
-      ?h \[SQL\]       : help on syntax of SQL commands
-      ?l\[+\]          : list databases
-      ?d \[NAME\]      : describe table,view,index, or sequence
-      ?d{t|i|v|s}\[+\] : list {tables/indexes/views/sequences}
-      ?dS\[+\]         : list system tables
+      ?h [SQL]       : help on syntax of SQL commands
+      ?l[+]          : list databases
+      ?d [NAME]      : describe table,view,index, or sequence
+      ?d{t|i|v|s}[+] : list {tables/indexes/views/sequences}
+      ?dS[+]         : list system tables
       ?da            : list aggregate functions
-      ?db\[+\]         : list tablespaces
+      ?db[+]         : list tablespaces
       ?dc            : list conversions
       ?dC            : list casts
       ?dd            : show comment for object
       ?dD            : list domains
-      ?df\[+\]         : list functions
-      ?dn\[+\]         : list schemas
+      ?df[+]         : list functions
+      ?dn[+]         : list schemas
       ?do            : list operators
       ?dp            : list table, view, and sequence access privileges, same as ?z
-      ?dT\[+\]         : list data\_types
+      ?dT[+]         : list data_types
       ?du            : list roles (users), same as ?dg
-    
+
     Large Objects
-      ?lo\_import     : lo\_import <'COMMENT'>
-      ?lo\_export     : lo\_export ?lo\_unlink     : lo\_unlink ?lo\_list       : list LARGE OBJECTs, same as ?dl
-    
+      ?lo_import     : lo_import <'COMMENT'>
+      ?lo_export     : lo_export ?lo_unlink     : lo_unlink ?lo_list       : list LARGE OBJECTs, same as ?dl
+
     Connection
-      ?con\[nect\] DBNAME\[@SERVER\]\[:PORT\] \[CONNECT\_NAME \[USERID \[PASSWORD\]\]\]
+      ?con[nect] DBNAME[@SERVER][:PORT] [CONNECT_NAME [USERID [PASSWORD]]]
                      : connect to new database
-      ?set\[connection\] CONNECT\_NAME
+      ?set[connection] CONNECT_NAME
                      : change database connection
-      ?dis\[connect\]   {CONNECT\_NAME | ALL}
+      ?dis[connect]   {CONNECT_NAME | ALL}
                      : disconnect databases
-      ?encoding \[ENCODING\]
+      ?encoding [ENCODING]
                      : show or set client encoding
       ?password USERNAME
                      : securely change the password for a user
     Status
-      ?dbc\[onnection\]: show database connection
-      ?opt\[ion\]      : show current values of exec\_sql\_OPTIONs
-      ?sta\[tus\]      : show STATUS after executing SQL
-      ?ver\[sion\]     : show PostgreSQL and pgbash VERSION
+      ?dbc[onnection]: show database connection
+      ?opt[ion]      : show current values of exec_sql_OPTIONs
+      ?sta[tus]      : show STATUS after executing SQL
+      ?ver[sion]     : show PostgreSQL and pgbash VERSION
     
     Formatting
-      E{+|-}         : turn on/off ECHO\_QUERY sent to the backend
-      L{+|-}         : turn on/off OUTER\_FRAME\_print
-      T{+|-}         : turn on/off TOP\_header\_print
-      B{+|-}         : turn on/off BOTTOM\_count\_print
+      E{+|-}         : turn on/off ECHO_QUERY sent to the backend
+      L{+|-}         : turn on/off OUTER_FRAME_print
+      T{+|-}         : turn on/off TOP_header_print
+      B{+|-}         : turn on/off BOTTOM_count_print
       A{+|-}         : turn on/off ALIGNMENT of plain text
       X{+|-}         : turn on/off EXPANDED format
       H{+|-}         : turn on/off HTML table format
-      C+  \[chr\]      : set CAPTION string          or DEFAULT('')
-      S+  \[chr\]      : set SEPARATOR  (e.g. ','  ) or DEFAULT('|')
-      N+  \[str\]      : set NULL\_STRING(e.g. '\*N\*') or DEFAULT('')
-      Z+  \[str\]      : set ZERO\_STRING(e.g. '\*0\*') or DEFAULT('')
+      C+  [chr]      : set CAPTION string          or DEFAULT('')
+      S+  [chr]      : set SEPARATOR  (e.g. ','  ) or DEFAULT('|')
+      N+  [str]      : set NULL_STRING(e.g. '*N*') or DEFAULT('')
+      Z+  [str]      : set ZERO_STRING(e.g. '*0*') or DEFAULT('')
     
     Pgbash help
       ??             : help with pgbash usage
       ??connect      : help with CONNECTION usage
       ??sql          : help with SQL usage
       ??sqlcode      : help with SQLCODE
-      ??exec\_sql     : help with 'exec\_sql' usage 
-    
-    (PostgreSQL-8.1の場合)  
-      
-      
-    
-*   **SQL予約語一覧のヘルプ**  
-      
-    対話型環境において、？ｈ　をタイプすると、次のSQL予約語一覧が表示されます。  
-      
-    pgbash> **?h**
+      ??exec_sql     : help with 'exec_sql' usage 
+
+(PostgreSQL-8.1の場合)  
+
+## SQL予約語一覧のヘルプ<a id="RESERVED" name="RESERVED">&nbsp;</a>
+
+対話型環境において、？ｈ　をタイプすると、次のSQL予約語一覧が表示されます。  
+
+    pgbash> ?h
     
     ABORT                     CREATE LANGUAGE           DROP VIEW
     ALTER AGGREGATE           CREATE OPERATOR CLASS     END
@@ -122,21 +116,19 @@
     CREATE FUNCTION           DROP TRIGGER              VACUUM
     CREATE GROUP              DROP TYPE
     CREATE INDEX              DROP USER
-    
-    (PostgreSQL-8.1の場合)  
-      
-      
-    
-*   **SQL文法のヘルプ**  
-      
-    SQL文法を知りたいたおきは、「？ｈ SQL文の先頭の予約語」 をタイプします。  
-      
-    pgbash> **?h alter database**
+
+(PostgreSQL-8.1の場合)  
+
+## SQL文法のヘルプ<a id="SQLSYNTAX" name="SQLSYNTAX">&nbsp;</a>
+
+SQL文法を知りたいたおきは、「？ｈ SQL文の先頭の予約語」 をタイプします。  
+
+    pgbash> ?h alter database
     
     Command:     ALTER DATABASE
     Description: change a database
     Syntax:
-    ALTER DATABASE name \[ \[ WITH \] option \[ ... \] \]
+    ALTER DATABASE name [ [ WITH ] option [ ... ] ]
     
     where option can be:
     
@@ -147,46 +139,45 @@
     
     ALTER DATABASE name RENAME TO newname
     
-    ALTER DATABASE name OWNER TO new\_owner
-    
-      
-    
-*   **対話型環境におけるデータベース情報の表示方法**  
-      
-    データベース情報を知りたい場合は、次のヘルプコマンドをタイプします。  
-      
-    
-      ?l\[+\]          : list databases
-      ?d \[NAME\]      : describe table,view,index, or sequence
-      ?d{t|i|v|s}\[+\] : list {tables/indexes/views/sequences}
-      ?dS\[+\]         : list system tables
-      ?da            : list aggregate functions
-      ?db\[+\]         : list tablespaces
-      ?dc            : list conversions
-      ?dC            : list casts
-      ?dd            : show comment for object
-      ?dD            : list domains
-      ?df\[+\]         : list functions
-      ?dn\[+\]         : list schemas
-      ?do            : list operators
-      ?dp            : list table, view, and sequence access privileges, same as ?z
-      ?dT\[+\]         : list data\_types
-      ?du            : list roles (users), same as ?dg
-    
-    (表示例）  
-      
+    ALTER DATABASE name OWNER TO new_owner
+
+## 対話型環境におけるデータベース情報の表示方法<a id="I_DBINFO" name="I_DBINFO">&nbsp;</a>
+
+データベース情報を知りたい場合は、次のヘルプコマンドをタイプします。  
+
+    ?l[+]          : list databases
+    ?d [NAME]      : describe table,view,index, or sequence
+    ?d{t|i|v|s}[+] : list {tables/indexes/views/sequences}
+    ?dS[+]         : list system tables
+    ?da            : list aggregate functions
+    ?db[+]         : list tablespaces
+    ?dc            : list conversions
+    ?dC            : list casts
+    ?dd            : show comment for object
+    ?dD            : list domains
+    ?df[+]         : list functions
+    ?dn[+]         : list schemas
+    ?do            : list operators
+    ?dp            : list table, view, and sequence access privileges, same as ?z
+    ?dT[+]         : list data_types
+    ?du            : list roles (users), same as ?dg
+
+(表示例）  
+
     pgbash> ?du
     
-    \[ List of roles \]
+    [ List of roles ]
      Role name | Superuser | Create role | Create DB | Connections | Member of
     -----------+-----------+-------------+-----------+-------------+-----------
      pgbash    | no        | no          | yes       | no limit    |
      postgres  | yes       | yes         | yes       | no limit    |
     (2 rows)
-    
+
+(表示例）  
+
     pgbash> ?l
     
-    \[ List of databases \]
+    [ List of databases ]
      Name      | Owner    | Encoding
     -----------+----------+----------
      pgbash    | pgbash   | UTF8
@@ -194,53 +185,55 @@
      template0 | postgres | UTF8
      template1 | postgres | UTF8
     (4 rows)
-    
+
+(表示例）  
+
     pgbash> ?d
     
-    \[ List of relations \]
+    [ List of relations ]
      Schema | Name            | Type     | Owner
     --------+-----------------+----------+--------
      public | member          | table    | pgbash
-     public | member\_log      | table    | pgbash
-     public | member\_log\_view | view     | pgbash
-     public | member\_passwd   | table    | pgbash
-     public | member\_seq      | sequence | pgbash
+     public | member_log      | table    | pgbash
+     public | member_log_view | view     | pgbash
+     public | member_passwd   | table    | pgbash
+     public | member_seq      | sequence | pgbash
      public | test            | table    | pgbash
-     public | test\_inherit    | table    | pgbash
-     public | test\_sequence   | sequence | pgbash
-     public | test\_table      | table    | pgbash
-     public | test\_table2     | table    | pgbash
-     public | test\_table\_dept | table    | pgbash
-     public | test\_view       | view     | pgbash
+     public | test_inherit    | table    | pgbash
+     public | test_sequence   | sequence | pgbash
+     public | test_table      | table    | pgbash
+     public | test_table2     | table    | pgbash
+     public | test_table_dept | table    | pgbash
+     public | test_view       | view     | pgbash
     (12 rows)
-    
+
+(表示例）  
+
     pgbash> ?d member  
     
-    \[ Table "test\_table" \]
+    [ Table "test_table" ]
      Column   | Type                  | NotNull  | Default
     ----------+-----------------------+----------+--------------------------
      code     | integer               | not null |
      name     | character varying(32) |          | 'aaa'::character varying
      address  | character varying(64) |          |
-     dept\_id  | character(4)          |          | '001'::bpchar
+     dept_id  | character(4)          |          | '001'::bpchar
      jobid    | character(3)          | not null | '999'::bpchar
-     inherits | test\_table2           |          |
+     inherits | test_table2           |          |
     (6 rows)
     
     Indexes
-     test\_table\_pkey : CREATE UNIQUE INDEX test\_table\_pkey ON test\_table ...
-     ix\_jobid        : CREATE INDEX ix\_jobid ON test\_table USING btree (jobid)
+     test_table_pkey : CREATE UNIQUE INDEX test_table_pkey ON test_table ...
+     ix_jobid        : CREATE INDEX ix_jobid ON test_table USING btree (jobid)
     
     Check constraints
-     ch\_code  : CHECK (code >= 1 AND code <= 9999)
-     ch\_jobid : CHECK (jobid >= 'aaaa'::bpchar AND jobid <= 'zzzz'::bpchar)
+     ch_code  : CHECK (code >= 1 AND code <= 9999)
+     ch_jobid : CHECK (jobid >= 'aaaa'::bpchar AND jobid <= 'zzzz'::bpchar)
     
     Foreign keys
-     test\_table\_dept\_id\_fkey : FOREIGN KEY (dept\_id) REFERENCES test\_table\_...
-    
-      
-    
+     test_table_dept_id_fkey : FOREIGN KEY (dept_id) REFERENCES test_table_...
+
 
 * * *
 
-\[[Prev](./usage01-j.md)\] \[[Menu](../usage-j.md)\] \[[Next](./usage10-j.md)\]
+[[Prev](./usage07-j.md)] [[Menu](./readme.md)] [[Next](./usage10-j.md)]

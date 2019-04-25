@@ -1,29 +1,17 @@
-\[[Home](index-j.md)\] \[[ダウンロード](download-j.md)\] \[[インストール](install-j.md)\] \[[使用方法](usage-j.md)\] \[[使用例](example-j.md)\] \[[FAQ](faq-j.md)\]
+[[Home](index-j.md)] [[ダウンロード](download-j.md)] [[インストール](install-j.md)] [[使用方法](./usage/readme.md)] [[使用例](example-j.md)] [[FAQ](faq-j.md)]
 
-  
-**pgbash のインストール**  
+# PgBashのインストール
 
-  
+PgBashのインストール方法について説明します。PgBashのバージョン番号が変更された場合は、以下の説明にあるバージョン番号を新しい番号に置き換えてください。  
 
-pgbash のインストール方法について説明します。pgbash のバージョン番号が変更された場合は、以下の説明にあるバージョン番号を新しい番号に置き換えてください。  
 
-  
+## PostgreSQL開発環境のインストール
 
-* * *
+PgBashは、libpq-fe.h および PostgreSQL関連インクルードファイル、libpqライブラリを必要とします。そのため、PgBashをインストールする前に PostgreSQLの開発環境をインストールしておく必要があります。  
 
-  
-**◎ PostgreSQL開発環境のインストール**  
-
-pgbashは、libpq-fe.h および PostgreSQL関連インクルードファイル、libpqライブラリを必要とします。そのため、pgbashをインストールする前に PostgreSQLの開発環境をインストールしておく必要があります。  
-  
 例えば、 yum や Cygwin では **postrgesql-devel** をインストールしておきます。  
 
-  
-
-* * *
-
-  
-**◎ pgbashのインストール**  
+## PgBashのインストール
 
 2.  **pgbash-8rx.x.tar.gz の展開**  
       
@@ -169,4 +157,4 @@ Pgbashを対話型で使用する場合、pgbash起動時は bashシェルと同
 
 * * *
 
-\[[Home](index-j.md)\] \[[ダウンロード](download-j.md)\] \[[インストール](install-j.md)\] \[[使用方法](usage-j.md)\] \[[使用例](example-j.md)\] \[[FAQ](faq-j.md)\]
+[[Home](index-j.md)] [[ダウンロード](download-j.md)] [[インストール](install-j.md)] [[使用方法](./usage/readme.md)] [[使用例](example-j.md)] [[FAQ](faq-j.md)]
