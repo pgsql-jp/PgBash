@@ -2,7 +2,7 @@
 
 * * *
 
-# pgbash の起動と終了
+# PgBash の起動と終了
 
 ## 対話型環境<a id="TTY" name="TTY">&nbsp;</a>
 
